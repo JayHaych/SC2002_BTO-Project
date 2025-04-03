@@ -30,12 +30,25 @@ public class Login_Controller
         System.out.println("___________________________________________________________________________________________");
         while (!validInput)
         {
-            System.out.println("Please enter the role you're signing in as:  \n1. Applicant \n2. HDB Officer \n3. HDB Manager");
-            System.out.print("Role: ");
-            role = scanner.nextInt();
-            scanner.nextLine();
+            try
+            {
+                System.out.println("Please enter the role you're signing in as:  \n1. Applicant \n2. HDB Officer \n3. HDB Manager");
+                System.out.print("Role: ");
+                role = scanner.nextInt();
+                scanner.nextLine();
+            }
+            catch (Exception e)
+            {
+                System.out.println("___________________________________________________________________________________________");
+                System.out.println("Invalid input. Please try again.");
+                scanner.nextLine(); // Clear the invalid input
+                System.out.println();
+                continue;
+            }
+
             if (role != 1 && role != 2 && role != 3)
             {
+                System.out.println("___________________________________________________________________________________________");
                 System.out.println("Invalid input. Please try again.");
                 System.out.println();
                 continue;

@@ -30,7 +30,9 @@ public class CSVWriter
                     bw.newLine();
                 }
 
-        } catch (IOException e) {
+        } 
+        catch (IOException e) 
+        {
             e.printStackTrace();
         }
     }
