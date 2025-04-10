@@ -1,5 +1,5 @@
 package Entity;
 
-public class Enquiries {
+public class Enquiry {
 
 }
