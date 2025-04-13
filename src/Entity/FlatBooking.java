@@ -2,16 +2,16 @@ package Entity;
 
 public class FlatBooking {
     private String bookingID;
-    private String projectID;
+    private String projectName;
     private String flatType;
     private String unitNumber;
     private String bookingDate;
     private String officeID;
     private boolean bookingStatus;
 
-    public FlatBooking(String bookingID, String projectID, String flatType, String unitNumber, String bookingDate, String officeID, boolean bookingStatus){
+    public FlatBooking(String bookingID, String projectName, String flatType, String unitNumber, String bookingDate, String officeID, boolean bookingStatus){
         this.bookingID = bookingID;
-        this.projectID = projectID;
+        this.projectName = projectName;
         this.flatType = flatType;
         this.unitNumber = unitNumber;
         this.bookingDate = bookingDate;
@@ -27,15 +27,15 @@ public class FlatBooking {
         this.bookingID = bookingID;
     }
 
-    public String getProjectID(){
-        return projectID;
+    public String getProjectName(){
+        return projectName;
     }
 
-    public void setProjectID(String projectID){
-        this.projectID = projectID;
+    public void setProjectName(String projectName){
+        this.projectName = projectName;
     }
 
-    public String getFlateType(){
+    public String getFlatType(){
         return flatType;
     }
 
@@ -47,7 +47,7 @@ public class FlatBooking {
         return unitNumber;
     }
 
-    public void setUnitNumber(){
+    public void setUnitNumber(String unitNumber){
         this.unitNumber = unitNumber;
     }
 
