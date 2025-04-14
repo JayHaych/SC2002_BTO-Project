@@ -6,7 +6,7 @@ import Entity.CurrentUser;
 import Controller.ApplicantController;
 
 public class Applicant_UI {
-    CurrentUser user; // Ensure this is properly instantiated somewhere
+    CurrentUser user;
 
     public static void display(CurrentUser user) {
         System.out.println("Welcome to the ApplicantUI!");
@@ -31,25 +31,25 @@ public class Applicant_UI {
                 ApplicantController.submitEnquiry(user);
                 break;
             case 2:
-                ApplicantController.viewEnquiry();
+                ApplicantController.viewEnquiry(user);
                 break;
             case 3:
-                ApplicantController.editEnquiry();
+                ApplicantController.editEnquiry(user);
                 break;
             case 4:
-                ApplicantController.deleteEnquiry();
+                ApplicantController.deleteEnquiry(user);
                 break;
             case 5:
-                ApplicantController.apply();
+                ApplicantController.apply(user);
                 break;
             case 6:
-                ApplicantController.viewProject();
+                ApplicantController.viewProject(user);
                 break;
             case 7:
-                ApplicantController.viewAppliedProject();
+                ApplicantController.viewAppliedProject(user);
                 break;
             case 8:
-                ApplicantController.requestWithdrawal();
+                ApplicantController.requestWithdrawal(user);
                 break;
             case 9:
                 

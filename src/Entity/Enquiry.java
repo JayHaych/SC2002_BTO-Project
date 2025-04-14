@@ -1,24 +1,42 @@
-package Entity; 
+/* enquiry needs CurrentUser cus each user can view, edit, delete only their enquiries
+ * enquiry needs projectname cus hdb manager can reply only the project they r managing. but can view all.
+ */
+
+package Entity;
 
 public class Enquiry {
-
     private String details;
+    private String projectName;
+    private CurrentUser user;
 
-    // No-argument constructor
-    public Enquiry() {
-    }
 
-    // Constructor with details
-    public Enquiry(String details) {
+    public Enquiry(String details, String projectName, CurrentUser user) {
         this.details = details;
+        this.projectName = projectName;
+        this.user = user;
     }
 
-    // Getter and setter
     public String getDetails() {
         return details;
     }
 
+    public String getProjectName() {
+        return projectName;
+    }
+
+    public CurrentUser getUser() {
+        return user;
+    }
+
     public void setDetails(String details) {
         this.details = details;
+    }
+
+    public void setProjectName(String projectName) {
+        this.projectName = projectName;
+    }
+
+    public void setUser(CurrentUser user) {
+        this.user = user;
     }
 }

@@ -1,5 +1,8 @@
 package Entity;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class BTOProject {
     private String projectName;
     private String neighbourhood;
@@ -9,14 +12,13 @@ public class BTOProject {
     private String closingDate;                
     private String HDBManagerInCharge;
     private int availableOfficerSlot;
-
-    public BTOProject(){
-
-    }
+    private boolean isVisible; // project visibility (on/off)
+    private List<Enquiry> enquiries; // To store enquiries
+    private List<FlatBooking> flatBookings; // To store flat bookings for receipt and report generation
 
     public BTOProject(String projectName, String neighbourhood, int numberOfTwoRoom,
                       int numberOfThreeRoom, String openingDate, String closingDate,
-                      String HDBManagerInCharge, int availableOfficerSlot) {
+                      String HDBManagerInCharge, int availableOfficerSlot, boolean isVisible) {
         this.projectName = projectName;
         this.neighbourhood = neighbourhood;
         this.numberOfTwoRoom = numberOfTwoRoom;
@@ -25,9 +27,11 @@ public class BTOProject {
         this.closingDate = closingDate;
         this.HDBManagerInCharge = HDBManagerInCharge;
         this.availableOfficerSlot = availableOfficerSlot;
+        this.isVisible = isVisible;
+        this.enquiries = new ArrayList<>();
+        this.flatBookings = new ArrayList<>();
     }
 
-    // Getter and Setter for projectName
     public String getProjectName() {
         return projectName;
     }
@@ -35,7 +39,6 @@ public class BTOProject {
         this.projectName = projectName;
     }
 
-    // Getter and Setter for neighbourhood
     public String getNeighbourhood() {
         return neighbourhood;
     }
@@ -43,7 +46,6 @@ public class BTOProject {
         this.neighbourhood = neighbourhood;
     }
 
-    // Getter and Setter for numberOfTwoRoom
     public int getNumberOfTwoRoom() {
         return numberOfTwoRoom;
     }
@@ -51,7 +53,6 @@ public class BTOProject {
         this.numberOfTwoRoom = numberOfTwoRoom;
     }
 
-    // Getter and Setter for numberOfThreeRoom
     public int getNumberOfThreeRoom() {
         return numberOfThreeRoom;
     }
@@ -59,7 +60,6 @@ public class BTOProject {
         this.numberOfThreeRoom = numberOfThreeRoom;
     }
 
-    // Getter and Setter for openingDate
     public String getOpeningDate() {
         return openingDate;
     }
@@ -67,7 +67,6 @@ public class BTOProject {
         this.openingDate = openingDate;
     }
 
-    // Getter and Setter for closingDate
     public String getClosingDate() {
         return closingDate;
     }
@@ -75,7 +74,6 @@ public class BTOProject {
         this.closingDate = closingDate;
     }
 
-    // Getter and Setter for HDBManagerInCharge
     public String getHDBManagerInCharge() {
         return HDBManagerInCharge;
     }
@@ -83,11 +81,37 @@ public class BTOProject {
         this.HDBManagerInCharge = HDBManagerInCharge;
     }
 
-    // Getter and Setter for availableOfficerSlot
     public int getAvailableOfficerSlot() {
         return availableOfficerSlot;
     }
     public void setAvailableOfficerSlot(int availableOfficerSlot) {
         this.availableOfficerSlot = availableOfficerSlot;
+    }
+
+    public boolean isVisible() {
+        return isVisible;
+    }
+    public void setVisible(boolean isVisible) {
+        this.isVisible = isVisible;
+    }
+
+    public List<Enquiry> getEnquiries() {
+        return enquiries;
+    }
+    public void setEnquiries(List<Enquiry> enquiries) {
+        this.enquiries = enquiries;
+    }
+
+    public List<FlatBooking> getFlatBookings() {
+        return flatBookings;
+    }
+
+    public void setFlatBookings(List<FlatBooking> flatBookings) {
+        this.flatBookings = flatBookings;
+    }
+    
+    //does this belong here????
+    public void addFlatBooking(FlatBooking booking) {
+        this.flatBookings.add(booking);
     }
 }
