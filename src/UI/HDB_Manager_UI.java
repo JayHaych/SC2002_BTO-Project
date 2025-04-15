@@ -1,20 +1,15 @@
 package UI;
 
-import java.util.Scanner;
+import Entity.LocalData;
 
-import Controller.HDBManagerController;
-
-public class HDB_Manager_UI {
+public class HDB_Manager_UI 
+{
     
-    public static void display(){
-        Scanner sc = new Scanner(System.in);
-        int choice;
+    public static void display()
+    {
 
-        HDBManagerController controller = new HDBManagerController(true, true, true);
-
-        while (true) {
             System.out.println("___________________________________________________________________________________________");
-            System.out.println("Welcome to the HDB Manager UI!");
+            System.out.println(LocalData.getCurrentUser().getName() + "Welcome to the HDB Manager UI!");
             System.out.println("1. Create new BTO project");
             System.out.println("2. Edit existing BTO project");
             System.out.println("3. Delete BTO project");
@@ -28,7 +23,10 @@ public class HDB_Manager_UI {
             System.out.println("11. Logout and quit");
             System.out.print("Select option: ");
 
-            choice = sc.nextInt();
+    }
+}
+
+/*             choice = sc.nextInt();
             String report;
 
             switch (choice) {
@@ -80,8 +78,5 @@ public class HDB_Manager_UI {
                     System.out.println("Thank you!");
                     return;
                 default:
-                    System.out.println("Invalid option.");
-            }
-        }
-    }
-}
+                    System.out.println("Invalid option."); 
+            } */

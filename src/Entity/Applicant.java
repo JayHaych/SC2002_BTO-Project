@@ -15,7 +15,7 @@ public class Applicant extends User {
         this.enquiries = new ArrayList<>();
     }
     
-    public boolean hasApplied() {
+    public boolean gethasApplied() {
         return hasApplied;
     }
     
@@ -33,3 +33,4 @@ public class Applicant extends User {
         enquiries.add(enquiry);
     }
 }
+

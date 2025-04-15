@@ -1,0 +1,4 @@
+bookingID,projectName,flatType,unitNumber,bookingStatus,ApplicantName
+1,Acacia Breeze,2-Room,01-01,Pending,Grace
+2,Acacia Breeze,3-Room,01-02,Pending,James
+3,Acacia Breeze,4-Room,01-03,Pending,Rachel

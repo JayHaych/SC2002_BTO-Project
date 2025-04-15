@@ -5,18 +5,29 @@ public class FlatBooking {
     private String projectName;
     private String flatType;
     private String unitNumber;
-    private boolean bookingStatus;
-    private CurrentUser applicant;
+    private String bookingStatus;
+    private User applicant;
+    private String applicantName;
 
-    public FlatBooking(String bookingID, String projectName, String flatType, String unitNumber, boolean bookingStatus, CurrentUser applicant) {
+    public FlatBooking(String bookingID, String projectName, String flatType, String unitNumber, String bookingStatus, String applicantName) {
         this.bookingID = bookingID;
         this.projectName = projectName;
         this.flatType = flatType;
         this.unitNumber = unitNumber;
         this.bookingStatus = bookingStatus;
-        this.applicant = applicant;
+        this.applicantName = applicantName;
     }
 
+
+    public String getApplicantName() {
+        return applicantName;
+    }
+
+    public void setApplicantName(String applicantName) {
+        this.applicantName = applicantName;
+    }
+
+    
     public String getBookingID(){
         return bookingID;
     }
@@ -49,19 +60,20 @@ public class FlatBooking {
         this.unitNumber = unitNumber;
     }
 
-    public boolean getBookingStatus(){
+    public String getBookingStatus(){
         return bookingStatus;
     }
 
-    public void setBookingStatus(boolean bookingStatus){
+    public void setBookingStatus(String bookingStatus){
         this.bookingStatus = bookingStatus;
     }
 
-    public CurrentUser getApplicant() {
+    public User getApplicant() {
         return applicant;
     }
 
-    public void setApplicant(CurrentUser applicant) {
+    public void setApplicant(User applicant) {
         this.applicant = applicant;
     }
 }
+

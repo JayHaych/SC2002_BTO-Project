@@ -5,9 +5,9 @@ import Entity.*;
 
 public class ApplicantController {
 
-    private static List<Enquiry> enquiries = new ArrayList<>(); //all enquiries are stored here
+/*     private static List<Enquiry> enquiries = new ArrayList<>(); //all enquiries are stored here
     private static List<BTOApplication> applicationList = new ArrayList<>();
-    private static List<BTOProject> projectList = new ArrayList<>();
+    private static List<BTOProject> projectList = new ArrayList<>(); */
 
     public static void submitEnquiry(CurrentUser user) {
         Scanner sc = new Scanner(System.in); 
@@ -174,18 +174,22 @@ public class ApplicantController {
     
 
     public static void viewProject(CurrentUser user) {
+        System.out.println("We haven't do yet lol");
     
     }
 
     public static void viewAppliedProject(CurrentUser user) {
+        System.out.println("We haven't do yet lol");
        
     }
 
     public static void requestWithdrawal(CurrentUser user) {
+        System.out.println("We haven't do yet lol");
       
     }
 
     public static void quit() {
+        System.out.println("We haven't do yet lol");
      
     }
     

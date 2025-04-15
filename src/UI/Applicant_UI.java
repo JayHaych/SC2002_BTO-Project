@@ -1,15 +1,13 @@
 package UI;
 
-import java.util.Scanner;
+import Entity.LocalData;
 
-import Entity.CurrentUser;
-import Controller.ApplicantController;
+public class Applicant_UI 
+{
 
-public class Applicant_UI {
-    CurrentUser user;
-
-    public static void display(CurrentUser user) {
-        System.out.println("Welcome to the ApplicantUI!");
+    public static void display() 
+    {
+        System.out.println(LocalData.getCurrentUser().getName() + ", welcome to the Applicant UI!");
         System.out.println("-----------------------------");
         System.out.println("What would you like to do? (Select a number 1-10)");
         System.out.println("1. Submit an enquiry");
@@ -23,6 +21,11 @@ public class Applicant_UI {
         System.out.println("9. Change your password");
         System.out.println("10. Logout and quit");
 
+        
+    }
+}
+
+/*
         Scanner sc = new Scanner(System.in);
         int choice = sc.nextInt();
 
@@ -59,7 +62,7 @@ public class Applicant_UI {
                 break;
             default:
                 System.out.println("Invalid choice. Please select a number from 1 to 10.");
-                break;
-        }
-    }
-}
+                break; 
+                }
+*/
+

@@ -7,13 +7,18 @@ package Entity;
 public class Enquiry {
     private String details;
     private String projectName;
-    private CurrentUser user;
+    private User user;
+    private String UserName; 
 
 
-    public Enquiry(String details, String projectName, CurrentUser user) {
+    public Enquiry(String details, String projectName, String Username) {
         this.details = details;
         this.projectName = projectName;
-        this.user = user;
+        this.UserName = Username;
+    }
+
+    public String getUserName() {
+        return UserName;
     }
 
     public String getDetails() {
@@ -24,7 +29,7 @@ public class Enquiry {
         return projectName;
     }
 
-    public CurrentUser getUser() {
+    public User getUser() {
         return user;
     }
 
@@ -36,7 +41,12 @@ public class Enquiry {
         this.projectName = projectName;
     }
 
-    public void setUser(CurrentUser user) {
+    public void setUser(User user) {
         this.user = user;
     }
+
+    public void setUserName(String UserName) {
+        this.UserName = UserName;
+    }
 }
+

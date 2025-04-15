@@ -1,40 +1,40 @@
 package Entity;
 
-import java.util.Date;
-import java.util.UUID;
-
 public class BTOApplication {
 
     private String applicationID;
     private String projectName;
     private String flatType;
     private String applicationStatus;
-    private Date submissionDate;
+    private String submissionDate;
     private Boolean withdrawalRequested;
-    private CurrentUser applicant; 
+    private String applicantName;
+    private User applicant; 
 
     public BTOApplication() {
        
     }
 
-    public BTOApplication(String projectName, CurrentUser user, int flatType) {
-        this.applicationID = UUID.randomUUID().toString();
+    public BTOApplication(String applicationID,String projectName, String flatType, String applicationStatus, 
+                          String submissionDate, Boolean withdrawalRequested, String applicantName) {
         this.projectName = projectName;
-        
+        this.applicationID = applicationID;
         // Convert the integer flat type to a descriptive string.
-        if (flatType == 2) {
-            this.flatType = "2-Room";
-        } else {
-            this.flatType = "3-Room";
-        }
-        
-        this.applicant = user;
-        this.submissionDate = new Date();
+        this.flatType = flatType;
+        this.applicantName = applicantName;
+        this.submissionDate = submissionDate;
         // Set the initial application status to "Pending".
-        this.applicationStatus = "Pending";
-        this.withdrawalRequested = false;
+        this.applicationStatus = applicationStatus;
+        this.withdrawalRequested = withdrawalRequested;
     }
 
+    public String getApplicantName() {
+        return applicantName;
+    }
+
+    public void setApplicantName(String applicantName) {
+        this.applicantName = applicantName;
+    }
     
     public String getApplicationID() {
         return applicationID;
@@ -68,11 +68,11 @@ public class BTOApplication {
         this.applicationStatus = applicationStatus;
     }
 
-    public Date getSubmissionDate() {
+    public String getSubmissionDate() {
         return submissionDate;
     }
 
-    public void setSubmissionDate(Date submissionDate) {
+    public void setSubmissionDate(String submissionDate) {
         this.submissionDate = submissionDate;
     }
 
@@ -84,11 +84,11 @@ public class BTOApplication {
         this.withdrawalRequested = withdrawalRequested;
     }
 
-    public CurrentUser getApplicant() {
+    public User getApplicant() {
         return applicant;
     }
 
-    public void setApplicant(CurrentUser applicant) {
+    public void setApplicant(User applicant) {
         this.applicant = applicant;
     }
 }

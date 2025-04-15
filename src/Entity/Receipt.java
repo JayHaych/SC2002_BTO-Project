@@ -10,7 +10,7 @@ public class Receipt {
 
     public Receipt(FlatBooking booking) {
 
-        CurrentUser applicant = booking.getApplicant();
+        User applicant = booking.getApplicant();
         this.applicantName = applicant.getName();
         this.applicantNRIC = applicant.getNRIC();
         this.applicantAge = applicant.getAge();

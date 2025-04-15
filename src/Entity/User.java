@@ -51,6 +51,10 @@ public class User
     {
         this.visibility = visibility;
     }
+    public boolean getVisibility()
+    {
+        return visibility;
+    }
     public String getMaritalStatus()
     {
         return marital_status;
@@ -68,3 +72,4 @@ public class User
         this.age = age;
     }
 }
+

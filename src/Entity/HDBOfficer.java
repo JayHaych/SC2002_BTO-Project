@@ -3,10 +3,13 @@ package Entity;
 public class HDBOfficer extends Applicant{
 
     private BTOProject newProject;
+    private String BTOprojectName;
 
-    public HDBOfficer(String name, String NRIC, String password, boolean visibility, String marital_status, int age, BTOProject newProject) {
-        super(name, NRIC, password, visibility, marital_status, age, visibility);
-        this.newProject = newProject;
+    public HDBOfficer(String name, String NRIC, String password, boolean visibility, 
+                      String marital_status, int age, boolean hasApplied, String BTOprojectName) 
+    {
+        super(name, NRIC, password, visibility, marital_status, age, hasApplied);
+        this.BTOprojectName = BTOprojectName;
     }
 
     public BTOProject getCurrentProject() {
@@ -17,5 +20,13 @@ public class HDBOfficer extends Applicant{
         this.newProject = newProject;
     }
 
+    public String getBTOprojectName() {
+        return BTOprojectName;
+    }
+    
+    public void setBTOprojectName(String BTOprojectName) {
+        this.BTOprojectName = BTOprojectName;
+    }
+    
    
 }

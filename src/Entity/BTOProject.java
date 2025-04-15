@@ -7,30 +7,46 @@ public class BTOProject {
     private String projectName;
     private String neighbourhood;
     private int numberOfTwoRoom;
+    private int sellingPriceOfTwoRoom;
     private int numberOfThreeRoom;
+    private int sellingPriceOfThreeRoom;
     private String openingDate;       
     private String closingDate;                
-    private String HDBManagerInCharge;
+    private String HDBManagerInChargeName;
+    private HDBManager hdbManagerInCharge; 
     private int availableOfficerSlot;
+    private ArrayList<HDBOfficer> OfficersInCharge; // To store HDB officers assigned to the project
+    private ArrayList<String> OfficerInChargeNames; // To store names of HDB officers assigned to the project
     private boolean isVisible; // project visibility (on/off)
     private List<Enquiry> enquiries; // To store enquiries
     private List<FlatBooking> flatBookings; // To store flat bookings for receipt and report generation
 
-    public BTOProject(String projectName, String neighbourhood, int numberOfTwoRoom,
-                      int numberOfThreeRoom, String openingDate, String closingDate,
-                      String HDBManagerInCharge, int availableOfficerSlot, boolean isVisible) {
+
+    public BTOProject(String projectName, String neighbourhood, int numberOfTwoRoom, int sellingPriceOfTwoRoom,
+                      int numberOfThreeRoom, int sellingPriceOfThreeRoom, String openingDate, String closingDate,
+                      String HDBManagerInChargeName, int availableOfficerSlot, String[] OfficerInChargeNames, boolean isVisible) {
         this.projectName = projectName;
         this.neighbourhood = neighbourhood;
         this.numberOfTwoRoom = numberOfTwoRoom;
+        this.sellingPriceOfTwoRoom = sellingPriceOfTwoRoom;
         this.numberOfThreeRoom = numberOfThreeRoom;
+        this.sellingPriceOfThreeRoom = sellingPriceOfThreeRoom;
         this.openingDate = openingDate;
         this.closingDate = closingDate;
-        this.HDBManagerInCharge = HDBManagerInCharge;
+        this.HDBManagerInChargeName = HDBManagerInChargeName;
         this.availableOfficerSlot = availableOfficerSlot;
+        this.OfficersInCharge = new ArrayList<>();
+        this.OfficerInChargeNames = new ArrayList<>();
+        for (String officerName : OfficerInChargeNames) 
+        {
+            this.OfficerInChargeNames.add(officerName);
+        }
         this.isVisible = isVisible;
         this.enquiries = new ArrayList<>();
         this.flatBookings = new ArrayList<>();
     }
+
+
 
     public String getProjectName() {
         return projectName;
@@ -74,11 +90,32 @@ public class BTOProject {
         this.closingDate = closingDate;
     }
 
-    public String getHDBManagerInCharge() {
-        return HDBManagerInCharge;
+    public String getHDBManagerInChargeName() {
+        return HDBManagerInChargeName;
     }
-    public void setHDBManagerInCharge(String HDBManagerInCharge) {
-        this.HDBManagerInCharge = HDBManagerInCharge;
+    public void setHDBManagerInChargeName(String HDBManagerInChargeName) {
+        this.HDBManagerInChargeName = HDBManagerInChargeName;
+    }
+
+    public HDBManager getHDBManagerInCharge() {
+        return hdbManagerInCharge;
+    }
+    public void setHDBManagerInCharge(HDBManager hdbManagerInCharge) {
+        this.hdbManagerInCharge = hdbManagerInCharge;
+    }
+
+    public int getSellingPriceOfTwoRoom() {
+        return sellingPriceOfTwoRoom;
+    }
+    public void setSellingPriceOfTwoRoom(int sellingPriceOfTwoRoom) {
+        this.sellingPriceOfTwoRoom = sellingPriceOfTwoRoom;
+    }
+    
+    public int getSellingPriceOfThreeRoom() {
+        return sellingPriceOfThreeRoom;
+    }
+    public void setSellingPriceOfThreeRoom(int sellingPriceOfThreeRoom) {
+        this.sellingPriceOfThreeRoom = sellingPriceOfThreeRoom;
     }
 
     public int getAvailableOfficerSlot() {
@@ -86,6 +123,25 @@ public class BTOProject {
     }
     public void setAvailableOfficerSlot(int availableOfficerSlot) {
         this.availableOfficerSlot = availableOfficerSlot;
+    }
+
+    public ArrayList<HDBOfficer> getOfficersInCharge() {
+        return OfficersInCharge;
+    }
+    public void setOfficersInCharge(ArrayList<HDBOfficer> OfficersInCharge) {
+        this.OfficersInCharge = OfficersInCharge;
+    }
+    public void addOfficerInCharge(HDBOfficer officer) {
+        this.OfficersInCharge.add(officer);
+    }
+    public void removeOfficerInCharge(HDBOfficer officer) {
+        this.OfficersInCharge.remove(officer);
+    }
+    public ArrayList<String> getOfficerInChargeNames() {
+        return OfficerInChargeNames;
+    }
+    public void setOfficerInChargeNames(ArrayList<String> OfficerInChargeNames) {
+        this.OfficerInChargeNames = OfficerInChargeNames;
     }
 
     public boolean isVisible() {

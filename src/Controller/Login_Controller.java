@@ -1,24 +1,15 @@
 package Controller;
 
 import java.util.Scanner;
-import Entity.User_list;
-import Entity.User;
+import Entity.LocalData;
+
 
 public class Login_Controller 
 {
-    static User_list list1 = CSVReader.readCSV("Data/ApplicantList.csv");
-    static User_list list2 = CSVReader.readCSV("Data/OfficerList.csv");
-    static User_list list3 = CSVReader.readCSV("Data/ManagerList.csv");
 
     private static String NRIC;
     private static String password;
     private static int role;
-    private static User current_user;
-
-    public static User getCurrentUser()
-    {
-        return current_user;
-    }
 
     public static int login()
     {
@@ -62,22 +53,24 @@ public class Login_Controller
             switch(role)
             {
                 case 1:
-                    for (int i = 0; i <= list1.getCount(); i++)
+                    for (int i = 0; i <= LocalData.getApplicantList().getCount(); i++)
                     {
-                        if (i == list1.getCount())
+                        if (i == LocalData.getApplicantList().getCount())
                         {
                             System.out.println("No such user found in the database.");
                             break;
                         }
-                        if (list1.getUser(i).getNRIC().equals(NRIC) && list1.getUser(i).getPassword().equals(password))
+                        if (LocalData.getApplicantList().getApplicant(i).getNRIC().equals(NRIC) && 
+                            LocalData.getApplicantList().getApplicant(i).getPassword().equals(password))
                         {
                             System.out.println();
                             System.out.println("Login successful! Welcome, Applicant!");
+                            LocalData.setCurrentUser(LocalData.getApplicantList().getApplicant(i));
                             validInput = true;
-                            current_user = list1.getUser(i);
                             break;
                         }
-                        else if (list1.getUser(i).getNRIC().equals(NRIC) && !list1.getUser(i).getPassword().equals(password))
+                        else if (LocalData.getApplicantList().getApplicant(i).getNRIC().equals(NRIC) && 
+                                !LocalData.getApplicantList().getApplicant(i).getPassword().equals(password))
                         {
                             System.out.println("Incorrect password. Please try again.");
                             break;
@@ -85,22 +78,24 @@ public class Login_Controller
                     }
                     continue;
                 case 2:
-                    for (int i = 0; i <= list2.getCount(); i++)
+                    for (int i = 0; i <= LocalData.getHDBOfficerList().getCount(); i++)
                     {
-                        if (i == list2.getCount())
+                        if (i == LocalData.getHDBOfficerList().getCount())
                         {
                             System.out.println("No such user found in the database.");
                             break;
                         }
-                        if (list2.getUser(i).getNRIC().equals(NRIC) && list2.getUser(i).getPassword().equals(password))
+                        if (LocalData.getHDBOfficerList().getHDBOfficer(i).getNRIC().equals(NRIC) && 
+                            LocalData.getHDBOfficerList().getHDBOfficer(i).getPassword().equals(password))
                         {
                             System.out.println();
                             System.out.println("Login successful! Welcome, HDB Officer!");
+                            LocalData.setCurrentUser(LocalData.getHDBOfficerList().getHDBOfficer(i));
                             validInput = true;
-                            current_user = list2.getUser(i);
                             break;
                         }
-                        else if (list2.getUser(i).getNRIC().equals(NRIC) && !list2.getUser(i).getPassword().equals(password))
+                        else if (LocalData.getHDBOfficerList().getHDBOfficer(i).getNRIC().equals(NRIC) && 
+                                !LocalData.getHDBOfficerList().getHDBOfficer(i).getPassword().equals(password))
                         {
                             System.out.println("Incorrect password. Please try again.");
                             break;
@@ -108,22 +103,24 @@ public class Login_Controller
                     }
                     continue;
                 case 3:
-                    for (int i = 0; i <= list3.getCount(); i++)
+                    for (int i = 0; i <= LocalData.getHDBManagerList().getCount(); i++)
                     {
-                        if(i == list3.getCount())
+                        if(i == LocalData.getHDBManagerList().getCount())
                         {
                             System.out.println("No such user found in the database.");
                             break;
                         }
-                        if (list3.getUser(i).getNRIC().equals(NRIC) && list3.getUser(i).getPassword().equals(password))
+                        if (LocalData.getHDBManagerList().getHDBManager(i).getNRIC().equals(NRIC) && 
+                            LocalData.getHDBManagerList().getHDBManager(i).getPassword().equals(password))
                         {
                             System.out.println();
                             System.out.println("Login successful! Welcome, HDB Manager!");
+                            LocalData.setCurrentUser(LocalData.getHDBManagerList().getHDBManager(i));
                             validInput = true;
-                            current_user = list3.getUser(i);
                             break;
                         }
-                        else if (list3.getUser(i).getNRIC().equals(NRIC) && !list3.getUser(i).getPassword().equals(password))
+                        else if (LocalData.getHDBManagerList().getHDBManager(i).getNRIC().equals(NRIC) && 
+                                !LocalData.getHDBManagerList().getHDBManager(i).getPassword().equals(password))
                         {
                             System.out.println("Incorrect password. Please try again.");
                             break;

@@ -1,11 +1,8 @@
 package Controller;
-import java.util.Scanner;
-import java.util.ArrayList;
 
-import Entity.BTOProject;
 
 public class HDBManagerController {
-    private boolean applicationApproved;
+/*     private boolean applicationApproved;
     private boolean registrationApproved;
     private boolean withdrawalApproved;
     
@@ -59,19 +56,20 @@ public class HDBManagerController {
     }
 
     public void deleteProject(){
+        System.out.println("We haven't do yet lol");
 
     }
 
     public void setVisibility(){
-
+        System.out.println("We haven't do yet lol");
     }
 
     public void viewAllProjects(){
-
+        System.out.println("We haven't do yet lol");
     }
 
     public void viewMyProjects(){
-
+        System.out.println("We haven't do yet lol");
     }
 
     public boolean approveRegistration(){
@@ -87,9 +85,9 @@ public class HDBManagerController {
     }
 
     public String generateReport(){
-
+        return "Report generated successfully!";
     }
 
 
-
+ */
 }
