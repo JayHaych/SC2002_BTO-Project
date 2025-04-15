@@ -131,8 +131,6 @@ public class Login_Controller
             }
         }
 
-    
-        scanner.close();
 
         return role;
     }
