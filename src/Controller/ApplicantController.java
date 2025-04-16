@@ -2,23 +2,23 @@ package Controller;
 
 import java.util.*;
 import Entity.*;
+import Interface.ViewEnquiryInterface;
 
-public class ApplicantController {
+public class ApplicantController implements ViewEnquiryInterface {
 
-/*     private static List<Enquiry> enquiries = new ArrayList<>(); //all enquiries are stored here
-    private static List<BTOApplication> applicationList = new ArrayList<>();
-    private static List<BTOProject> projectList = new ArrayList<>(); */
+    private static List<Enquiry> enquiries = new ArrayList<>(); //all enquiries are stored here
+    private static List<BTOApplication> applicationList = new ArrayList<>(); //all applications are stored here
+    private static List<BTOProject> projectList = new ArrayList<>(); 
 
-    public static void submitEnquiry(CurrentUser user) {
+    public static void submitEnquiry(User user) {
         Scanner sc = new Scanner(System.in); 
         System.out.println("Enter your enquiry:");
         String details = sc.nextLine();
         System.out.println("Enter the project name: ");
         String projectName = sc.nextLine();
-    
+
         Enquiry enquiry = new Enquiry(details, projectName, user);
         
-        // check if project in projectList.
         boolean projectFound = false;
         for (BTOProject project : projectList) {
             if (project.getProjectName().equalsIgnoreCase(projectName)) {
@@ -39,9 +39,8 @@ public class ApplicantController {
         sc.close();
     }
     
-    
 
-    public static void viewEnquiry(CurrentUser user) {
+    public static void viewEnquiry(User user) {
         boolean found = false;
         int count = 1;
         System.out.println("Your Enquiries:");
@@ -61,7 +60,7 @@ public class ApplicantController {
     }
     
 
-    public static void editEnquiry(CurrentUser user) {
+    public static void editEnquiry(User user) {
         //new list of user enquiries
         List<Enquiry> userEnquiries = new ArrayList<>();
         for (Enquiry enquiry : enquiries) {
@@ -98,7 +97,7 @@ public class ApplicantController {
     }
     
 
-    public static void deleteEnquiry(CurrentUser user) {
+    public static void deleteEnquiry(User user) {
         List<Enquiry> userEnquiries = new ArrayList<>();
         for (Enquiry enquiry : enquiries) {
             if (enquiry.getUser().equals(user)) {
@@ -133,7 +132,7 @@ public class ApplicantController {
     }
     
 
-    public static void apply(CurrentUser user) {
+    public static void apply(Applicant user) {
         Scanner sc = new Scanner(System.in);
         
         System.out.println("Enter the project name you would like to apply for:");
@@ -154,7 +153,7 @@ public class ApplicantController {
         }
         // Check eligibility for single applicants (age >= 35)
         else if (user.getMaritalStatus() == "Single" && user.getAge() >= 35) {
-            System.out.println("As a single applicant, you can only apply for a 2-room flat.");
+            System.out.println("As a single applicant, you can only apply for a 2-room flat. Proceeding to Apply for 2 room flat.");
             flatType = 2;
         }
         // Applicant is not eligible
@@ -165,31 +164,148 @@ public class ApplicantController {
         }
         
         // Create application with the given project name, user and flat type.
-        BTOApplication application = new BTOApplication(projectName, user, flatType);
+        BTOApplication application = new BTOApplication(projectName, flatType, user);
         applicationList.add(application);
+
+        user.setAppliedProject(projectName); //set applied project attribute to applicant
         
         System.out.println("Application submitted successfully.");
         sc.close();
     }
     
 
-    public static void viewProject(CurrentUser user) {
-        System.out.println("We haven't do yet lol");
+    public static void viewProjects() {
+        User currentUser = LocalData.getCurrentUser();
+        if (currentUser == null) {
+            System.out.println("No user is currently logged in.");
+            return;
+        }
     
+        BTOProject_List projectList = LocalData.getBTOProjectList();
+        boolean foundProject = false;
+    
+        System.out.println("Available Projects Based on Your Eligibility:");
+        for (int i = 0; i < projectList.getCount(); i++) {
+            BTOProject project = projectList.getBTOProject(i);
+    
+            if (!project.isVisible()) {
+                continue;
+            }
+            
+            // Married applicants (age >= 21): Show both 2-room and 3-room flats.
+            if (currentUser.getMaritalStatus().equalsIgnoreCase("Married") && currentUser.getAge() >= 21) {
+                System.out.println("Project Name: " + project.getProjectName());
+                System.out.println("Neighbourhood: " + project.getNeighbourhood());
+                System.out.println("2-Room Units Available: " + project.getNumberOfTwoRoom());
+                System.out.println("3-Room Units Available: " + project.getNumberOfThreeRoom());
+                System.out.println("Application Period: " + project.getOpeningDate() + " to " + project.getClosingDate());
+                System.out.println("------------------------------------------");
+                foundProject = true;
+            }
+            // Single applicants (age >= 35): Only show projects with available 2-room flats.
+            else if (currentUser.getMaritalStatus().equalsIgnoreCase("Single") && currentUser.getAge() >= 35) {
+                // Check if the project offers at least one 2-room unit (Type 1 is assumed to be 2-Room).
+                if (project.getNumberOfTwoRoom() > 0) {
+                    System.out.println("Project Name: " + project.getProjectName());
+                    System.out.println("Neighbourhood: " + project.getNeighbourhood());
+                    System.out.println("2-Room Units Available: " + project.getNumberOfTwoRoom());
+                    System.out.println("Application Period: " + project.getOpeningDate() + " to " + project.getClosingDate());
+                    System.out.println("------------------------------------------");
+                    foundProject = true;
+                }
+            }
+        }
+    
+        if (!foundProject) {
+            System.out.println("No projects available based on your eligibility criteria.");
+        }
     }
 
-    public static void viewAppliedProject(CurrentUser user) {
-        System.out.println("We haven't do yet lol");
-       
+    public static void viewAppliedProject() {
+        User currentUser = LocalData.getCurrentUser();
+        if (currentUser == null) {
+            System.out.println("No user is currently logged in.");
+            return;
+        }
+        
+        // Since only an Applicant is supposed to invoke this method,
+        // we directly cast the current user to Applicant.
+        Applicant applicant = (Applicant) currentUser;
+        // Get the project name that the applicant has applied for.
+        String appliedProjectName = applicant.getAppliedProject();
+        
+        if (appliedProjectName == null || appliedProjectName.trim().isEmpty()) {
+            System.out.println("You have not applied for any project yet.");
+            return;
+        }
+        
+        // Retrieve the project list from LocalData.
+        BTOProject_List projectList = LocalData.getBTOProjectList();
+        boolean projectFound = false;
+        
+        // Iterate through the project list to find the matching project.
+        for (int i = 0; i < projectList.getCount(); i++) {
+            BTOProject project = projectList.getBTOProject(i);
+            if (project.getProjectName().equalsIgnoreCase(appliedProjectName)) {
+                // Display the project details.
+                System.out.println("Project Details for Your Applied Project:");
+                System.out.println("Project Name: " + project.getProjectName());
+                System.out.println("Neighbourhood: " + project.getNeighbourhood());
+                System.out.println("2-Room Units Available: " + project.getNumberOfTwoRoom());
+                System.out.println("3-Room Units Available: " + project.getNumberOfThreeRoom());
+                System.out.println("Application Opening Date: " + project.getOpeningDate());
+                System.out.println("Application Closing Date: " + project.getClosingDate());
+                System.out.println("Manager in Charge: " + project.getHDBManagerInCharge());
+                System.out.println("------------------------------------------");
+                projectFound = true;
+                break;
+            }
+        }
+        
+        if (!projectFound) {
+            System.out.println("The project you applied for could not be found.");
+        }
     }
 
-    public static void requestWithdrawal(CurrentUser user) {
-        System.out.println("We haven't do yet lol");
-      
+    public static void requestWithdrawal() {
+        User currentUser = LocalData.getCurrentUser();
+        if (currentUser == null) {
+            System.out.println("No user is currently logged in.");
+            return;
+        }
+
+        Applicant applicant = (Applicant) currentUser;
+        String appliedProjectName = applicant.getAppliedProject();
+
+        if (appliedProjectName == null || appliedProjectName.trim().isEmpty()) {
+            System.out.println("No project applied for, nothing to withdraw.");
+            return;
+        }
+        
+        BTOApplication_List applicationList = LocalData.getBTOApplicationList();
+        boolean applicationFound = false;
+        
+        for (int i = 0; i < applicationList.getCount(); i++) {
+            BTOApplication application = applicationList.getBTOApplication(i);
+            if (application != null &&
+                application.getProjectName().equalsIgnoreCase(appliedProjectName) &&
+                application.getApplicant().getNRIC().equalsIgnoreCase(applicant.getNRIC())) {
+                
+                applicationList.removeBTOApplication(application);
+                applicationFound = true;
+                break;
+            }
+        }
+        
+        if (applicationFound) {
+            applicant.setAppliedProject(null);
+            System.out.println("Your application has been withdrawn successfully.");
+        } else {
+            System.out.println("Could not find your application to withdraw.");
+        }
     }
 
     public static void quit() {
-        System.out.println("We haven't do yet lol");
      
     }
     

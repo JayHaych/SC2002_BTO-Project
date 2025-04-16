@@ -44,11 +44,11 @@ public class CSVReader
                 boolean visibility = Boolean.parseBoolean(values[3]);
                 String maritalStatus = values[4];
                 String password = values[5];
-                boolean hasApplied = Boolean.parseBoolean(values[6]);
+                String appliedProject = String.substring(values[6]);
 
 
 
-                Applicant applicant = new Applicant(name, NRIC, password, visibility, maritalStatus, age, hasApplied);
+                Applicant applicant = new Applicant(name, NRIC, password, visibility, maritalStatus, age, appliedProject);
                 applicantList.addApplicant(applicant);
             }
         } catch (IOException e) {

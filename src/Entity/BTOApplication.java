@@ -2,30 +2,26 @@ package Entity;
 
 public class BTOApplication {
 
-    private String applicationID;
     private String projectName;
-    private String flatType;
+    private int flatType; //flatType is NOT enumerate anymore. 
     private String applicationStatus;
     private String submissionDate;
     private Boolean withdrawalRequested;
     private String applicantName;
-    private User applicant; 
+    private Applicant applicant; //either Applicant or Officer object
 
     public BTOApplication() {
        
     }
 
-    public BTOApplication(String applicationID,String projectName, String flatType, String applicationStatus, 
-                          String submissionDate, Boolean withdrawalRequested, String applicantName) {
+    public BTOApplication(String projectName, int flatType, Applicant user) {
         this.projectName = projectName;
-        this.applicationID = applicationID;
-        // Convert the integer flat type to a descriptive string.
         this.flatType = flatType;
-        this.applicantName = applicantName;
-        this.submissionDate = submissionDate;
-        // Set the initial application status to "Pending".
-        this.applicationStatus = applicationStatus;
-        this.withdrawalRequested = withdrawalRequested;
+        this.applicant = user;
+        applicantName = user.getName();
+        applicationStatus = "Pending"; //enumerate
+        submissionDate = "test";
+        withdrawalRequested = false;
     }
 
     public String getApplicantName() {
@@ -34,14 +30,6 @@ public class BTOApplication {
 
     public void setApplicantName(String applicantName) {
         this.applicantName = applicantName;
-    }
-    
-    public String getApplicationID() {
-        return applicationID;
-    }
-
-    public void setApplicationID(String applicationID) {
-        this.applicationID = applicationID;
     }
 
     public String getProjectName() {
@@ -52,11 +40,11 @@ public class BTOApplication {
         this.projectName = projectName;
     }
 
-    public String getFlatType() {
+    public int getFlatType() {
         return flatType;
     }
 
-    public void setFlatType(String flatType) {
+    public void setFlatType(int flatType) {
         this.flatType = flatType;
     }
 
@@ -88,7 +76,7 @@ public class BTOApplication {
         return applicant;
     }
 
-    public void setApplicant(User applicant) {
+    public void setApplicant(Applicant applicant) {
         this.applicant = applicant;
     }
 }
