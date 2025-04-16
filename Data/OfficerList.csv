@@ -1,4 +1,5 @@
-﻿Name,NRIC,Age,visibility,MaritalStatus,Password,hasApplied
-Daniel,T2109876H,36,true,Single,password,false
-Emily,S6543210I,28,true,Single,password,false
-David,T1234567J,29,true,Married,password,false
+﻿Name,NRIC,Age,visibility,MaritalStatus,Password,hasApplied,BTOProjectName
+Daniel,T2109876H,36,true,Single,password,false,Acacia Breeze
+Emily,S6543210I,28,true,Single,password,false,Acacia Breeze
+David,T1234567J,29,true,Married,password,false,null
+
