@@ -128,7 +128,7 @@ public class ApplicantController implements ViewEnquiryInterface {
         
         System.out.println("Enter the project name you would like to apply for:");
         String projectName = sc.nextLine();
-
+    
         boolean projectFound = false;
         for (BTOProject project : LocalData.getBTOProjectList().getList()) {
             if (project.getProjectName().equalsIgnoreCase(projectName)) {
@@ -136,31 +136,37 @@ public class ApplicantController implements ViewEnquiryInterface {
                 break;
             }
         }
-
+    
         // If the project name is invalid, print an error and return
         if (!projectFound) {
             System.out.println("Invalid project name. Please choose a valid project from the list.");
-            sc.close();
-            return;
+            return;  // Exit the method if the project is not found
         }
-        
-        String flatType;
+    
+        String flatType = "";
         
         // Check eligibility for married applicants (age >= 21)
         if (user.getMaritalStatus().equals("Married") && user.getAge() >= 21) {
             System.out.println("Enter the flat type you want to apply for (enter 2 for 2-room, 3 for 3-room):");
-            int choice = sc.nextInt();
-            sc.nextLine();
             
-            if (choice == 2) {
-                flatType = "2-room";
-            }
-            else if (choice == 3) {
-                flatType = "3-room";
-            }
-            else {
-                System.out.println("Invalid input.");
-                return;
+            while (true) { // Loop until a valid choice is entered
+                if (sc.hasNextInt()) {
+                    int choice = sc.nextInt();
+                    sc.nextLine(); // Consume the newline character left after nextInt()
+    
+                    if (choice == 2) {
+                        flatType = "2-room";
+                        break;
+                    } else if (choice == 3) {
+                        flatType = "3-room";
+                        break; 
+                    } else {
+                        System.out.println("Invalid input! Please enter 2 for 2-room or 3 for 3-room.");
+                    }
+                } else {
+                    System.out.println("Invalid input! Please enter a number (2 for 2-room or 3 for 3-room).");
+                    sc.nextLine();
+                }
             }
         }
         // Check eligibility for single applicants (age >= 35)
@@ -171,23 +177,20 @@ public class ApplicantController implements ViewEnquiryInterface {
         // Applicant is not eligible
         else {
             System.out.println("You are not eligible to apply for a BTO application based on your marital status or age.");
-            sc.close();
             return;
         }
     
-        // Create the BTOApplication object (this automatically sets default values)
-        BTOApplication application = new BTOApplication(projectName, flatType, user);
+        BTOApplication application = new BTOApplication(projectName, flatType, user); //default value type
         
-        // Add the application to the BTOApplication_List in LocalData
         LocalData.getBTOApplicationList().addBTOApplication(application);
-        
-        // Update the applicant's applied project
-        Applicant applicant = (Applicant) user; // Casting User to Applicant
-        applicant.setAppliedProject(projectName); // Set applied project attribute to applicant
+
+        Applicant applicant = (Applicant) user; 
+        applicant.setAppliedProject(projectName); 
         
         System.out.println("Application submitted successfully.");
-        sc.close();
+
     }
+    
     
     
 
@@ -221,15 +224,12 @@ public class ApplicantController implements ViewEnquiryInterface {
             }
             // Single applicants (age >= 35): Only show projects with available 2-room flats.
             else if (currentUser.getMaritalStatus().equalsIgnoreCase("Single") && currentUser.getAge() >= 35) {
-                // Check if the project offers at least one 2-room unit (Type 1 is assumed to be 2-Room).
-                if (project.getNumberOfTwoRoom() > 0) {
-                    System.out.println("Project Name: " + project.getProjectName());
-                    System.out.println("Neighbourhood: " + project.getNeighbourhood());
-                    System.out.println("2-Room Units Available: " + project.getNumberOfTwoRoom());
-                    System.out.println("Application Period: " + project.getOpeningDate() + " to " + project.getClosingDate());
-                    System.out.println("------------------------------------------");
-                    foundProject = true;
-                }
+                System.out.println("Project Name: " + project.getProjectName());
+                System.out.println("Neighbourhood: " + project.getNeighbourhood());
+                System.out.println("2-Room Units Available: " + project.getNumberOfTwoRoom());
+                System.out.println("Application Period: " + project.getOpeningDate() + " to " + project.getClosingDate());
+                System.out.println("------------------------------------------");
+                foundProject = true;
             }
         }
     
@@ -320,6 +320,17 @@ public class ApplicantController implements ViewEnquiryInterface {
         } else {
             System.out.println("Could not find your application to withdraw.");
         }
+    }
+
+    public static void changePassword(){
+        User currentUser = LocalData.getCurrentUser();
+        Scanner sc = new Scanner(System.in);
+
+        System.out.println("Enter your new password");
+        String newPassword = sc.nextLine();
+        currentUser.setPassword(newPassword);
+        // need to change password here
+        System.out.println("Password saved successfully");
     }
 
     public static void quit() {

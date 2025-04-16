@@ -77,8 +77,7 @@ public class Applicant_UI {
                     ApplicantController.requestWithdrawal();
                     break;
                 case 9:
-                    // Add logic for changing the password here
-                    System.out.println("Password change functionality not yet implemented.");
+                    ApplicantController.changePassword();
                     break;
                 case 10:
                     ApplicantController.quit();  // Assuming quit will handle logout
