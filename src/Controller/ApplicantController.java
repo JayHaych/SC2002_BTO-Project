@@ -128,7 +128,7 @@ public class ApplicantController implements ViewEnquiryInterface {
         
         System.out.println("Enter the project name you would like to apply for:");
         String projectName = sc.nextLine();
-
+    
         boolean projectFound = false;
         for (BTOProject project : LocalData.getBTOProjectList().getList()) {
             if (project.getProjectName().equalsIgnoreCase(projectName)) {
@@ -136,31 +136,37 @@ public class ApplicantController implements ViewEnquiryInterface {
                 break;
             }
         }
-
+    
         // If the project name is invalid, print an error and return
         if (!projectFound) {
             System.out.println("Invalid project name. Please choose a valid project from the list.");
-            sc.close();
-            return;
+            return;  // Exit the method if the project is not found
         }
-        
-        String flatType;
+    
+        String flatType = "";
         
         // Check eligibility for married applicants (age >= 21)
         if (user.getMaritalStatus().equals("Married") && user.getAge() >= 21) {
             System.out.println("Enter the flat type you want to apply for (enter 2 for 2-room, 3 for 3-room):");
-            int choice = sc.nextInt();
-            sc.nextLine();
             
-            if (choice == 2) {
-                flatType = "2-room";
-            }
-            else if (choice == 3) {
-                flatType = "3-room";
-            }
-            else {
-                System.out.println("Invalid input.");
-                return;
+            while (true) { // Loop until a valid choice is entered
+                if (sc.hasNextInt()) {
+                    int choice = sc.nextInt();
+                    sc.nextLine(); // Consume the newline character left after nextInt()
+    
+                    if (choice == 2) {
+                        flatType = "2-room";
+                        break; // Exit the loop after a valid input
+                    } else if (choice == 3) {
+                        flatType = "3-room";
+                        break; // Exit the loop after a valid input
+                    } else {
+                        System.out.println("Invalid input! Please enter 2 for 2-room or 3 for 3-room.");
+                    }
+                } else {
+                    System.out.println("Invalid input! Please enter a number (2 for 2-room or 3 for 3-room).");
+                    sc.nextLine(); // Consume the invalid input
+                }
             }
         }
         // Check eligibility for single applicants (age >= 35)
@@ -186,8 +192,9 @@ public class ApplicantController implements ViewEnquiryInterface {
         applicant.setAppliedProject(projectName); // Set applied project attribute to applicant
         
         System.out.println("Application submitted successfully.");
-        sc.close();
+        return;
     }
+    
     
     
 
