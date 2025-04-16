@@ -114,53 +114,52 @@ public class CSVReader
 
 
 
-    public static HDBOfficer_List readHDBOfficerCSV(String filePath) 
-    {
+    public static HDBOfficer_List readHDBOfficerCSV(String filePath) {
         HDBOfficer_List hdbOfficerList = new HDBOfficer_List();
-
+    
         try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
             String line;
             int count = 0;
             while ((line = br.readLine()) != null) {
-                if (count == 0) 
-                {
+                if (count == 0) {
                     count++;
-                    continue; 
+                    continue;  // Skip the header row
                 }
-
+    
                 String[] values = line.split(",");
-                
-
-                if (values.length < 7) {
+    
+                // Ensure there are enough columns
+                if (values.length < 8) {
                     System.err.println("Skipping invalid line: " + line);
                     continue;
                 }
-
+    
+                // Extract the values from the CSV line
                 String name = values[0];
                 String NRIC = values[1];
-
-
+    
                 int age;
                 try {
                     age = Integer.parseInt(values[2]);
                 } catch (NumberFormatException e) {
                     System.err.println("Invalid age format for line: " + line);
-                    continue; 
+                    continue;
                 }
+    
                 boolean visibility = Boolean.parseBoolean(values[3]);
                 String maritalStatus = values[4];
                 String password = values[5];
-                boolean hasApplied = Boolean.parseBoolean(values[6]);
-
-
-
-                HDBOfficer hdbOfficer = new HDBOfficer(name, NRIC, password, visibility, maritalStatus, age, hasApplied, null);
+                String appliedProject = values[6];  // Now handling appliedProject as a String
+                String BTOprojectName = values[7];  // BTO project name the officer is managing
+    
+                // Create a new HDBOfficer object and add it to the list
+                HDBOfficer hdbOfficer = new HDBOfficer(name, NRIC, password, visibility, maritalStatus, age, appliedProject, BTOprojectName);
                 hdbOfficerList.addHDBOfficer(hdbOfficer);
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
-
+    
         return hdbOfficerList;
     }
 
@@ -275,6 +274,11 @@ public class CSVReader
                 //String applicantName = rest[1].trim();
                 User currentUser = LocalData.getCurrentUser();
 
+                if (currentUser == null) {
+                    System.err.println("No user logged in. Cannot create enquiry for project: " + projectName);
+                    continue; // Skip creating the enquiry if no user is logged in
+                }
+                
                 Enquiry enquiry = new Enquiry(message, projectName, currentUser);
                 enquiryList.addEnquiry(enquiry);
             }

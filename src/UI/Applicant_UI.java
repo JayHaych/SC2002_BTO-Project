@@ -5,10 +5,9 @@ import Controller.ApplicantController;
 import Entity.LocalData;
 import Entity.User;
 
-public class Applicant_UI 
-{
+public class Applicant_UI {
 
-    public static void display() {
+    public static void displayMenu() {
         System.out.println(LocalData.getCurrentUser().getName() + ", welcome to the Applicant UI!");
         System.out.println("-----------------------------");
         System.out.println("What would you like to do? (Select a number 1-10)");
@@ -22,49 +21,59 @@ public class Applicant_UI
         System.out.println("8. Request a withdrawal from your application");
         System.out.println("9. Change your password");
         System.out.println("10. Logout and quit");
- 
     }
 
-
-
+    public static void display() {
         Scanner sc = new Scanner(System.in);
-        int choice = sc.nextInt();{
-        User currentUser = LocalData.getCurrentUser();
-        switch(choice) {
-            case 1:
-                ApplicantController.submitEnquiry(currentUser);
-                break;
-            case 2:
-                ApplicantController.viewEnquiry(currentUser);
-                break;
-            case 3:
-                ApplicantController.editEnquiry(currentUser);
-                break;
-            case 4:
-                ApplicantController.deleteEnquiry(currentUser);
-                break;
-            case 5:
-                ApplicantController.apply();
-                break;
-            case 6:
-                ApplicantController.viewProjects();
-                break;
-            case 7:
-                ApplicantController.viewAppliedProject();
-                break;
-            case 8:
-                ApplicantController.requestWithdrawal();
-                break;
-            case 9:
-                
-                break;
-            case 10:
-                ApplicantController.quit();
-                break;
-            default:
-                System.out.println("Invalid choice. Please select a number from 1 to 10.");
-                break; 
-                }
+        int choice = 0;
 
+        // Continue showing the menu until the user chooses to quit (option 10)
+        while (choice != 10) {
+            displayMenu();
+
+            System.out.print("Enter your choice: ");
+            choice = sc.nextInt();
+            User currentUser = LocalData.getCurrentUser();
+
+            switch (choice) {
+                case 1:
+                    ApplicantController.submitEnquiry(currentUser);
+                    break;
+                case 2:
+                    ApplicantController.viewEnquiry(currentUser);
+                    break;
+                case 3:
+                    ApplicantController.editEnquiry(currentUser);
+                    break;
+                case 4:
+                    ApplicantController.deleteEnquiry(currentUser);
+                    break;
+                case 5:
+                    ApplicantController.apply();
+                    break;
+                case 6:
+                    ApplicantController.viewProjects();
+                    break;
+                case 7:
+                    ApplicantController.viewAppliedProject();
+                    break;
+                case 8:
+                    ApplicantController.requestWithdrawal();
+                    break;
+                case 9:
+                    // Add logic for changing the password here
+                    System.out.println("Password change functionality not yet implemented.");
+                    break;
+                case 10:
+                    ApplicantController.quit();  // Assuming quit will handle logout
+                    System.out.println("You have successfully logged out.");
+                    break;
+                default:
+                    System.out.println("Invalid choice. Please select a number from 1 to 10.");
+                    break;
             }
         }
+        
+        sc.close();
+    }
+}
