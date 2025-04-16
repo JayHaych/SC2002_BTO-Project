@@ -46,7 +46,7 @@ public class Applicant_UI
                 ApplicantController.apply(user);
                 break;
             case 6:
-                ApplicantController.viewProject(user);
+                ApplicantController.viewProjects(user);
                 break;
             case 7:
                 ApplicantController.viewAppliedProject(user);

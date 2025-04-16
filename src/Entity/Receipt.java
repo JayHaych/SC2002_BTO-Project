@@ -15,7 +15,6 @@ public class Receipt {
         this.applicantNRIC = applicant.getNRIC();
         this.applicantAge = applicant.getAge();
         this.applicantMaritalStatus = applicant.getMaritalStatus();
-        
         this.flatType = booking.getFlatType();
         this.projectName = booking.getProjectName();
     }

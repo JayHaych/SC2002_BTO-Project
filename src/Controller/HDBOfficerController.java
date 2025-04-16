@@ -4,9 +4,11 @@
 
 package Controller;
 
+import Entity.User;
+
 public class HDBOfficerController extends ApplicantController {
     
-/*     public static void registerForProjectAsOfficer(CurrentUser user) {
+    public static void registerForProjectAsOfficer(User user) {
        
     }
 
@@ -23,10 +25,10 @@ public class HDBOfficerController extends ApplicantController {
     }
 
     public static void updateApplication() {
-
+        
     }
 
     public static void getReceipt() {
         
-    } */
+    }
 }

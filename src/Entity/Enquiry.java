@@ -8,17 +8,18 @@ public class Enquiry {
     private String details;
     private String projectName;
     private User user;
-    private String UserName; 
+    private String userName; 
 
 
-    public Enquiry(String details, String projectName, String Username) {
+    public Enquiry(String details, String projectName, User user) {
         this.details = details;
         this.projectName = projectName;
-        this.UserName = Username;
+        this.user = user;
+        this.userName = user.getName();
     }
 
     public String getUserName() {
-        return UserName;
+        return userName;
     }
 
     public String getDetails() {
@@ -46,7 +47,7 @@ public class Enquiry {
     }
 
     public void setUserName(String UserName) {
-        this.UserName = UserName;
+        this.userName = UserName;
     }
 }
 
