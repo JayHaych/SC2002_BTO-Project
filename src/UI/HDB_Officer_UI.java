@@ -21,6 +21,12 @@ public class HDB_Officer_UI
         System.out.println("8. Request a withdrawal from your application");
         System.out.println("9. Change your password");
         System.out.println("10. Logout and quit");
+        System.out.println("11. Register to join a project");
+        System.out.println("12. View your registration status");
+        System.out.println("13. View the enquiries of the project you are handling");
+        System.out.println("14. Reply to enquiries");
+        System.out.println("15. Manage applications");
+        System.out.println("16. Generate receipt");
 
     }
 }
