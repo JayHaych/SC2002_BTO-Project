@@ -7,6 +7,7 @@ import Entity.User;
 
 public class Applicant_UI {
 
+    // Method to display the menu options
     public static void displayMenu() {
         System.out.println(LocalData.getCurrentUser().getName() + ", welcome to the Applicant UI!");
         System.out.println("-----------------------------");
@@ -23,17 +24,32 @@ public class Applicant_UI {
         System.out.println("10. Logout and quit");
     }
 
+    // Method to run the UI and interact with the user
     public static void display() {
         Scanner sc = new Scanner(System.in);
         int choice = 0;
 
         // Continue showing the menu until the user chooses to quit (option 10)
         while (choice != 10) {
-            displayMenu();
+            displayMenu();  // Display the menu options
 
             System.out.print("Enter your choice: ");
-            choice = sc.nextInt();
-            User currentUser = LocalData.getCurrentUser();
+            
+            // Ensure the input is an integer and handle the case where user provides invalid input
+            if (sc.hasNextInt()) {
+                choice = sc.nextInt();
+                sc.nextLine();
+            } else {
+                // Handle non-integer input
+                System.out.println("Invalid input! Please enter a number between 1 and 10.");
+                sc.nextLine();  // Consume the invalid input (this prevents infinite loops)
+                continue; // Skip the rest of the loop and ask for input again
+            }
+
+            // Consume the leftover newline character after reading the integer
+            //sc.nextLine();
+
+            User currentUser = LocalData.getCurrentUser();  // Get the current user
 
             switch (choice) {
                 case 1:
@@ -73,7 +89,7 @@ public class Applicant_UI {
                     break;
             }
         }
-        
+
         sc.close();
     }
 }

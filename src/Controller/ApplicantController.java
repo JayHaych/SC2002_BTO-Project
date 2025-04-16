@@ -128,6 +128,22 @@ public class ApplicantController implements ViewEnquiryInterface {
         
         System.out.println("Enter the project name you would like to apply for:");
         String projectName = sc.nextLine();
+
+        boolean projectFound = false;
+        for (BTOProject project : LocalData.getBTOProjectList().getList()) {
+            if (project.getProjectName().equalsIgnoreCase(projectName)) {
+                projectFound = true;
+                break;
+            }
+        }
+
+        // If the project name is invalid, print an error and return
+        if (!projectFound) {
+            System.out.println("Invalid project name. Please choose a valid project from the list.");
+            sc.close();
+            return;
+        }
+        
         String flatType;
         
         // Check eligibility for married applicants (age >= 21)
