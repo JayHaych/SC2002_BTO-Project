@@ -6,10 +6,6 @@ import Interface.ViewEnquiryInterface;
 
 public class ApplicantController implements ViewEnquiryInterface {
 
-    private static List<Enquiry> enquiries = new ArrayList<>(); //all enquiries are stored here
-    private static List<BTOApplication> applicationList = new ArrayList<>(); //all applications are stored here
-    private static List<BTOProject> projectList = new ArrayList<>(); 
-
     public static void submitEnquiry(User user) {
         Scanner sc = new Scanner(System.in); 
         System.out.println("Enter your enquiry:");
@@ -17,12 +13,13 @@ public class ApplicantController implements ViewEnquiryInterface {
         System.out.println("Enter the project name: ");
         String projectName = sc.nextLine();
 
+        // Create the enquiry
         Enquiry enquiry = new Enquiry(details, projectName, user);
         
         boolean projectFound = false;
-        for (BTOProject project : projectList) {
+        for (BTOProject project : LocalData.getBTOProjectList().getList()) {
             if (project.getProjectName().equalsIgnoreCase(projectName)) {
-                project.getEnquiries().add(enquiry);
+                project.getEnquiries().add(enquiry); // Add enquiry to the project's own enquiry list
                 projectFound = true;
                 break;
             }
@@ -30,23 +27,21 @@ public class ApplicantController implements ViewEnquiryInterface {
         
         if (!projectFound) {
             System.out.println("No project found with the name '" + projectName + "'. Enquiry not saved.");
-            sc.close();
             return;
         }
         
-        enquiries.add(enquiry);
+        // Add the enquiry to the global enquiry list in LocalData
+        LocalData.getEnquiryList().addEnquiry(enquiry);
         System.out.println("Enquiry submitted successfully.");
-        sc.close();
     }
-    
 
     public static void viewEnquiry(User user) {
         boolean found = false;
         int count = 1;
         System.out.println("Your Enquiries:");
         
-        // only show enquiries that belong to the applicant
-        for (Enquiry enquiry : enquiries) {
+        // Only show enquiries that belong to the applicant
+        for (Enquiry enquiry : LocalData.getEnquiryList().getList()) {
             if (enquiry.getUser().equals(user)) {
                 System.out.println(count + ". " + enquiry.getDetails());
                 count++;
@@ -58,12 +53,11 @@ public class ApplicantController implements ViewEnquiryInterface {
             System.out.println("No enquiries to display.");
         }
     }
-    
 
     public static void editEnquiry(User user) {
-        //new list of user enquiries
+        // New list of user enquiries
         List<Enquiry> userEnquiries = new ArrayList<>();
-        for (Enquiry enquiry : enquiries) {
+        for (Enquiry enquiry : LocalData.getEnquiryList().getList()) {
             if (enquiry.getUser().equals(user)) {
                 userEnquiries.add(enquiry);
             }
@@ -93,13 +87,11 @@ public class ApplicantController implements ViewEnquiryInterface {
         } else {
             System.out.println("Invalid number.");
         }
-        sc.close();
     }
-    
 
     public static void deleteEnquiry(User user) {
         List<Enquiry> userEnquiries = new ArrayList<>();
-        for (Enquiry enquiry : enquiries) {
+        for (Enquiry enquiry : LocalData.getEnquiryList().getList()) {
             if (enquiry.getUser().equals(user)) {
                 userEnquiries.add(enquiry);
             }
@@ -122,39 +114,43 @@ public class ApplicantController implements ViewEnquiryInterface {
         
         if (choice > 0 && choice <= userEnquiries.size()) {
             Enquiry enquiryToDelete = userEnquiries.get(choice - 1);
-            enquiries.remove(enquiryToDelete);
+            LocalData.getEnquiryList().removeEnquiry(enquiryToDelete);  // Remove the enquiry from the global enquiry list in LocalData
             System.out.println("Enquiry deleted successfully.");
         } else {
             System.out.println("Invalid enquiry number.");
         }
-        
-        sc.close();
     }
     
 
-    public static void apply(Applicant user) {
+    public static void apply() {
+        User user = LocalData.getCurrentUser();
         Scanner sc = new Scanner(System.in);
         
         System.out.println("Enter the project name you would like to apply for:");
         String projectName = sc.nextLine();
-        int flatType = 0;
+        String flatType;
         
         // Check eligibility for married applicants (age >= 21)
-        if (user.getMaritalStatus() == "Married" && user.getAge() >= 21) {
+        if (user.getMaritalStatus().equals("Married") && user.getAge() >= 21) {
             System.out.println("Enter the flat type you want to apply for (enter 2 for 2-room, 3 for 3-room):");
-            flatType = sc.nextInt();
+            int choice = sc.nextInt();
             sc.nextLine();
             
-            if (flatType != 2 && flatType != 3) {
-                System.out.println("Invalid flat type selected.");
-                sc.close();
+            if (choice == 2) {
+                flatType = "2-room";
+            }
+            else if (choice == 3) {
+                flatType = "3-room";
+            }
+            else {
+                System.out.println("Invalid input.");
                 return;
             }
         }
         // Check eligibility for single applicants (age >= 35)
-        else if (user.getMaritalStatus() == "Single" && user.getAge() >= 35) {
+        else if (user.getMaritalStatus().equals("Single") && user.getAge() >= 35) {
             System.out.println("As a single applicant, you can only apply for a 2-room flat. Proceeding to Apply for 2 room flat.");
-            flatType = 2;
+            flatType = "2-room";
         }
         // Applicant is not eligible
         else {
@@ -162,16 +158,21 @@ public class ApplicantController implements ViewEnquiryInterface {
             sc.close();
             return;
         }
-        
-        // Create application with the given project name, user and flat type.
+    
+        // Create the BTOApplication object (this automatically sets default values)
         BTOApplication application = new BTOApplication(projectName, flatType, user);
-        applicationList.add(application);
-
-        user.setAppliedProject(projectName); //set applied project attribute to applicant
+        
+        // Add the application to the BTOApplication_List in LocalData
+        LocalData.getBTOApplicationList().addBTOApplication(application);
+        
+        // Update the applicant's applied project
+        Applicant applicant = (Applicant) user; // Casting User to Applicant
+        applicant.setAppliedProject(projectName); // Set applied project attribute to applicant
         
         System.out.println("Application submitted successfully.");
         sc.close();
     }
+    
     
 
     public static void viewProjects() {

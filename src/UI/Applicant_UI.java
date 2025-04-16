@@ -1,12 +1,14 @@
 package UI;
 
+import java.util.Scanner;
+import Controller.ApplicantController;
 import Entity.LocalData;
+import Entity.User;
 
 public class Applicant_UI 
 {
 
-    public static void display() 
-    {
+    public static void display() {
         System.out.println(LocalData.getCurrentUser().getName() + ", welcome to the Applicant UI!");
         System.out.println("-----------------------------");
         System.out.println("What would you like to do? (Select a number 1-10)");
@@ -20,39 +22,38 @@ public class Applicant_UI
         System.out.println("8. Request a withdrawal from your application");
         System.out.println("9. Change your password");
         System.out.println("10. Logout and quit");
-
-        
+ 
     }
-}
 
-/*
+
+
         Scanner sc = new Scanner(System.in);
-        int choice = sc.nextInt();
-
+        int choice = sc.nextInt();{
+        User currentUser = LocalData.getCurrentUser();
         switch(choice) {
             case 1:
-                ApplicantController.submitEnquiry(user);
+                ApplicantController.submitEnquiry(currentUser);
                 break;
             case 2:
-                ApplicantController.viewEnquiry(user);
+                ApplicantController.viewEnquiry(currentUser);
                 break;
             case 3:
-                ApplicantController.editEnquiry(user);
+                ApplicantController.editEnquiry(currentUser);
                 break;
             case 4:
-                ApplicantController.deleteEnquiry(user);
+                ApplicantController.deleteEnquiry(currentUser);
                 break;
             case 5:
-                ApplicantController.apply(user);
+                ApplicantController.apply();
                 break;
             case 6:
-                ApplicantController.viewProjects(user);
+                ApplicantController.viewProjects();
                 break;
             case 7:
-                ApplicantController.viewAppliedProject(user);
+                ApplicantController.viewAppliedProject();
                 break;
             case 8:
-                ApplicantController.requestWithdrawal(user);
+                ApplicantController.requestWithdrawal();
                 break;
             case 9:
                 
@@ -64,5 +65,6 @@ public class Applicant_UI
                 System.out.println("Invalid choice. Please select a number from 1 to 10.");
                 break; 
                 }
-*/
 
+            }
+        }

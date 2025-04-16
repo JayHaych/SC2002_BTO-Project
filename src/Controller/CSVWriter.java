@@ -19,14 +19,14 @@ public class CSVWriter
                 for (int i = 0 ; i < applicantList.getCount() ; i++) 
                 {
                     Applicant applicant = (Applicant) applicantList.getApplicant(i);
-                    String line = String.format("%s,%s,%d,%b,%s,%s,%b",
+                    String line = String.format("%s,%s,%d,%b,%s,%s,%s",
                     applicant.getName(),
                     applicant.getNRIC(),
                     applicant.getAge(),
                     applicant.getVisibility(),
                     applicant.getMaritalStatus(),
                     applicant.getPassword(),
-                    applicant.gethasApplied());
+                    applicant.getAppliedProject());
                     bw.write(line);
                     bw.newLine();
                 }
@@ -211,15 +211,15 @@ public class CSVWriter
     {
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(filePath))) 
         {
-            bw.write("applicationID,projectName,flatType,applicationStatus,submissionDate,withdrawalRequested,applicantName");
+            bw.write("projectName,flatType,applicationStatus,submissionDate,withdrawalRequested,applicantName");
             bw.newLine();
             
 
                 for (int i = 0 ; i < btoApplicationList.getCount() ; i++) 
                 {
                     BTOApplication btoApplication = (BTOApplication) btoApplicationList.getBTOApplication(i);
-                    String line = String.format("%s,%s,%s,%s,%s,%b,%s",
-                    btoApplication.getApplicationID(),
+                    String line = String.format("%s,%s,%s,%s,%b,%s",
+                    //btoApplication.getApplicationID(),
                     btoApplication.getProjectName(),
                     btoApplication.getFlatType(),
                     btoApplication.getApplicationStatus(),

@@ -44,7 +44,8 @@ public class CSVReader
                 boolean visibility = Boolean.parseBoolean(values[3]);
                 String maritalStatus = values[4];
                 String password = values[5];
-                String appliedProject = String.substring(values[6]);
+                String appliedProject = values[6];
+
 
 
 
@@ -271,9 +272,10 @@ public class CSVReader
                 if (rest.length < 2) continue; // Malformed
 
                 String projectName = rest[0].trim();
-                String applicantName = rest[1].trim();
+                //String applicantName = rest[1].trim();
+                User currentUser = LocalData.getCurrentUser();
 
-                Enquiry enquiry = new Enquiry(message, projectName, applicantName);
+                Enquiry enquiry = new Enquiry(message, projectName, currentUser);
                 enquiryList.addEnquiry(enquiry);
             }
 
@@ -355,18 +357,18 @@ public class CSVReader
                     System.err.println("Skipping invalid line: " + line);
                     continue;
                 }
-                String applicationID = values[0];
+                //String applicationID = values[0];
                 String projectName = values[1];
                 String flatType = values[2];
-                String applicationStatus = values[3];
-                String submissionDate  = values[4];
-                boolean withdrawalRequested = Boolean.parseBoolean(values[5]);
-                String applicantName = values[6];
+                //String applicationStatus = values[3];
+                //String submissionDate  = values[4];
+                //boolean withdrawalRequested = Boolean.parseBoolean(values[5]);
+                //String applicantName = values[6];
+                User currentUser = LocalData.getCurrentUser();
 
 
 
-
-                BTOApplication btoApplication = new BTOApplication(applicationID,projectName,flatType,applicationStatus,submissionDate,withdrawalRequested,applicantName);
+                BTOApplication btoApplication = new BTOApplication(projectName,flatType,currentUser);
                 btoApplicationList.addBTOApplication(btoApplication);
             }
         } catch (IOException e) {

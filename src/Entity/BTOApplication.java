@@ -3,18 +3,18 @@ package Entity;
 public class BTOApplication {
 
     private String projectName;
-    private int flatType; //flatType is NOT enumerate anymore. 
+    private String flatType; //flatType is NOT enumerate anymore. 
     private String applicationStatus;
     private String submissionDate;
     private Boolean withdrawalRequested;
     private String applicantName;
-    private Applicant applicant; //either Applicant or Officer object
+    private User applicant; //either Applicant or Officer object
 
     public BTOApplication() {
        
     }
 
-    public BTOApplication(String projectName, int flatType, Applicant user) {
+    public BTOApplication(String projectName, String flatType, User user) {
         this.projectName = projectName;
         this.flatType = flatType;
         this.applicant = user;
@@ -40,11 +40,11 @@ public class BTOApplication {
         this.projectName = projectName;
     }
 
-    public int getFlatType() {
+    public String getFlatType() {
         return flatType;
     }
 
-    public void setFlatType(int flatType) {
+    public void setFlatType(String flatType) {
         this.flatType = flatType;
     }
 

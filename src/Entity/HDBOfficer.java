@@ -6,9 +6,9 @@ public class HDBOfficer extends Applicant{
     private String BTOprojectName; //project the officer is a manager for.
 
     public HDBOfficer(String name, String NRIC, String password, boolean visibility, 
-                      String marital_status, int age, boolean hasApplied, String BTOprojectName) 
+                      String marital_status, int age, String appliedProject, String BTOprojectName) 
     {
-        super(name, NRIC, password, visibility, marital_status, age, hasApplied);
+        super(name, NRIC, password, visibility, marital_status, age, appliedProject);
         this.BTOprojectName = BTOprojectName;
     }
 
