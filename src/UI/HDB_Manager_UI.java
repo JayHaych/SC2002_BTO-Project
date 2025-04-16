@@ -30,7 +30,7 @@ public class HDB_Manager_UI {
             
            
             choice = sc.nextInt();
-            String report;
+            // report = controller.generateReport();
 
             switch (choice) {
                 case 1:
@@ -52,8 +52,8 @@ public class HDB_Manager_UI {
                     controller.viewMyProjects();
                     break;
                 case 7:
-                    report = controller.generateReport();
-                    System.out.println(report);
+                    controller.generateReport();
+                    // System.out.println(report);
                     break;
                 case 8:
                     if (controller.approveRegistration()){

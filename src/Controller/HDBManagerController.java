@@ -1,4 +1,5 @@
 package Controller;
+
 import java.util.Scanner;
 
 import Entity.BTOProject_List;
@@ -30,18 +31,18 @@ public class HDBManagerController{
         String neighbourhood = sc.nextLine();
         System.out.print("Number of 2-room flats: ");
         int numberOfTwoRoom = sc.nextInt();
-        System.out.println("Price of 2-room flats: ");
+        System.out.print("Price of 2-room flats: $");
         int sellingPriceOfTwoRoom = sc.nextInt();
         System.out.print("Number of 3-room flats: ");
         int numberOfThreeRoom = sc.nextInt();
-        System.out.println("Price of 3-room flats: ");
+        System.out.print("Price of 3-room flats: $");
         int sellingPriceOfThreeRoom = sc.nextInt();
 
         sc.nextLine();
 
-        System.out.print("Opening Date: ");
+        System.out.print("Opening Date (DD/MM/YYYY): ");
         String openingDate = sc.nextLine();
-        System.out.print("Closing Date: ");
+        System.out.print("Closing Date (DD/MM/YYYY): ");
         String closingDate = sc.nextLine();
         System.out.print("HDB Manager's Name: ");
         String managerName = sc.nextLine();
@@ -49,6 +50,7 @@ public class HDBManagerController{
         int availableOfficerSlot = sc.nextInt();
 
         sc.nextLine();
+        
         String[] OfficerInChargeNames = {}; 
         boolean isVisible = true;
 
@@ -71,24 +73,56 @@ public class HDBManagerController{
             }
         
         BTOProject project = projectList.getBTOProject(projectNumber - 1);
+        System.out.println("1.Edit Project Name\n2.Edit Neighbourhood\n3.Edit number of two room flats\n4.Edit number of three room flats\n5.Edit opening date of project\n6.Edit closing date of the project\n7.Edit HDB Manager in-charge\n8.Edit available office slots\n9.Done editing");
+        int choice = sc.nextInt();
 
-        System.out.println("Edit project name (current: " + project.getProjectName() + ") :");
-        project.setProjectName(sc.nextLine());
-        System.out.println("Edit neighbourhood (current: )" + project.getNeighbourhood() + ") :");
-        project.setNeighbourhood(sc.nextLine());
-        System.out.println("Edit number of two room flats (current: " + project.getNumberOfTwoRoom() + ") :");
-        project.setNumberOfTwoRoom(sc.nextInt());
-        System.out.println("Edit the number of three room flats (current: " + project.getNumberOfThreeRoom() + ") :");
-        project.setNumberOfThreeRoom(sc.nextInt());
-        System.out.println("Edit opening date of project (current: " + project.getOpeningDate() + ") :");
-        project.setOpeningDate(sc.nextLine());
-        System.out.println("Edit closing date of the project (current: " + project.getClosingDate() + ") :");
-        project.setClosingDate(sc.nextLine());
-        System.out.println("Edit HDB Manager in-charge (current: " + project.getHDBManagerInCharge() + ") :");
-        project.setHDBManagerInChargeName(sc.nextLine());
-        System.out.println("Edit available officer slots (current: " + project.getAvailableOfficerSlot() + ") :");
-        project.setAvailableOfficerSlot(sc.nextInt());
-        System.out.println("BTO Project updated!");
+        switch(choice){
+            case 1:
+                System.out.print("Edit project name (current: " + project.getProjectName() + ") :");
+                project.setProjectName(sc.nextLine());
+                sc.nextLine();
+                break;
+            case 2:
+                System.out.print("Edit neighbourhood (current: " + project.getNeighbourhood() + ") :");
+                project.setNeighbourhood(sc.nextLine());
+                sc.nextLine();
+                break;
+            case 3:
+                System.out.print("Edit number of two room flats (current: " + project.getNumberOfTwoRoom() + ") :");
+                project.setNumberOfTwoRoom(sc.nextInt());
+                sc.nextLine();
+
+                break;
+            case 4:
+                System.out.print("Edit the number of three room flats (current: " + project.getNumberOfThreeRoom() + ") :");
+                project.setNumberOfThreeRoom(sc.nextInt());
+                sc.nextLine();
+
+                break;
+            case 5:
+                System.out.print("Edit opening date of project (current: " + project.getOpeningDate() + ") :");
+                project.setOpeningDate(sc.nextLine());
+                sc.nextLine();
+                break;
+            case 6:
+                System.out.print("Edit closing date of the project (current: " + project.getClosingDate() + ") :");
+                project.setClosingDate(sc.nextLine());
+                sc.nextLine();
+                break;
+            case 7:
+                System.out.print("Edit HDB Manager in-charge (current: " + project.getHDBManagerInCharge() + ") :");
+                project.setHDBManagerInChargeName(sc.nextLine());
+                sc.nextLine();
+                break;
+            case 8:
+                System.out.print("Edit available officer slots (current: " + project.getAvailableOfficerSlot() + ") :");
+                project.setAvailableOfficerSlot(sc.nextInt());
+                sc.nextLine();
+                break;
+            case 9:
+                System.out.print("BTO Project updated!");
+                return;
+        }
     }
 
     public void deleteProject(){
@@ -125,10 +159,14 @@ public class HDBManagerController{
     }
 
     public void viewAllProjects(){
-        System.out.println("---------ALL PROJECTS---------");
         for (int i = 0; i < projectList.getCount(); i++){
-            BTOProject btoProject = projectList.getBTOProject(i);
-            System.out.println((i + 1) + ". " + btoProject.getProjectName());
+            if (projectList.getCount() > 0){
+                System.out.println("---------ALL PROJECTS---------");
+                BTOProject btoProject = projectList.getBTOProject(i);
+                System.out.println((i + 1) + ". " + btoProject.getProjectName());
+            } else{
+                System.out.println("No projects found.");
+            }
         }
     }
 
@@ -143,23 +181,65 @@ public class HDBManagerController{
             if (managerName.toLowerCase().equals(project.getHDBManagerInChargeName())){
                 System.out.println(project.getProjectName());
                 nameIsInSystem = true;
-            } else{
-                System.out.println("No projects found under manager name " + managerName);
-            }
+            } 
         }
-
+        if(!nameIsInSystem){
+            System.out.println("No projects found under manager name " + managerName);
+        }
     }
 
     public boolean approveRegistration(){
-        return registrationApproved;
+        Scanner sc = new Scanner(System.in);
+        System.out.println("Approve Registration?");
+        System.out.println("1.YES");
+        System.out.println("2.NO");
+        int choice = sc.nextInt();
+
+        if (choice == 1){
+            return registrationApproved;
+        } else if(choice == 2){
+            registrationApproved = false;
+            return registrationApproved;
+        } else{
+            System.out.println("Invalid Option.");
+            return false;
+        }
     }
 
     public boolean approveApplication(){
-        return applicationApproved;
+        Scanner sc = new Scanner(System.in);
+        System.out.println("Approve Application?");
+        System.out.println("1.YES");
+        System.out.println("2.NO");
+        int choice = sc.nextInt();
+
+        if (choice == 1){
+            return applicationApproved;
+        } else if(choice == 2){
+            applicationApproved = false;
+            return applicationApproved;
+        } else{
+            System.out.println("Invalid Option.");
+            return false;
+        }
     }
 
     public boolean approveWithdrawal(){
-        return withdrawalApproved;
+        Scanner sc = new Scanner(System.in);
+        System.out.println("Approve Withdrawal?");
+        System.out.println("1.YES");
+        System.out.println("2.NO");
+        int choice = sc.nextInt();
+
+        if (choice == 1){
+            return withdrawalApproved;
+        } else if(choice == 2){
+            withdrawalApproved = false;
+            return withdrawalApproved;
+        } else{
+            System.out.println("Invalid Option.");
+            return false;
+        }
     }
 
     public void generateReport(){
@@ -232,6 +312,7 @@ public class HDBManagerController{
                         System.out.println("Flat Type: " + flatType);
                         System.out.println("Project Name: " + projectName);
                     }
+                
             }
         }
     }
