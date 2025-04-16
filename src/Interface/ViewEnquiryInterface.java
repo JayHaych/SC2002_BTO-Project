@@ -1,6 +1,7 @@
 package Interface;
 
-public interface ViewEnquiryInterface 
-{
-    public void viewEnquiry(); 
+import Entity.User;
+
+public interface ViewEnquiryInterface {
+    public static void viewEnquiry(User user){};
 }
