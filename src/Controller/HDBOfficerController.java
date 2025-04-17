@@ -5,10 +5,7 @@ import Entity.LocalData;
 
 import java.util.Scanner;
 
-import Entity.BTOApplication;
-import Entity.BTOProject;
-import Entity.Enquiry;
-import Entity.HDBOfficer;
+import Entity.*;
 
 public class HDBOfficerController extends ApplicantController {
 
