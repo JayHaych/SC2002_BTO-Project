@@ -1,10 +1,14 @@
+import Controller.UpdateCSV;
 import UI.*;
+import Entity.LocalData;
 
 public class Run 
 {
+
+
     public static void main(String[] args) 
     {
-
+        LocalData.LocalDataLoad();
 
         int logged_in_user = Login_UI.login();
         
@@ -21,6 +25,7 @@ public class Run
                 break;
         }
 
+        UpdateCSV.updateCSV();
 
     }
 

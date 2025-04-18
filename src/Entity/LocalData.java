@@ -4,15 +4,33 @@ import Controller.CSVReader;
 
 public class LocalData 
 {
-    private static Applicant_list applicantList = CSVReader.readApplicantCSV("Data/ApplicantList.csv");
-    private static HDBManager_List hdbManagerList = CSVReader.readHDBManagerCSV("Data/ManagerList.csv");
-    private static HDBOfficer_List hdbOfficerList = CSVReader.readHDBOfficerCSV("Data/OfficerList.csv");
-    private static BTOProject_List btoProjectList = CSVReader.readBTOProjectCSV("Data/ProjectList.csv");
-    private static Enquiry_List enquiryList = CSVReader.readEnquiryCSV("Data/EnquiryList.csv");
-    private static FlatBooking_List flatBookingList = CSVReader.readFlatBookingCSV("Data/FlatBookingList.csv");
-    private static BTOApplication_List btoApplicationList = CSVReader.readBTOApplicationCSV("Data/BTOApplicationList.csv");
-    private static User currentUser = null;
+    private static BTOApplication_List btoApplicationList;
+    private static FlatBooking_List flatBookingList;
+    private static Enquiry_List enquiryList;
+    private static Applicant_list applicantList;
+    private static HDBOfficer_List hdbOfficerList;
+    private static HDBManager_List hdbManagerList;
+    private static BTOProject_List btoProjectList;
+    private static Registration_List registrationList;
+    private static User currentUser;
 
+    public static void LocalDataLoad()
+    {
+        applicantList = CSVReader.readApplicantCSV("Data/ApplicantList.csv");
+        hdbManagerList = CSVReader.readHDBManagerCSV("Data/ManagerList.csv");
+        hdbOfficerList = CSVReader.readHDBOfficerCSV("Data/OfficerList.csv");
+        btoProjectList = CSVReader.readBTOProjectCSV("Data/ProjectList.csv");
+        enquiryList = CSVReader.readEnquiryCSV("Data/EnquiryList.csv");
+        flatBookingList = CSVReader.readFlatBookingCSV("Data/FlatBookingList.csv");
+        btoApplicationList = CSVReader.readBTOApplicationCSV("Data/BTOApplicationList.csv");
+        registrationList = CSVReader.readRegistrationCSV("Data/RegistrationList.csv");
+        currentUser = null;
+    }
+
+    public static Registration_List getRegistrationList() 
+    {
+        return registrationList;
+    }
 
 
     public static BTOApplication_List getBTOApplicationList() 

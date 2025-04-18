@@ -1,3 +1,3 @@
-﻿Name,NRIC,Age,visibility,MaritalStatus,Password
-Michael,T8765432F,36,true,Single,password
-Jessica,S5678901G,26,true,Married,password
+Name,NRIC,Age,visibility,MaritalStatus,Password,currentProject
+Michael,T8765432F,36,false,password,Acacia Breeze,null
+Jessica,S5678901G,26,false,password,null,null

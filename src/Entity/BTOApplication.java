@@ -1,27 +1,40 @@
 package Entity;
 
+import java.time.LocalDate;
+
 public class BTOApplication {
 
     private String projectName;
     private String flatType; //flatType is NOT enumerate anymore. 
     private String applicationStatus;
-    private String submissionDate;
+    private LocalDate submissionDate;
     private Boolean withdrawalRequested;
     private String applicantName;
     private User applicant; //either Applicant or Officer object
+    private Boolean withdrawalApproved; //for officer to approve the withdrawal request
 
     public BTOApplication() {
        
     }
 
-    public BTOApplication(String projectName, String flatType, User user) {
+    public BTOApplication(String projectName, String flatType, String applicationStatus, 
+                          String submissionDate, Boolean withdrawalRequested, String applicantName, Boolean withdrawalApproved) {
         this.projectName = projectName;
         this.flatType = flatType;
-        this.applicant = user;
-        applicantName = user.getName();
-        applicationStatus = "Pending"; //enumerate
-        submissionDate = "test";
-        withdrawalRequested = false;
+        this.applicantName = applicantName;
+        this.applicationStatus = applicationStatus; //enumerate
+        this.withdrawalRequested = withdrawalRequested;
+        this.applicantName = applicantName;
+        this.withdrawalApproved = withdrawalApproved;
+        this.submissionDate = LocalDate.parse(submissionDate);
+    }
+    
+    public Boolean getWithdrawalApproved() {
+        return withdrawalApproved;
+    }
+
+    public void setWithdrawalApproved(Boolean withdrawalApproved) {
+        this.withdrawalApproved = withdrawalApproved;
     }
 
     public String getApplicantName() {
@@ -56,12 +69,12 @@ public class BTOApplication {
         this.applicationStatus = applicationStatus;
     }
 
-    public String getSubmissionDate() {
+    public LocalDate getSubmissionDate() {
         return submissionDate;
     }
 
     public void setSubmissionDate(String submissionDate) {
-        this.submissionDate = submissionDate;
+        this.submissionDate = LocalDate.parse(submissionDate);
     }
 
     public Boolean getWithdrawalRequested() {

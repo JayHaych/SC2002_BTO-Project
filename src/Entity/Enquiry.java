@@ -11,11 +11,10 @@ public class Enquiry {
     private String userName; 
 
 
-    public Enquiry(String details, String projectName, User user) {
+    public Enquiry(String details, String projectName, String userName) {
         this.details = details;
         this.projectName = projectName;
-        this.user = user;
-        this.userName = user.getName();
+        this.userName = userName;
     }
 
     public String getUserName() {

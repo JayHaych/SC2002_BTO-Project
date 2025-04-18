@@ -23,12 +23,7 @@ public class CSVReader
                 }
 
                 String[] values = line.split(",");
-                
-
-                if (values.length < 7) {
-                    System.err.println("Skipping invalid line: " + line);
-                    continue;
-                }
+        
 
                 String name = values[0];
                 String NRIC = values[1];
@@ -80,11 +75,6 @@ public class CSVReader
                 String[] values = line.split(",");
                 
 
-                if (values.length < 6) {
-                    System.err.println("Skipping invalid line: " + line);
-                    continue;
-                }
-
                 String name = values[0];
                 String NRIC = values[1];
 
@@ -128,11 +118,6 @@ public class CSVReader
     
                 String[] values = line.split(",");
     
-                // Ensure there are enough columns
-                if (values.length < 8) {
-                    System.err.println("Skipping invalid line: " + line);
-                    continue;
-                }
     
                 // Extract the values from the CSV line
                 String name = values[0];
@@ -149,11 +134,10 @@ public class CSVReader
                 boolean visibility = Boolean.parseBoolean(values[3]);
                 String maritalStatus = values[4];
                 String password = values[5];
-                String appliedProject = values[6];  // Now handling appliedProject as a String
-                String BTOprojectName = values[7];  // BTO project name the officer is managing
+                String BTOprojectName = values[6];  // BTO project name the officer is managing
     
                 // Create a new HDBOfficer object and add it to the list
-                HDBOfficer hdbOfficer = new HDBOfficer(name, NRIC, password, visibility, maritalStatus, age, appliedProject, BTOprojectName);
+                HDBOfficer hdbOfficer = new HDBOfficer(name, NRIC, password, visibility, maritalStatus, age, null, BTOprojectName);
                 hdbOfficerList.addHDBOfficer(hdbOfficer);
             }
         } catch (IOException e) {
@@ -181,10 +165,6 @@ public class CSVReader
 
                 // Basic split
                 String[] raw = line.split(",");
-                if (raw.length < 14) {
-                    System.err.println("Invalid line: " + line);
-                    continue;
-                }
 
                 // Prepare clean values array
                 String[] values = new String[14];
@@ -257,32 +237,27 @@ public class CSVReader
 
         try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
             String line;
-
+            int count = 0;
             while ((line = br.readLine()) != null) {
-                // Handle quoted message
-                if (!line.startsWith("\"")) continue; // Skip malformed lines
-
-                int endQuoteIndex = line.indexOf("\",");
-                if (endQuoteIndex == -1) continue; // Malformed
-
-                String message = line.substring(1, endQuoteIndex);
-                String[] rest = line.substring(endQuoteIndex + 2).split(",");
-
-                if (rest.length < 2) continue; // Malformed
-
-                String projectName = rest[0].trim();
-                //String applicantName = rest[1].trim();
-                User currentUser = LocalData.getCurrentUser();
-
-                if (currentUser == null) {
-                    System.err.println("No user logged in. Cannot create enquiry for project: " + projectName);
-                    continue; // Skip creating the enquiry if no user is logged in
+                if (count == 0) 
+                {
+                    count++;
+                    continue; 
                 }
+
+                String[] values = line.split(",");
                 
-                Enquiry enquiry = new Enquiry(message, projectName, currentUser);
+
+
+                String message = values[0];
+                String ProjectName = values[1];
+                String ApplicantName = values[2];
+
+
+
+                Enquiry enquiry = new Enquiry(message, ProjectName, ApplicantName);
                 enquiryList.addEnquiry(enquiry);
             }
-
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -312,10 +287,6 @@ public class CSVReader
                 String[] values = line.split(",");
                 
 
-                if (values.length < 5) {
-                    System.err.println("Skipping invalid line: " + line);
-                    continue;
-                }
 
                 String projectName = values[0];
                 String applicantName = values[1];
@@ -357,22 +328,19 @@ public class CSVReader
                 String[] values = line.split(",");
                 
 
-                if (values.length < 7) {
-                    System.err.println("Skipping invalid line: " + line);
-                    continue;
-                }
-                //String applicationID = values[0];
-                String projectName = values[1];
-                String flatType = values[2];
-                //String applicationStatus = values[3];
-                //String submissionDate  = values[4];
-                //boolean withdrawalRequested = Boolean.parseBoolean(values[5]);
-                //String applicantName = values[6];
-                User currentUser = LocalData.getCurrentUser();
+
+
+                String projectName = values[0];
+                String flatType = values[1];
+                String applicationStatus = values[2];
+                String submissionDate  = values[3];
+                boolean withdrawalRequested = Boolean.parseBoolean(values[4]);
+                String applicantName = values[5];
+                String withdrawalApproved = values[6];
 
 
 
-                BTOApplication btoApplication = new BTOApplication(projectName,flatType,currentUser);
+                BTOApplication btoApplication = new BTOApplication(projectName, flatType, applicationStatus, submissionDate, withdrawalRequested, applicantName, Boolean.parseBoolean(withdrawalApproved));
                 btoApplicationList.addBTOApplication(btoApplication);
             }
         } catch (IOException e) {
@@ -380,6 +348,44 @@ public class CSVReader
         }
 
         return btoApplicationList;
+    }
+
+
+
+
+
+    public static Registration_List readRegistrationCSV(String filePath) 
+    {
+        Registration_List registrationList = new Registration_List();
+
+        try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
+            String line;
+            int count = 0;
+            while ((line = br.readLine()) != null) {
+                if (count == 0) 
+                {
+                    count++;
+                    continue; 
+                }
+
+                String[] values = line.split(",");
+                
+
+
+                String ProjectName = values[0];
+                String OfficerName = values[1];
+                String ApprovalStatus = values[2];
+
+
+
+                Registration registration = new Registration(ProjectName, OfficerName, ApprovalStatus);
+                registrationList.addRegistration(registration);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return registrationList;
     }
 
 }

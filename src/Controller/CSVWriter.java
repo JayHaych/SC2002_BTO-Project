@@ -61,7 +61,7 @@ public class CSVWriter
                     hdbManager.getVisibility(),
                     hdbManager.getMaritalStatus(),
                     hdbManager.getPassword(),
-                    hdbManager.getCurrentProject().getProjectName());
+                    hdbManager.getBTOprojectname());
                     bw.write(line);
                     bw.newLine();
                 }
@@ -211,21 +211,22 @@ public class CSVWriter
     {
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(filePath))) 
         {
-            bw.write("projectName,flatType,applicationStatus,submissionDate,withdrawalRequested,applicantName");
+            bw.write("projectName,flatType,applicationStatus,submissionDate,withdrawalRequested,applicantName,withdrawalApproved");
             bw.newLine();
             
 
                 for (int i = 0 ; i < btoApplicationList.getCount() ; i++) 
                 {
                     BTOApplication btoApplication = (BTOApplication) btoApplicationList.getBTOApplication(i);
-                    String line = String.format("%s,%s,%s,%s,%b,%s",
+                    String line = String.format("%s,%s,%s,%s,%b,%s,%b",
                     //btoApplication.getApplicationID(),
                     btoApplication.getProjectName(),
                     btoApplication.getFlatType(),
                     btoApplication.getApplicationStatus(),
                     btoApplication.getSubmissionDate(),
                     btoApplication.getWithdrawalRequested(),
-                    btoApplication.getApplicantName());
+                    btoApplication.getApplicantName(),
+                    btoApplication.getWithdrawalApproved());
                     bw.write(line);
                     bw.newLine();
                 }
@@ -236,4 +237,36 @@ public class CSVWriter
             e.printStackTrace();
         }
     }
+
+
+
+
+
+    public static void writeRegistrationCSV(String filePath, Registration_List registrationList) 
+    {
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(filePath))) 
+        {
+            bw.write("ProjectName,OfficerName,ApprovalStatus");
+            bw.newLine();
+            
+
+                for (int i = 0 ; i < registrationList.getRegistrationCount() ; i++) 
+                {
+                    Registration registration = (Registration) registrationList.getRegistration(i);
+                    String line = String.format("%s,%s,%s",
+                    registration.getProjectName(),
+                    registration.getOfficerName(),
+                    registration.getApprovalStatus());
+                    bw.write(line);
+                    bw.newLine();
+                }
+
+        } 
+        catch (IOException e) 
+        {
+            e.printStackTrace();
+        }
+    }
+
+
 }

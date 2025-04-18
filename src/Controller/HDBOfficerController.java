@@ -25,7 +25,8 @@ public class HDBOfficerController extends ApplicantController {
                 projectFound = true;
 
                 // project.addOfficerInCharge(officer); SHOULD BE REGISTER, NOT STRAIGHT AWAY ADD
-
+                Registration registration = new Registration(officer.getName(), projectName, "Pending");
+                LocalData.getRegistrationList().addRegistration(registration);  // Add registration to the list
                 System.out.println("Successfully registered for the project: " + projectName);
                 break;
             }

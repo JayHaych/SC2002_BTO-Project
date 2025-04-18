@@ -14,7 +14,7 @@ public class ApplicantController implements ViewEnquiryInterface {
         String projectName = sc.nextLine();
 
         // Create the enquiry
-        Enquiry enquiry = new Enquiry(details, projectName, user);
+        Enquiry enquiry = new Enquiry(details, projectName, LocalData.getCurrentUser().getName());
         
         boolean projectFound = false;
         for (BTOProject project : LocalData.getBTOProjectList().getList()) {
