@@ -22,10 +22,12 @@ public class HDB_Manager_UI {
             System.out.println("5. View all projects");
             System.out.println("6. View my projects");
             System.out.println("7. Generate report");
-            System.out.println("8. Approve registration");
-            System.out.println("9. Approve application");
-            System.out.println("10. Approve withdrawal");
-            System.out.println("11. Logout and quit");
+            System.out.println("8. View all enquiries");
+            System.out.println("9. Reply enquiries");
+            System.out.println("10. Approve registration");
+            System.out.println("11. Approve application");
+            System.out.println("12. Approve withdrawal");
+            System.out.println("13. Logout and quit");
             System.out.print("Select option: ");
             
            
@@ -36,50 +38,57 @@ public class HDB_Manager_UI {
                 case 1:
                     controller.createProject();
                     break;
+
                 case 2:
                     controller.editProject();
                     break;
+
                 case 3:
                     controller.deleteProject();
                     break;
+
                 case 4:
                     controller.setVisibility();
                     break;
+
                 case 5:
                     controller.viewAllProjects();
                     break;
+
                 case 6:
                     controller.viewMyProjects();
                     break;
+
                 case 7:
                     controller.generateReport();
                     // System.out.println(report);
                     break;
+
                 case 8:
-                    if (controller.approveRegistration()){
-                        System.out.println("Registration approved!");
-                    } else{
-                        System.out.println("Registration rejected");
-                    }
+                    controller.viewAllEnquiries();
                     break;
+
                 case 9:
-                    if (controller.approveApplication()){
-                        System.out.println("Application approved!");
-                    } else {
-                        System.out.println("Application rejected");
-                    }
+                    controller.replyEnquiry();
                     break;
+
                 case 10:
-                    if (controller.approveWithdrawal()){
-                        System.out.println("Withdrawal approved!");
-                    } else{
-                        System.out.println("Withdrawal rejected");
-                    }
+                    controller.approveRegistration();
                     break;
+
                 case 11:
+                    controller.approveApplication();
+                    break;
+
+                case 12:
+                    controller.approveWithdrawal();
+                    break;
+
+                case 13:
                     System.out.println("Logging out...");
                     System.out.println("Thank you!");
                     return;
+                    
                 default:
                     System.out.println("Invalid option.");
             }

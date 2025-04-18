@@ -32,11 +32,11 @@ public class BTOProject_List
         count--; 
     }
 
-    public BTOProject getBTOProject(int index) 
+    public BTOProject getBTOProject(int i) 
     {
-        if (index >= 0 && index < count) 
+        if (i >= 0 && i < count) 
         {
-            return BTOProjectList.get(index);
+            return BTOProjectList.get(i);
         } else 
         {
             return null; // or throw an exception

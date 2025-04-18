@@ -1,12 +1,18 @@
 package Controller;
 
+import java.nio.file.SecureDirectoryStream;
 import java.util.Scanner;
 
 import Entity.BTOProject_List;
+import Entity.Enquiry_List;
 import Entity.FlatBooking;
 import Entity.FlatBooking_List;
+import Entity.HDBOfficer_List;
+import Entity.BTOApplication_List;
 import Entity.BTOProject;
 import Entity.User;
+import Entity.LocalData;
+import Entity.Registration_List;
 
 public class HDBManagerController{
     private boolean applicationApproved;
@@ -14,13 +20,20 @@ public class HDBManagerController{
     private boolean withdrawalApproved;
     private BTOProject_List projectList;
     private FlatBooking_List flatBookingList;
+    private Enquiry_List enquiryList;
+    private BTOApplication_List applicationList;
+    private Registration_List registrationList;
+    private String applicationStatus;
     
     public HDBManagerController(boolean applicationApproved, boolean registrationApproved, boolean withdrawalApproved){
         this.applicationApproved = applicationApproved;
         this.registrationApproved = registrationApproved;
         this.withdrawalApproved = withdrawalApproved;
-        this.projectList = new BTOProject_List();
-        this.flatBookingList = new FlatBooking_List();
+        this.projectList =  LocalData.getBTOProjectList();
+        this.flatBookingList = LocalData.getFlatBookingList();
+        this.enquiryList = LocalData.getEnquiryList();
+        this.applicationList = LocalData.getBTOApplicationList();
+        this.registrationList = LocalData.getRegistrationList();
     }
 
     public void createProject(){
@@ -56,6 +69,8 @@ public class HDBManagerController{
 
         BTOProject project = new BTOProject(projectName, neighbourhood, numberOfTwoRoom, sellingPriceOfTwoRoom, numberOfThreeRoom, sellingPriceOfThreeRoom, openingDate, closingDate, managerName, availableOfficerSlot, OfficerInChargeNames, isVisible);
         projectList.addBTOProject(project);
+        // managerName = sc.nextLine();
+        // projectList.getBTOProject(project).setHDBManagerInCharge(managerName);
         System.out.println("Project successfully created!");
         
     }
@@ -164,7 +179,7 @@ public class HDBManagerController{
                 System.out.println("---------ALL PROJECTS---------");
                 BTOProject btoProject = projectList.getBTOProject(i);
                 System.out.println((i + 1) + ". " + btoProject.getProjectName());
-            } else{
+            } else {
                 System.out.println("No projects found.");
             }
         }
@@ -189,58 +204,110 @@ public class HDBManagerController{
     }
 
     public boolean approveRegistration(){
+        registrationList = LocalData.getRegistrationList();
         Scanner sc = new Scanner(System.in);
-        System.out.println("Approve Registration?");
-        System.out.println("1.YES");
-        System.out.println("2.NO");
-        int choice = sc.nextInt();
+        for (int i = 0; i < registrationList.getRegistrationCount(); i++){
+            System.out.println("All HDB Officer Registrations: ");
+            System.out.println((i+1) + ". " + registrationList.getRegistration(i).getOfficerName());
 
-        if (choice == 1){
-            return registrationApproved;
-        } else if(choice == 2){
-            registrationApproved = false;
-            return registrationApproved;
-        } else{
-            System.out.println("Invalid Option.");
-            return false;
+            String registrationStatus = registrationList.getRegistration(i).getApprovalStatus();
+            if(registrationStatus.equals("Pending")){
+                System.out.println("\nRegistration: " + (i+1) + ":");
+                System.out.println("Officer Name: " + registrationList.getRegistration(i).getOfficerName());
+                System.out.println("Project Name " + registrationList.getRegistration(i).getProjectName());
+                System.out.println("Registration Status: " + registrationList.getRegistration(i).getApprovalStatus());
+                System.out.println("Approve Registration?");
+                System.out.println("1.YES");
+                System.out.println("2.NO");
+                int choice = sc.nextInt();
+
+                if (choice == 1){
+                    registrationList.getRegistration(i).setApprovalStatus("Approved");
+                    System.out.println("Registration Approved!");
+                    return registrationApproved;
+                } else if(choice == 2){
+                    registrationList.getRegistration(i).setApprovalStatus("Rejected");
+                    System.out.println("Registration Rejected.");
+                    registrationApproved = false;
+                    return registrationApproved;
+                }
+
+            }
         }
+        return registrationApproved;
     }
 
     public boolean approveApplication(){
+        applicationList = LocalData.getBTOApplicationList();
         Scanner sc = new Scanner(System.in);
-        System.out.println("Approve Application?");
-        System.out.println("1.YES");
-        System.out.println("2.NO");
-        int choice = sc.nextInt();
-
-        if (choice == 1){
-            return applicationApproved;
-        } else if(choice == 2){
-            applicationApproved = false;
-            return applicationApproved;
-        } else{
-            System.out.println("Invalid Option.");
-            return false;
+        for(int i = 0; i < applicationList.getCount(); i++){
+            System.out.println("All applications: ");
+            System.out.println((i+1) + ". " + applicationList.getBTOApplication(i).getApplicantName());
+            
+            String applicationStatus = applicationList.getBTOApplication(i).getApplicationStatus();
+            if (applicationStatus.equals("Pending")){
+                System.out.println("\nApplication " + (i + 1) + ":");
+                System.out.println("Applicant Name: " + applicationList.getBTOApplication(i).getApplicantName());
+                System.out.println("Project: " + applicationList.getBTOApplication(i).getProjectName());
+                System.out.println("Flat Type: " + applicationList.getBTOApplication(i).getFlatType());
+                System.out.println("Status: " + applicationList.getBTOApplication(i).getApplicationStatus());
+                System.out.println("Approve Application?");
+                System.out.println("1.YES");
+                System.out.println("2.NO");
+                int choice = sc.nextInt();
+        
+                if (choice == 1){
+                    applicationList.getBTOApplication(i).setApplicationStatus("Approved");
+                    System.out.println("Application Approved!");
+                    return applicationApproved;
+                } else if(choice == 2){
+                    applicationList.getBTOApplication(i).setApplicationStatus("Rejected");
+                    System.out.println("Application Rejected.");
+                    applicationApproved = false;
+                    return applicationApproved;
+                }
+            }
         }
-    }
+        return applicationApproved;
+    }   
 
     public boolean approveWithdrawal(){
+        applicationList = LocalData.getBTOApplicationList();
         Scanner sc = new Scanner(System.in);
-        System.out.println("Approve Withdrawal?");
-        System.out.println("1.YES");
-        System.out.println("2.NO");
-        int choice = sc.nextInt();
+        for(int i = 0; i < applicationList.getCount(); i++){
+            if (applicationList.getBTOApplication(i).getWithdrawalRequested() == true){
+                System.out.println("All withdrawal requests: ");
+                System.out.println((i+1) + ". " + applicationList.getBTOApplication(i).getApplicantName());
+                if (applicationList.getBTOApplication(i).getWithdrawalApproved().equals(false)){
+                    System.out.println("\nApplication " + (i+1) + ":");
+                    System.out.println("Application Name: " + applicationList.getBTOApplication(i).getApplicantName());
+                    System.out.println("Project: " + applicationList.getBTOApplication(i).getProjectName());
+                    System.out.println("Flat Type: " + applicationList.getBTOApplication(i).getFlatType());
+                    System.out.println("Withdrawal Status: " + applicationList.getBTOApplication(i).getWithdrawalRequested());
+                    System.out.println("Approve Withdrawal?");
+                    System.out.println("1. YES");
+                    System.out.println("2. NO");
+                    int choice =  sc.nextInt();
 
-        if (choice == 1){
-            return withdrawalApproved;
-        } else if(choice == 2){
-            withdrawalApproved = false;
-            return withdrawalApproved;
-        } else{
-            System.out.println("Invalid Option.");
-            return false;
+                    if(choice == 1 ){
+                        applicationList.getBTOApplication(i).setWithdrawalApproved(true);
+                        applicationList.getBTOApplication(i).setWithdrawalRequested(null);
+                        System.out.println("Withdrawal Approved!");
+                        return withdrawalApproved;
+                    } else if(choice == 2){
+                        applicationList.getBTOApplication(i).setWithdrawalApproved(false);
+                        applicationList.getBTOApplication(i).setWithdrawalRequested(null);
+                        System.out.println("Withdrawal Rejected.");
+                        return withdrawalApproved;
+                    }
+                }
+            } else{
+                System.out.println("No withdrawal requested.");
+            }
         }
+        return withdrawalApproved;
     }
+
 
     public void generateReport(){
         Scanner sc = new Scanner(System.in);
@@ -315,5 +382,47 @@ public class HDBManagerController{
                 
             }
         }
+    }
+    public void viewAllEnquiries(){
+        enquiryList = LocalData.getEnquiryList();
+        for (int i = 0; i < enquiryList.getEnquiryCount(); i ++){
+            // BTOProject project = projectList.getBTOProject(i);
+
+            System.out.println("All enquiries: ");
+            System.out.println((i+1) + ". " + enquiryList.getEnquiry(i).getUserName());
+            System.out.println("\nApplication " + (i+1) +":");
+            System.out.println("Applicant Name: " + enquiryList.getEnquiry(i).getUserName());
+            System.out.println("BTO Project: " + enquiryList.getEnquiry(i).getProjectName());
+            System.out.println("Enquiry: " + enquiryList.getEnquiry(i).getDetails());
+        }
+    }
+
+    public void replyEnquiry(){
+        Scanner sc = new Scanner(System.in);
+        enquiryList = LocalData.getEnquiryList();
+        for (int i = 0; i<enquiryList.getEnquiryCount(); i++){
+            System.out.println("All enquiries: ");
+            System.out.println((i+1) + ". " + enquiryList.getEnquiry(i).getUserName());
+            System.out.println("\nApplication " + (i+1) +":");
+            System.out.println("Applicant Name: " + enquiryList.getEnquiry(i).getUserName());
+            System.out.println("BTO Project: " + enquiryList.getEnquiry(i).getProjectName());
+            System.out.println("Enquiry: " + enquiryList.getEnquiry(i).getDetails());
+            System.out.println("Reply Enquiry?");
+            System.out.println("1.YES");
+            System.out.println("2.NO");
+            int choice = sc.nextInt();
+
+            if (choice == 1){
+                sc.nextLine();
+                System.out.print("Please Enter Reply: ");
+                String reply = sc.nextLine();
+                enquiryList.getEnquiry(i).setDetails(reply);
+            } else if (choice == 2){
+                System.out.println("No reply given.");
+                String reply = "No reply given.";
+                enquiryList.getEnquiry(i).setDetails(reply);
+            }
+        }
+        
     }
 }
