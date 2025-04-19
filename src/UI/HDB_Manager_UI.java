@@ -87,6 +87,7 @@ public class HDB_Manager_UI {
                 case 13:
                     System.out.println("Logging out...");
                     System.out.println("Thank you!");
+                    sc.close();
                     return;
                     
                 default:

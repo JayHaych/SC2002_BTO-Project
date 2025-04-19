@@ -12,11 +12,11 @@ public class Enquiry {
     private String reply;
 
 
-    public Enquiry(String details, String projectName, String userName) { //enquiry constructor for enquiry_list
+    public Enquiry(String details, String projectName, String userName, String reply) { //enquiry constructor for enquiry_list
         this.details = details;
         this.projectName = projectName;
         this.userName = getUserName();
-        this.reply = "No replies yet.";
+        this.reply = reply;
     } //needs to be edited
 
     public Enquiry(String details, String projectName, User user) { //enquiry constructor for NEW enquiry by applicant

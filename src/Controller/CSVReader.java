@@ -252,10 +252,11 @@ public class CSVReader
                 String message = values[0];
                 String ProjectName = values[1];
                 String ApplicantName = values[2];
+                String reply = values[3];
 
 
 
-                Enquiry enquiry = new Enquiry(message, ProjectName, ApplicantName);
+                Enquiry enquiry = new Enquiry(message, ProjectName, ApplicantName,reply);
                 enquiryList.addEnquiry(enquiry);
             }
         } catch (IOException e) {

@@ -153,17 +153,18 @@ public class CSVWriter
     {
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(filePath))) 
         {
-            bw.write("Details,ProjectName,UserName");
+            bw.write("Details,ProjectName,UserName,Reply");
             bw.newLine();
             
 
                 for (int i = 0 ; i < enquiryList.getEnquiryCount() ; i++) 
                 {
                     Enquiry enquiry = (Enquiry) enquiryList.getEnquiry(i);
-                    String line = String.format("%s,%s,%s",
+                    String line = String.format("%s,%s,%s,%s",
                     enquiry.getDetails(),
                     enquiry.getProjectName(),
-                    enquiry.getUserName());
+                    enquiry.getUserName(),
+                    enquiry.getReply());
                     bw.write(line);
                     bw.newLine();
                 }
