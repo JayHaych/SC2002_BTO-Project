@@ -1,8 +1,6 @@
 package Controller;
 
-import Entity.User;
-import Entity.LocalData;
-
+import java.util.HashMap;
 import java.util.Scanner;
 
 import Entity.*;
@@ -11,6 +9,60 @@ public class HDBOfficerController extends ApplicantController {
 
     public static void registerForProjectAsOfficer() {
         User currentUser = LocalData.getCurrentUser();
+
+        if (!(currentUser instanceof HDBOfficer)) {
+            System.out.println("Only HDB officers can register for projects as officers.");
+            return;
+        }
+
+        HDBOfficer officer = (HDBOfficer) currentUser;
+
+        Scanner sc = new Scanner(System.in);
+        System.out.println("Enter the project name you want to register for as an officer:");
+        String projectName = sc.nextLine().trim();
+
+        BTOProject selectedProject = null;
+        for (BTOProject project : LocalData.getBTOProjectList().getList()) {
+            if (project.getProjectName().equalsIgnoreCase(projectName)) {
+                selectedProject = project;
+                break;
+            }
+        }
+
+        if (selectedProject == null) {
+            System.out.println("Project not found!");
+            return;
+        }
+
+        // Check 1: Officer is not also an applicant
+        for (Applicant applicant : LocalData.getApplicantList().getList()) {
+            if (applicant.getNRIC().equals(officer.getNRIC())) {
+                System.out.println("You cannot register as an officer because you are already an applicant.");
+                return;
+            }
+        }
+
+        // Check 2: Officer has not already registered as officer for any project
+        for (BTOProject project : LocalData.getBTOProjectList().getList()) {
+            if (project.hasOfficer(officer.getNRIC())) {
+                System.out.println("You have already registered as an officer for another BTO project.");
+                return;
+            }
+        }
+
+        // Check 3: Project has fewer than 10 officers
+        if (selectedProject.getNumberOfOfficers() >= 10) {
+            System.out.println("This project already has 10 officers.");
+            return;
+        }
+
+        // All checks passed → add officer
+        selectedProject.addOfficerInCharge(officer);
+        System.out.println("Successfully registered as officer for: " + selectedProject.getProjectName());
+    }
+
+        /* private HashMap<String, BTOProject> btoProjects = new HashMap<>();
+        User currentUser = LocalData.getCurrentUser();
         
         HDBOfficer officer = (HDBOfficer) currentUser;  // Upcast to HDBOfficer class
         
@@ -18,24 +70,25 @@ public class HDBOfficerController extends ApplicantController {
         Scanner sc = new Scanner(System.in);
         String projectName = sc.nextLine();  // Get project name from the user
         boolean projectFound = false;
+            
+        if (!projectFound) {
+            System.out.println("Project not found!");
+        }
     
         // Check if the project exists in the project list
         for (BTOProject project : LocalData.getBTOProjectList().getList()) {
             if (project.getProjectName().equalsIgnoreCase(projectName)) {
                 projectFound = true;
+                
+
 
                 // project.addOfficerInCharge(officer); SHOULD BE REGISTER, NOT STRAIGHT AWAY ADD
-                Registration registration = new Registration(officer.getName(), projectName, "Pending");
-                LocalData.getRegistrationList().addRegistration(registration);  // Add registration to the list
-                System.out.println("Successfully registered for the project: " + projectName);
-                break;
+
+                /*System.out.println("Successfully registered for the project: " + projectName);
+                break; 
             }
-        }
-    
-        if (!projectFound) {
-            System.out.println("Project not found!");
-        }
-    }
+        } */
+
 
     public static void viewProjectDetails(User user) {
         System.out.println("Enter the project name you want to view details for:");
