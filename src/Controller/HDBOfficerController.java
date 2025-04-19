@@ -1,6 +1,8 @@
 package Controller;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Scanner;
 
 import Entity.*;
@@ -177,47 +179,50 @@ public class HDBOfficerController extends ApplicantController {
     }
 
     public static void replyToEnquiry(User user) {
-        String projectName = ((HDBOfficer) user).getBTOprojectName();
 
-        if (projectName == null || projectName.isEmpty()) {
-            System.out.println("You are not registered for any project, hence no enquiries to reply to.");
+        //Casting to access attribute
+        HDBOfficer officer = (HDBOfficer) user;
+        String officerProject = officer.getBTOprojectName();
+
+        if (officerProject == null || officerProject.isBlank()) {
+            System.out.println("You are not registered for any project");
             return;
         }
 
-        Scanner sc = new Scanner(System.in);
-        System.out.println("Enter the enquiry number you want to reply to:");
-
-        boolean foundEnquiry = false;
-        for (BTOProject project : LocalData.getBTOProjectList().getList()) {
-            if (project.getProjectName().equalsIgnoreCase(projectName)) {
-                System.out.println("Available enquiries for project: " + projectName);
-                for (int i = 0; i < project.getEnquiries().size(); i++) {
-                    Enquiry enquiry = project.getEnquiries().get(i);
-                    System.out.println((i + 1) + ". " + enquiry.getDetails());
-                }
-
-                int enquiryChoice = sc.nextInt();
-                sc.nextLine(); // consume newline
-
-                if (enquiryChoice > 0 && enquiryChoice <= project.getEnquiries().size()) {
-                    Enquiry selectedEnquiry = project.getEnquiries().get(enquiryChoice - 1);
-                    System.out.println("You selected the enquiry: " + selectedEnquiry.getDetails());
-                    System.out.println("Enter your reply: ");
-                    String reply = sc.nextLine();
-
-                    selectedEnquiry.setDetails(selectedEnquiry.getDetails() + "\nOfficer's reply: " + reply);
-                    System.out.println("Reply added successfully.");
-                    foundEnquiry = true;
-                    break;
-                } else {
-                    System.out.println("Invalid enquiry number.");
-                }
+        List<Enquiry> targetEnquiries = new ArrayList<>();
+        for (Enquiry e : LocalData.getEnquiryList().getList()) {
+            if (e.getProjectName().equalsIgnoreCase(officerProject)) {
+                targetEnquiries.add(e);
             }
         }
 
-        if (!foundEnquiry) {
-            System.out.println("No enquiries found for this project.");
+        if (targetEnquiries.isEmpty()) {
+            System.out.println("There are no enquiries for project\""+ officerProject + "\".");
+            return;
         }
+
+        System.out.println("Enquiries for project \"" + officerProject + "\":");
+        for (int i = 0; i < targetEnquiries.size(); i++) {
+            Enquiry e = targetEnquiries.get(i);
+            System.out.printf("%d. %s  (asked by %s)%n", i + 1, e.getDetails(), e.getUserName());
+        }
+
+        Scanner sc = new Scanner(System.in);
+        System.out.print("Enter the enquiry number to reply: ");
+        int idx = sc.nextInt();
+        sc.nextLine();
+
+        if (idx < 1 || idx > targetEnquiries.size()) {
+            System.out.println("Invalid enquiry number.");
+            return;
+        }
+
+        Enquiry chosen = targetEnquiries.get(idx - 1);
+        System.out.println("Enter your reply: ");
+        String reply = sc.nextLine();
+
+        chosen.setReply(reply);
+        System.out.println("Reply recorded successfully.");
     }
 
     // Officer-specific method to generate a receipt for an application

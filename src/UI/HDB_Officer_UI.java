@@ -63,7 +63,7 @@ public class HDB_Officer_UI
                     ApplicantController.requestWithdrawal(user);
                     break;
                 case 9:
-                    
+                    ApplicantController.changePassword();
                     break;*/
                 case 10:
                     System.out.println("Logging out...");
