@@ -7,6 +7,8 @@ import Entity.BTOProject_List;
 import Entity.Enquiry_List;
 import Entity.FlatBooking;
 import Entity.FlatBooking_List;
+import Entity.HDBManager;
+import Entity.HDBManager_List;
 import Entity.HDBOfficer_List;
 import Entity.BTOApplication_List;
 import Entity.BTOProject;
@@ -37,6 +39,14 @@ public class HDBManagerController{
     }
 
     public void createProject(){
+        User currentUser = LocalData.getCurrentUser();
+        HDBManager manager = (HDBManager) currentUser;
+        
+        if (manager.getCurrentProject() != null) {
+            System.out.println("You already have an ongoing project: " + manager.getCurrentProject().getProjectName());
+            return;
+        }
+
         Scanner sc = new Scanner(System.in);
         System.out.print("Project Name: ");
         String projectName = sc.nextLine();
@@ -69,8 +79,10 @@ public class HDBManagerController{
 
         BTOProject project = new BTOProject(projectName, neighbourhood, numberOfTwoRoom, sellingPriceOfTwoRoom, numberOfThreeRoom, sellingPriceOfThreeRoom, openingDate, closingDate, managerName, availableOfficerSlot, OfficerInChargeNames, isVisible);
         projectList.addBTOProject(project);
-        // managerName = sc.nextLine();
-        // projectList.getBTOProject(project).setHDBManagerInCharge(managerName);
+        manager.setCurrentProject(project);
+        manager.setBTOprojectname(projectName);
+        project.setHDBManagerInCharge(manager);
+        LocalData.getBTOProjectList().addBTOProject(project);
         System.out.println("Project successfully created!");
         
     }
@@ -394,6 +406,7 @@ public class HDBManagerController{
             System.out.println("Applicant Name: " + enquiryList.getEnquiry(i).getUserName());
             System.out.println("BTO Project: " + enquiryList.getEnquiry(i).getProjectName());
             System.out.println("Enquiry: " + enquiryList.getEnquiry(i).getDetails());
+            System.out.println("Manager Reply: " + enquiryList.getEnquiry(i).getReply());
         }
     }
 
@@ -416,11 +429,11 @@ public class HDBManagerController{
                 sc.nextLine();
                 System.out.print("Please Enter Reply: ");
                 String reply = sc.nextLine();
-                enquiryList.getEnquiry(i).setDetails(reply);
+                enquiryList.getEnquiry(i).setReply(reply);
             } else if (choice == 2){
                 System.out.println("No reply given.");
                 String reply = "No reply given.";
-                enquiryList.getEnquiry(i).setDetails(reply);
+                enquiryList.getEnquiry(i).setReply(reply);
             }
         }
         
