@@ -14,7 +14,7 @@ public class ApplicantController implements ViewEnquiryInterface {
         String projectName = sc.nextLine();
 
         // Create the enquiry
-        Enquiry enquiry = new Enquiry(details, projectName, LocalData.getCurrentUser().getName());
+        Enquiry enquiry = new Enquiry(details, projectName, user);
         
         boolean projectFound = false;
         for (BTOProject project : LocalData.getBTOProjectList().getList()) {
@@ -44,6 +44,7 @@ public class ApplicantController implements ViewEnquiryInterface {
         for (Enquiry enquiry : LocalData.getEnquiryList().getList()) {
             if (enquiry.getUser().equals(user)) {
                 System.out.println(count + ". " + enquiry.getDetails());
+                System.out.println("Reply: "+ enquiry.getReply() +"\n");
                 count++;
                 found = true;
             }
@@ -278,7 +279,7 @@ public class ApplicantController implements ViewEnquiryInterface {
                 break;
             }
         }
-        
+
         if (!projectFound) {
             System.out.println("The project you applied for could not be found.");
         }

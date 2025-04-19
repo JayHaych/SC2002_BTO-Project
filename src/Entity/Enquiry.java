@@ -9,12 +9,23 @@ public class Enquiry {
     private String projectName;
     private User user;
     private String userName; 
+    private String reply;
 
 
-    public Enquiry(String details, String projectName, String userName) {
+    public Enquiry(String details, String projectName, String userName) { //enquiry constructor for enquiry_list
         this.details = details;
         this.projectName = projectName;
-        this.userName = userName;
+        this.user = user;
+        this.userName = user.getName();
+        this.reply = "No replies yet.";
+    } //needs to be edited
+
+    public Enquiry(String details, String projectName, User user) { //enquiry constructor for NEW enquiry by applicant
+        this.details = details;
+        this.projectName = projectName;
+        this.user = user;
+        this.userName = user.getName();
+        this.reply = "No replies yet.";
     }
 
     public String getUserName() {
@@ -47,6 +58,14 @@ public class Enquiry {
 
     public void setUserName(String UserName) {
         this.userName = UserName;
+    }
+
+    public String getReply(){
+        return reply;
+    }
+
+    public void setReply(String reply){
+        this.reply = reply;
     }
 }
 

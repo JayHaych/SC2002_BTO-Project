@@ -245,7 +245,7 @@ public class HDBOfficerController extends ApplicantController {
                 System.out.println("Applicant Name : " + application.getApplicantName());
     
                 if (applicant != null) {
-                    System.out.println("NRIC           : " + applicant.getNric());
+                    System.out.println("NRIC           : " + applicant.getNRIC());
                     System.out.println("Age            : " + applicant.getAge());
                     System.out.println("Marital Status : " + applicant.getMaritalStatus());
                 } else {

@@ -18,4 +18,3 @@ public class Applicant extends User {
         appliedProject = projectName;
     }
 }
-

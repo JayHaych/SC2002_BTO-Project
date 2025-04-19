@@ -28,6 +28,17 @@ public class BTOApplication {
         this.withdrawalApproved = withdrawalApproved;
         this.submissionDate = LocalDate.parse(submissionDate);
     }
+
+    public BTOApplication(String projectName, String flatType, User user){
+        this.projectName = projectName;
+        this.flatType = flatType;
+        applicationStatus = "Pending";
+        submissionDate = LocalDate.now();
+        withdrawalRequested = false;
+        applicantName = user.getName();
+        this.applicant = user;
+        withdrawalApproved = false;
+    }
     
     public Boolean getWithdrawalApproved() {
         return withdrawalApproved;
