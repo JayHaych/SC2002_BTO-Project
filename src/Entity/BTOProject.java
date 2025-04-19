@@ -170,4 +170,16 @@ public class BTOProject {
     public void addFlatBooking(FlatBooking booking) {
         this.flatBookings.add(booking);
     }
+
+
+    public boolean hasOfficer(String NRIC) {
+        for (HDBOfficer officer : OfficersInCharge) {
+            if (officer.getNRIC().equals(NRIC)) return true;
+        }
+        return false;
+    }
+    
+    public int getNumberOfOfficers() {
+        return OfficersInCharge.size();
+    }
 }

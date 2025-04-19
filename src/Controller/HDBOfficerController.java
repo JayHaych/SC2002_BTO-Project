@@ -222,6 +222,52 @@ public class HDBOfficerController extends ApplicantController {
 
     // Officer-specific method to generate a receipt for an application
     public static void getReceipt(User user) {
+        Scanner sc = new Scanner(System.in);
+        System.out.println("Enter the application ID to generate a receipt:");
+        String applicationId = sc.nextLine().trim();
+    
+        boolean applicationFound = false;
+    
+        for (BTOApplication application : LocalData.getBTOApplicationList().getList()) {
+            // Let's assume applicationId here is applicantName + projectName combo for uniqueness
+            String generatedId = application.getApplicantName() + "_" + application.getProjectName();
+            if (generatedId.equalsIgnoreCase(applicationId)) {
+                applicationFound = true;
+    
+                // Cast applicant to actual Applicant class to get more details
+                Applicant applicant = null;
+                if (application.getApplicant() instanceof Applicant) {
+                    applicant = (Applicant) application.getApplicant();
+                }
+    
+                System.out.println("======= Booking Receipt =======");
+                System.out.println("Application ID : " + applicationId);
+                System.out.println("Applicant Name : " + application.getApplicantName());
+    
+                if (applicant != null) {
+                    System.out.println("NRIC           : " + applicant.getNric());
+                    System.out.println("Age            : " + applicant.getAge());
+                    System.out.println("Marital Status : " + applicant.getMaritalStatus());
+                } else {
+                    System.out.println("NRIC           : [Unknown]");
+                    System.out.println("Age            : [Unknown]");
+                    System.out.println("Marital Status : [Unknown]");
+                }
+    
+                System.out.println("Project Name   : " + application.getProjectName());
+                System.out.println("Flat Type      : " + application.getFlatType());
+                System.out.println("Status         : " + application.getApplicationStatus());
+                System.out.println("================================");
+                break;
+            }
+        }
+    
+        if (!applicationFound) {
+            System.out.println("Application not found!");
+        }
+    }
+    /* 
+    public static void getReceipt(User user) {
         // Logic to generate receipt for an application
         System.out.println("Enter the application ID to generate a receipt:");
         String applicationId = sc.nextLine();
@@ -242,5 +288,5 @@ public class HDBOfficerController extends ApplicantController {
         if (!applicationFound) {
             System.out.println("Application not found!");
         }
-    }
+    } */
 }

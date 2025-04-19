@@ -48,4 +48,14 @@ public class BTOProject_List
         return count; 
     }
 
+    public BTOProject findProjectByName(String name) {
+        for (BTOProject project : BTOProjectList) {
+            if (project.getProjectName().equalsIgnoreCase(name.trim())) {
+                return project;
+            }
+        }
+        return null;
+    }
+
+
 }
