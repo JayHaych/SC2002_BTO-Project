@@ -25,6 +25,7 @@ public class HDBManagerController{
     private Enquiry_List enquiryList;
     private BTOApplication_List applicationList;
     private Registration_List registrationList;
+    private HDBOfficer_List officerList;
     private String applicationStatus;
     
     public HDBManagerController(boolean applicationApproved, boolean registrationApproved, boolean withdrawalApproved){
@@ -36,6 +37,7 @@ public class HDBManagerController{
         this.enquiryList = LocalData.getEnquiryList();
         this.applicationList = LocalData.getBTOApplicationList();
         this.registrationList = LocalData.getRegistrationList();
+        this.officerList = LocalData.getHDBOfficerList();
     }
 
     public void createProject(){
@@ -228,6 +230,7 @@ public class HDBManagerController{
 
     public boolean approveRegistration(){
         registrationList = LocalData.getRegistrationList();
+        officerList = LocalData.getHDBOfficerList();
         Scanner sc = new Scanner(System.in);
         for (int i = 0; i < registrationList.getRegistrationCount(); i++){
             System.out.println("All HDB Officer Registrations: ");
@@ -243,17 +246,38 @@ public class HDBManagerController{
                 System.out.println("1.YES");
                 System.out.println("2.NO");
                 int choice = sc.nextInt();
-
+            
+                
                 if (choice == 1){
                     registrationList.getRegistration(i).setApprovalStatus("Approved");
                     System.out.println("Registration Approved!");
+                    for (int j = 0; j < officerList.getCount(); j++){
+                        if (officerList.getHDBOfficer(j).getName() == registrationList.getRegistration(i).getOfficerName()){
+                            officerList.getHDBOfficer(j).setBTOprojectName(registrationList.getRegistration(i).getProjectName());
+                        }
+                    }
                     return registrationApproved;
+
                 } else if(choice == 2){
                     registrationList.getRegistration(i).setApprovalStatus("Rejected");
                     System.out.println("Registration Rejected.");
                     registrationApproved = false;
                     return registrationApproved;
                 }
+                    
+                
+
+                // if (choice == 1){
+                //     registrationList.getRegistration(i).setApprovalStatus("Approved");
+                //     officerList.getHDBOfficer(registrationList.getRegistration(i).getOfficerName()).setBTOprojectName(registrationList.getRegistration(i).getProjectName());
+                //     System.out.println("Registration Approved!");
+                //     return registrationApproved;
+                // } else if(choice == 2){
+                //     registrationList.getRegistration(i).setApprovalStatus("Rejected");
+                //     System.out.println("Registration Rejected.");
+                //     registrationApproved = false;
+                //     return registrationApproved;
+                // }
 
             }
         }
