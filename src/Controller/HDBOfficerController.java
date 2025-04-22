@@ -8,6 +8,212 @@ import Entity.*;
 
 public class HDBOfficerController extends ApplicantController {
 
+    public static void viewEnquiry(User user) {
+        boolean found = false;
+        int count = 1;
+        System.out.println("Your own enquiries:");
+    
+        // Display the user's own enquiries
+        for (Enquiry enquiry : LocalData.getEnquiryList().getList()) {
+            if (enquiry.getUser().equals(user)) {
+                System.out.println(count + ". " + enquiry.getDetails());
+                System.out.println("Reply: " + enquiry.getReply() + "\n");
+                count++;
+                found = true;
+            }
+        }
+    
+        if (!found) {
+            System.out.println("No enquiries to display.");
+        }
+    }
+
+    public static void viewProjects(HDBOfficer officer) {
+        boolean foundProject = false;
+        int count = 1; // Start the counter at 1
+        System.out.println("Projects You Are In Charge Of:");
+    
+        // Retrieve the list of projects from LocalData
+        ArrayList<BTOProject> projectList = LocalData.getBTOProjectList().getList();
+        
+        // Iterate through all projects in LocalData using the getList() method
+        for (BTOProject project : projectList) {
+            // Officer can see the project regardless of visibility if they are in charge
+            if (project.hasOfficer(officer.getNRIC())) {
+                System.out.println(count + ". Project Name: " + project.getProjectName());
+                System.out.println("   Neighbourhood: " + project.getNeighbourhood());
+                System.out.println("   2-Room Units Available: " + project.getNumberOfTwoRoom());
+                System.out.println("   3-Room Units Available: " + project.getNumberOfThreeRoom());
+                System.out.println("   Application Period: " + project.getOpeningDate() + " to " + project.getClosingDate());
+                System.out.println("------------------------------------------");
+                foundProject = true;
+                count++; // Increment the counter for each project
+            }
+        }
+    
+        // Officer views projects based on eligibility (as an applicant)
+        System.out.println("Projects Based on Your Eligibility:");
+        User currentUser = LocalData.getCurrentUser();
+        if (currentUser == null) {
+            System.out.println("No user is currently logged in.");
+            return;
+        }
+    
+        // Iterate through all projects to show based on eligibility
+        for (BTOProject project : projectList) {
+            if (!project.isVisible()) {
+                continue;
+            }
+    
+            // Married applicants (age >= 21): Show both 2-room and 3-room flats.
+            if (currentUser.getMaritalStatus().equalsIgnoreCase("Married") && currentUser.getAge() >= 21) {
+                System.out.println(count + ". Project Name: " + project.getProjectName());
+                System.out.println("   Neighbourhood: " + project.getNeighbourhood());
+                System.out.println("   2-Room Units Available: " + project.getNumberOfTwoRoom());
+                System.out.println("   3-Room Units Available: " + project.getNumberOfThreeRoom());
+                System.out.println("   Application Period: " + project.getOpeningDate() + " to " + project.getClosingDate());
+                System.out.println("------------------------------------------");
+                foundProject = true;
+                count++; // Increment the counter for each project
+            }
+            // Single applicants (age >= 35): Only show projects with available 2-room flats.
+            else if (currentUser.getMaritalStatus().equalsIgnoreCase("Single") && currentUser.getAge() >= 35) {
+                System.out.println(count + ". Project Name: " + project.getProjectName());
+                System.out.println("   Neighbourhood: " + project.getNeighbourhood());
+                System.out.println("   2-Room Units Available: " + project.getNumberOfTwoRoom());
+                System.out.println("   Application Period: " + project.getOpeningDate() + " to " + project.getClosingDate());
+                System.out.println("------------------------------------------");
+                foundProject = true;
+                count++; // Increment the counter for each project
+            }
+        }
+    
+        if (!foundProject) {
+            System.out.println("No projects available based on your eligibility criteria.");
+        }
+    }
+    
+    public static void viewProjectEnquiry(User user) {
+        boolean found = false;
+        int count = 1;
+        System.out.println("Enquiries for your project:");
+
+        // Check if the user is an officer and retrieve their current project
+        if (user instanceof HDBOfficer) {
+            HDBOfficer officer = (HDBOfficer) user;
+            
+            // Display enquiries related to the officer's current project
+            for (Enquiry enquiry : officer.getCurrentProject().getEnquiries()) {
+                System.out.println(count + ". " + enquiry.getDetails());
+                System.out.println("Reply: " + enquiry.getReply() + "\n");
+                count++;
+                found = true;
+            }
+        } else {
+            System.out.println("This feature is only available for HDB Officers.");
+        }
+
+        if (!found) {
+            System.out.println("No project enquiries to display.");
+        }
+    }
+    
+    
+    public static void apply() {
+        // Retrieve the current user (officer or applicant)
+        User user = LocalData.getCurrentUser();
+        
+        if (user == null) {
+            System.out.println("No user is currently logged in.");
+            return;  // Exit if no user is logged in
+        }
+    
+        // Check if the current user is an officer
+        if (!(user instanceof HDBOfficer)) {
+            System.out.println("This feature is only available for HDB Officers.");
+            return;
+        }
+        
+        HDBOfficer officer = (HDBOfficer) user;  // Cast the user to HDBOfficer
+        
+        Scanner sc = new Scanner(System.in);
+        
+        System.out.println("Enter the project name you would like to apply for:");
+        String projectName = sc.nextLine();
+        
+        // Check if the officer is already managing the project
+        if (officer.getBTOprojectName() != null && officer.getBTOprojectName().equalsIgnoreCase(projectName)) {
+            System.out.println("You cannot apply for the project that you are managing.");
+            return;  // Return early if the officer is managing the project
+        }
+        
+        boolean projectFound = false;
+        BTOProject projectToApplyFor = null;
+        
+        // Iterate through the list of projects to check if the entered project is valid
+        for (BTOProject project : LocalData.getBTOProjectList().getList()) {
+            if (project.getProjectName().equalsIgnoreCase(projectName)) {
+                projectFound = true;
+                projectToApplyFor = project;
+                break;
+            }
+        }
+    
+        // If the project name is invalid, print an error and return
+        if (!projectFound) {
+            System.out.println("Invalid project name. Please choose a valid project from the list.");
+            return;  // Exit the method if the project is not found
+        }
+    
+        String flatType = "";
+    
+        // Check eligibility for married officers (age >= 21)
+        if (officer.getMaritalStatus().equals("Married") && officer.getAge() >= 21) {
+            System.out.println("Enter the flat type you want to apply for (enter 2 for 2-room, 3 for 3-room):");
+    
+            while (true) { // Loop until a valid choice is entered
+                if (sc.hasNextInt()) {
+                    int choice = sc.nextInt();
+                    sc.nextLine(); // Consume the newline character left after nextInt()
+    
+                    if (choice == 2) {
+                        flatType = "2-room";
+                        break;
+                    } else if (choice == 3) {
+                        flatType = "3-room";
+                        break; 
+                    } else {
+                        System.out.println("Invalid input! Please enter 2 for 2-room or 3 for 3-room.");
+                    }
+                } else {
+                    System.out.println("Invalid input! Please enter a number (2 for 2-room or 3 for 3-room).");
+                    sc.nextLine();
+                }
+            }
+        }
+        // Check eligibility for single officers (age >= 35)
+        else if (officer.getMaritalStatus().equals("Single") && officer.getAge() >= 35) {
+            System.out.println("As a single officer, you can only apply for a 2-room flat. Proceeding to Apply for 2-room flat.");
+            flatType = "2-room";
+        }
+        // Officer is not eligible
+        else {
+            System.out.println("You are not eligible to apply for a BTO application based on your marital status or age.");
+            return;
+        }
+    
+        // Create the application for the officer
+        BTOApplication application = new BTOApplication(projectName, flatType, officer);
+    
+        // Add the application to the BTO application list
+        LocalData.getBTOApplicationList().addBTOApplication(application);
+    
+        // Set the applied project for the officer (if needed)
+        officer.setAppliedProject(projectName);
+    
+        System.out.println("Application submitted successfully.");
+    }
+
     public static void registerForProjectAsOfficer() {
         User currentUser = LocalData.getCurrentUser();
 
