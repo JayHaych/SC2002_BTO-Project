@@ -178,11 +178,22 @@ public class HDBManagerController{
             System.out.println("Invalid Project Number.");
             return;
         }
-
+        projectList = LocalData.getBTOProjectList();
         BTOProject project = projectList.getBTOProject(projectNumber - 1);
-        project.setVisible(!project.isVisible());
-        System.out.println("Project Visibility: " + project.isVisible());
-
+        if (project.isVisible() == true){
+            System.out.println("Project Visibility: Visible");
+        } else{
+            System.out.println("Project Visibility: Not Visible.");
+        }
+        System.out.println("Set Project Visibility:\n1. Visible\n2. Not Visible");
+        int choice = sc.nextInt();
+        if (choice == 1){
+            project.setVisible(true);
+            System.out.println("Project is now visible!");
+        } else if (choice == 2){
+            project.setVisible(false);
+            System.out.println("Project is now not visible!");
+        }
     }
 
     public void viewAllProjects(){
@@ -395,6 +406,7 @@ public class HDBManagerController{
             }
         }
     }
+
     public void viewAllEnquiries(){
         enquiryList = LocalData.getEnquiryList();
         for (int i = 0; i < enquiryList.getEnquiryCount(); i ++){
@@ -423,17 +435,25 @@ public class HDBManagerController{
             System.out.println("Reply Enquiry?");
             System.out.println("1.YES");
             System.out.println("2.NO");
-            int choice = sc.nextInt();
 
-            if (choice == 1){
-                sc.nextLine();
-                System.out.print("Please Enter Reply: ");
-                String reply = sc.nextLine();
-                enquiryList.getEnquiry(i).setReply(reply);
-            } else if (choice == 2){
-                System.out.println("No reply given.");
-                String reply = "No reply given.";
-                enquiryList.getEnquiry(i).setReply(reply);
+            boolean hasReplied = false;
+            while(!hasReplied){
+                int choice = sc.nextInt();
+
+                if (choice == 1){
+                    sc.nextLine();
+                    System.out.print("Please Enter Reply: ");
+                    String reply = sc.nextLine();
+                    enquiryList.getEnquiry(i).setReply(reply);
+                    hasReplied = true;
+                } else if (choice == 2){
+                    System.out.println("No reply given.");
+                    // String reply = "No reply given.";
+                    // enquiryList.getEnquiry(i).setReply(reply);
+                    hasReplied = true;
+                } else{
+                    System.out.println("Invalid Input.");
+                }
             }
         }
         

@@ -15,7 +15,7 @@ public class Enquiry {
     public Enquiry(String details, String projectName, String userName, String reply) { //enquiry constructor for enquiry_list
         this.details = details;
         this.projectName = projectName;
-        this.userName = getUserName();
+        this.userName = userName;
         this.reply = reply;
     } //needs to be edited
 

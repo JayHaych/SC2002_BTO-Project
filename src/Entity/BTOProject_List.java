@@ -5,7 +5,8 @@ import java.util.ArrayList;
 public class BTOProject_List 
 {
     private ArrayList<BTOProject> BTOProjectList;
-    private int count; 
+    private int count;
+    public Object project; 
 
 
     public ArrayList<BTOProject> getList() 
