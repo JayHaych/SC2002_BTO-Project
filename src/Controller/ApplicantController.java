@@ -334,6 +334,84 @@ public class ApplicantController implements ViewEnquiryInterface {
         System.out.println("Password saved successfully");
     }
 
+    public static void createFlatBooking() {
+        User user = LocalData.getCurrentUser();
+        if (user == null) {
+            System.out.println("No user is currently logged in.");
+            return;
+        }
+
+        // 1. Find their successful application
+        BTOApplication_List appList = LocalData.getBTOApplicationList();
+        BTOApplication successfulApp = null;
+        for (BTOApplication app : appList.getList()) {
+            if (app.getApplicant().equals(user)
+             && "Successful".equalsIgnoreCase(app.getApplicationStatus())) {
+                successfulApp = app;
+                break;
+            }
+        }
+
+        if (successfulApp == null) {
+            System.out.println("You do not have a successful application to book a flat.");
+            return;
+        }
+
+        // 2. Check they haven't already booked
+        FlatBooking_List bookingList = LocalData.getFlatBookingList();
+        for (FlatBooking fb : bookingList.getList()) {
+            if (fb.getApplicant().equals(user)
+             && !"Pending".equalsIgnoreCase(fb.getBookingStatus())) {
+                System.out.println("You have already completed a flat booking.");
+                return;
+            }
+        }
+
+        // 3. Ask the user to select the flat type (since unit number is removed)
+        Scanner sc = new Scanner(System.in);
+        System.out.println("You have been approved for a BTO application. Please select the flat type you want to book (enter 2 for 2-room, 3 for 3-room):");
+        
+        String flatType = "";
+        while (true) { 
+            if (sc.hasNextInt()) {
+                int choice = sc.nextInt();
+                sc.nextLine(); // Consume the newline character left after nextInt()
+
+                if (choice == 2) {
+                    flatType = "2-room";
+                    break;
+                } else if (choice == 3) {
+                    flatType = "3-room";
+                    break; 
+                } else {
+                    System.out.println("Invalid input! Please enter 2 for 2-room or 3 for 3-room.");
+                }
+            } else {
+                System.out.println("Invalid input! Please enter a number (2 for 2-room or 3 for 3-room).");
+                sc.nextLine();
+            }
+        }
+
+        // 4. Generate a booking ID (simple increment, can be replaced with UUID if desired)
+        String bookingID = String.valueOf(bookingList.getList().size() + 1);
+        String projectName = successfulApp.getProjectName();
+        String bookingStatus = "Pending";  // initial status
+
+        // 5. Create and store the booking
+        FlatBooking booking = new FlatBooking(
+            bookingID,
+            projectName,
+            flatType,
+            bookingStatus,
+            user.getName()
+        );
+        booking.setApplicant(user);
+
+        bookingList.addFlatBooking(booking);
+
+        System.out.println("Flat booking created successfully! Your Booking ID is " + bookingID + ".");
+    }
+
     public static void quit() {
      
     }

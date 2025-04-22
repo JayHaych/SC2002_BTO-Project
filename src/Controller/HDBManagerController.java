@@ -467,4 +467,87 @@ public class HDBManagerController{
         }
         
     }
+
+    public static void approveFlatBooking() {
+        // Retrieve the current user (HDB Manager)
+        User user = LocalData.getCurrentUser();
+        
+        if (user == null) {
+            System.out.println("No user is currently logged in.");
+            return;  // Exit if no user is logged in
+        }
+
+        // Check if the current user is a HDB Manager
+        if (!(user instanceof HDBManager)) {
+            System.out.println("This feature is only available for HDB Managers.");
+            return;
+        }
+
+        HDBManager manager = (HDBManager) user;  // Cast the user to HDBManager
+        
+        // Retrieve the list of all flat bookings
+        FlatBooking_List flatBookingList = LocalData.getFlatBookingList();
+        
+        System.out.println("Pending Flat Bookings:");
+        
+        boolean foundPendingBooking = false;
+
+        // Iterate through the list of flat bookings
+        for (FlatBooking flatBooking : flatBookingList.getList()) {
+            if ("Pending".equalsIgnoreCase(flatBooking.getBookingStatus())) {
+                foundPendingBooking = true;
+                System.out.println("Booking ID: " + flatBooking.getBookingID());
+                System.out.println("Project Name: " + flatBooking.getProjectName());
+                System.out.println("Flat Type: " + flatBooking.getFlatType());
+                System.out.println("Applicant Name: " + flatBooking.getApplicantName());
+                System.out.println("----------------------------------");
+
+                // Check if the manager wants to approve this booking
+                Scanner sc = new Scanner(System.in);
+                System.out.println("Do you want to approve this booking? (yes/no)");
+                String approvalResponse = sc.nextLine().trim().toLowerCase();
+
+                if ("yes".equals(approvalResponse)) {
+                    // Find the project associated with the booking
+                    BTOProject projectToApprove = null;
+                    for (BTOProject project : LocalData.getBTOProjectList().getList()) {
+                        if (project.getProjectName().equalsIgnoreCase(flatBooking.getProjectName())) {
+                            projectToApprove = project;
+                            break;
+                        }
+                    }
+
+                    if (projectToApprove == null) {
+                        System.out.println("Project not found.");
+                        continue;
+                    }
+
+                    // Check available units for the flat type
+                    boolean isAvailable = false;
+                    if ("2-room".equalsIgnoreCase(flatBooking.getFlatType()) && projectToApprove.getNumberOfTwoRoom() > 0) {
+                        isAvailable = true;
+                        projectToApprove.setNumberOfTwoRoom(projectToApprove.getNumberOfTwoRoom() - 1);
+                    } else if ("3-room".equalsIgnoreCase(flatBooking.getFlatType()) && projectToApprove.getNumberOfThreeRoom() > 0) {
+                        isAvailable = true;
+                        projectToApprove.setNumberOfThreeRoom(projectToApprove.getNumberOfThreeRoom() - 1);
+                    }
+
+                    // If there are available units, approve the booking
+                    if (isAvailable) {
+                        flatBooking.setBookingStatus("Approved");
+                        System.out.println("Flat booking approved successfully!");
+                    } else {
+                        System.out.println("No available units for this flat type.");
+                    }
+                } else {
+                    System.out.println("Flat booking not approved.");
+                }
+            }
+        }
+
+        if (!foundPendingBooking) {
+            System.out.println("No pending flat bookings to approve.");
+        }
+    }
+    
 }
