@@ -80,7 +80,7 @@ public class HDBManagerController{
         boolean isVisible = true;
 
         BTOProject project = new BTOProject(projectName, neighbourhood, numberOfTwoRoom, sellingPriceOfTwoRoom, numberOfThreeRoom, sellingPriceOfThreeRoom, openingDate, closingDate, managerName, availableOfficerSlot, OfficerInChargeNames, isVisible);
-        projectList.addBTOProject(project);
+        // projectList.addBTOProject(project);
         manager.setCurrentProject(project);
         manager.setBTOprojectname(projectName);
         project.setHDBManagerInCharge(manager);
@@ -199,9 +199,9 @@ public class HDBManagerController{
     }
 
     public void viewAllProjects(){
+        System.out.println("---------ALL PROJECTS---------");
         for (int i = 0; i < projectList.getCount(); i++){
             if (projectList.getCount() > 0){
-                System.out.println("---------ALL PROJECTS---------");
                 BTOProject btoProject = projectList.getBTOProject(i);
                 System.out.println((i + 1) + ". " + btoProject.getProjectName());
             } else {
@@ -247,7 +247,6 @@ public class HDBManagerController{
                 System.out.println("2.NO");
                 int choice = sc.nextInt();
             
-                
                 if (choice == 1){
                     registrationList.getRegistration(i).setApprovalStatus("Approved");
                     System.out.println("Registration Approved!");
@@ -264,20 +263,6 @@ public class HDBManagerController{
                     registrationApproved = false;
                     return registrationApproved;
                 }
-                    
-                
-
-                // if (choice == 1){
-                //     registrationList.getRegistration(i).setApprovalStatus("Approved");
-                //     officerList.getHDBOfficer(registrationList.getRegistration(i).getOfficerName()).setBTOprojectName(registrationList.getRegistration(i).getProjectName());
-                //     System.out.println("Registration Approved!");
-                //     return registrationApproved;
-                // } else if(choice == 2){
-                //     registrationList.getRegistration(i).setApprovalStatus("Rejected");
-                //     System.out.println("Registration Rejected.");
-                //     registrationApproved = false;
-                //     return registrationApproved;
-                // }
 
             }
         }
@@ -377,7 +362,7 @@ public class HDBManagerController{
                 String flatType = flatBooking.getFlatType();
                 String projectName = flatBooking.getProjectName();
             
-
+                
                 boolean filter = false;
 
                 switch(choice){
