@@ -4,16 +4,14 @@ public class FlatBooking {
     private String bookingID;
     private String projectName;
     private String flatType;
-    private String unitNumber;
     private String bookingStatus;
     private User applicant;
     private String applicantName;
 
-    public FlatBooking(String bookingID, String projectName, String flatType, String unitNumber, String bookingStatus, String applicantName) {
+    public FlatBooking(String bookingID, String projectName, String flatType, String bookingStatus, String applicantName) {
         this.bookingID = bookingID;
         this.projectName = projectName;
         this.flatType = flatType;
-        this.unitNumber = unitNumber;
         this.bookingStatus = bookingStatus;
         this.applicantName = applicantName;
     }
@@ -50,14 +48,6 @@ public class FlatBooking {
 
     public void setFlatType(String flatType){
         this.flatType = flatType;
-    }
-
-    public String getUnitNumber(){
-        return unitNumber;
-    }
-
-    public void setUnitNumber(String unitNumber){
-        this.unitNumber = unitNumber;
     }
 
     public String getBookingStatus(){

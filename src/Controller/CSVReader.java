@@ -292,13 +292,12 @@ public class CSVReader
                 String projectName = values[0];
                 String applicantName = values[1];
                 String flatType = values[2];
-                String unitNumber = values[3];
-                String bookingStatus  = values[4];
-                String ApplicantName = values[5];
+                String bookingStatus  = values[3];
+                String ApplicantName = values[4];
 
 
 
-                FlatBooking flatBooking = new FlatBooking(projectName, applicantName, flatType, unitNumber, bookingStatus, ApplicantName);
+                FlatBooking flatBooking = new FlatBooking(projectName, applicantName, flatType, bookingStatus, ApplicantName);
                 flatBookingList.addFlatBooking(flatBooking);
             }
         } catch (IOException e) {

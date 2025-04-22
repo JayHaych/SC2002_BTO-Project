@@ -189,11 +189,10 @@ public class CSVWriter
                 for (int i = 0 ; i < flatBookingList.getCount() ; i++) 
                 {
                     FlatBooking flatBooking = (FlatBooking) flatBookingList.getFlatBooking(i);
-                    String line = String.format("%s,%s,%s,%s,%s,%s",
+                    String line = String.format("%s,%s,%s,%s,%s",
                     flatBooking.getBookingID(),
                     flatBooking.getProjectName(),
                     flatBooking.getFlatType(),
-                    flatBooking.getUnitNumber(),
                     flatBooking.getBookingStatus(),
                     flatBooking.getApplicantName());
                     bw.write(line);
