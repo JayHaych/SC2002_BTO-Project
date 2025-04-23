@@ -48,10 +48,8 @@ public class HDBManagerController{
         User currentUser = LocalData.getCurrentUser();
         HDBManager manager = (HDBManager) currentUser;
 
-        System.out.println(manager.getBTOprojectname());
 
-
-        if (manager.getBTOprojectname() != null) {
+        if (! manager.getBTOprojectname().equals("null")) {
             System.out.println("You already have an ongoing project: " + manager.getBTOprojectname());
             return;
         }
@@ -342,6 +340,7 @@ public class HDBManagerController{
                         applicationList.getBTOApplication(i).setWithdrawalApproved(true);
                         applicationList.getBTOApplication(i).setWithdrawalRequested(null);
                         System.out.println("Withdrawal Approved!");
+                        applicationList.removeBTOApplication(applicationList.getBTOApplication(i));
                         return withdrawalApproved;
                     } else if(choice == 2){
                         applicationList.getBTOApplication(i).setWithdrawalApproved(false);
@@ -395,62 +394,28 @@ public class HDBManagerController{
 
         }
 
-        for(int i = 0; i < projectList.getCount(); i++){
 
-            for (FlatBooking flatBooking : LocalData.getFlatBookingList().getList()){
-                String maritalStatus = null;
-                int age = 0;
-                String applicantName = flatBooking.getApplicantName();
-                for (Applicant applicant : LocalData.getApplicantList().getList())
-                {
-                    if (applicant.getName().equals(applicantName)){
-                        applicantName = applicant.getName();
-                        age = applicant.getAge();
-                        maritalStatus = applicant.getMaritalStatus();
-                    }
+
+        for (FlatBooking flatBooking : LocalData.getFlatBookingList().getList()){
+            String maritalStatus = null;
+            int age = 0;
+            String applicantName = flatBooking.getApplicantName();
+            for (Applicant applicant : LocalData.getApplicantList().getList())
+            {
+                if (applicant.getName().equals(applicantName)){
+                    applicantName = applicant.getName();
+                    age = applicant.getAge();
+                    maritalStatus = applicant.getMaritalStatus();
                 }
-                String flatType = flatBooking.getFlatType();
-                String projectName = flatBooking.getProjectName();
-            
-                
-                boolean filter = false;
+            }
+            String flatType = flatBooking.getFlatType();
+            String projectName = flatBooking.getProjectName();
+        
 
-                switch(choice){
-                    case 1:
-                        // System.out.println("Filter for Married Applicants:");
-                        if(maritalStatus.toLowerCase().equals("married")){
-                            filter = true;
-                        }
-                        break;
-                    
-                    case 2:
-                        // System.out.println("Filter for Single Applicants:");
-                        if(maritalStatus.toLowerCase().equals("single")){
-                            filter = true;
-                        }
-                        break;
-
-                    case 3:
-                        // System.out.println("Filter for Two-Room Flats:");
-                        if(flatType.toLowerCase().equals("2-room")){
-                            filter = true;
-                        }
-                        break;
-
-                    case 4:
-                        // System.out.println("Filter for Three-Room Flats:");
-                        if(flatType.toLowerCase().equals("3-room")){
-                            filter = true;
-                        }
-                        break;
-
-                    case 5:
-                        // System.out.println("All applicants:");
-                        filter = true;
-                        break;
-                    }
-
-                    if (filter = true){
+            switch(choice){
+                case 1:
+                    // System.out.println("Filter for Married Applicants:");
+                    if(maritalStatus.toLowerCase().equals("married")){
                         System.out.println("------------------------");
                         System.out.println("Applicant: " + applicantName);
                         System.out.println("Age: " + age);
@@ -458,8 +423,55 @@ public class HDBManagerController{
                         System.out.println("Flat Type: " + flatType);
                         System.out.println("Project Name: " + projectName);
                     }
+                    break;
                 
-            }
+                case 2:
+                    // System.out.println("Filter for Single Applicants:");
+                    if(maritalStatus.toLowerCase().equals("single")){
+                        System.out.println("------------------------");
+                        System.out.println("Applicant: " + applicantName);
+                        System.out.println("Age: " + age);
+                        System.out.println("Marital Status: " + maritalStatus);
+                        System.out.println("Flat Type: " + flatType);
+                        System.out.println("Project Name: " + projectName);
+                    }
+                    break;
+
+                case 3:
+                    // System.out.println("Filter for Two-Room Flats:");
+                    if(flatType.toLowerCase().equals("2-room")){
+                        System.out.println("------------------------");
+                        System.out.println("Applicant: " + applicantName);
+                        System.out.println("Age: " + age);
+                        System.out.println("Marital Status: " + maritalStatus);
+                        System.out.println("Flat Type: " + flatType);
+                        System.out.println("Project Name: " + projectName);
+                    }
+                    break;
+
+                case 4:
+                    // System.out.println("Filter for Three-Room Flats:");
+                    if(flatType.toLowerCase().equals("3-room")){
+                        System.out.println("------------------------");
+                        System.out.println("Applicant: " + applicantName);
+                        System.out.println("Age: " + age);
+                        System.out.println("Marital Status: " + maritalStatus);
+                        System.out.println("Flat Type: " + flatType);
+                        System.out.println("Project Name: " + projectName);
+                    }
+                    break;
+
+                case 5:
+                    // System.out.println("All applicants:");
+                    System.out.println("------------------------");
+                    System.out.println("Applicant: " + applicantName);
+                    System.out.println("Age: " + age);
+                    System.out.println("Marital Status: " + maritalStatus);
+                    System.out.println("Flat Type: " + flatType);
+                    System.out.println("Project Name: " + projectName);
+                    break;
+                }
+            
         }
     }
 

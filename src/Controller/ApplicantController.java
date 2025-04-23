@@ -42,7 +42,7 @@ public class ApplicantController implements ViewEnquiryInterface {
         
         // Only show enquiries that belong to the applicant
         for (Enquiry enquiry : LocalData.getEnquiryList().getList()) {
-            if (enquiry.getUser().equals(user)) {
+            if (enquiry.getUserName().equals(user.getName())) {
                 System.out.println(count + ". " + enquiry.getDetails());
                 System.out.println("Reply: "+ enquiry.getReply() +"\n");
                 count++;
@@ -59,7 +59,7 @@ public class ApplicantController implements ViewEnquiryInterface {
         // New list of user enquiries
         List<Enquiry> userEnquiries = new ArrayList<>();
         for (Enquiry enquiry : LocalData.getEnquiryList().getList()) {
-            if (enquiry.getUser().equals(user)) {
+            if (enquiry.getUserName().equals(user.getName())) {
                 userEnquiries.add(enquiry);
             }
         }
@@ -93,7 +93,7 @@ public class ApplicantController implements ViewEnquiryInterface {
     public static void deleteEnquiry(User user) {
         List<Enquiry> userEnquiries = new ArrayList<>();
         for (Enquiry enquiry : LocalData.getEnquiryList().getList()) {
-            if (enquiry.getUser().equals(user)) {
+            if (enquiry.getUserName().equals(user.getName())) {
                 userEnquiries.add(enquiry);
             }
         }
@@ -204,7 +204,8 @@ public class ApplicantController implements ViewEnquiryInterface {
     
         BTOProject_List projectList = LocalData.getBTOProjectList();
         boolean foundProject = false;
-    
+        
+        System.out.println();
         System.out.println("Available Projects Based on Your Eligibility:");
         for (int i = 0; i < projectList.getCount(); i++) {
             BTOProject project = projectList.getBTOProject(i);
@@ -236,6 +237,7 @@ public class ApplicantController implements ViewEnquiryInterface {
     
         if (!foundProject) {
             System.out.println("No projects available based on your eligibility criteria.");
+            System.out.println();
         }
     }
 
@@ -273,7 +275,7 @@ public class ApplicantController implements ViewEnquiryInterface {
                 System.out.println("3-Room Units Available: " + project.getNumberOfThreeRoom());
                 System.out.println("Application Opening Date: " + project.getOpeningDate());
                 System.out.println("Application Closing Date: " + project.getClosingDate());
-                System.out.println("Manager in Charge: " + project.getHDBManagerInCharge());
+                System.out.println("Manager in Charge: " + project.getHDBManagerInChargeName());
                 System.out.println("------------------------------------------");
                 projectFound = true;
                 break;
@@ -307,17 +309,17 @@ public class ApplicantController implements ViewEnquiryInterface {
             BTOApplication application = applicationList.getBTOApplication(i);
             if (application != null &&
                 application.getProjectName().equalsIgnoreCase(appliedProjectName) &&
-                application.getApplicant().getNRIC().equalsIgnoreCase(applicant.getNRIC())) {
+                application.getApplicantName().equalsIgnoreCase(applicant.getName())) {
                 
-                applicationList.removeBTOApplication(application);
+                application.setWithdrawalRequested(true);
                 applicationFound = true;
                 break;
             }
         }
         
         if (applicationFound) {
-            applicant.setAppliedProject(null);
-            System.out.println("Your application has been withdrawn successfully.");
+            applicant.setAppliedProject("false");
+            System.out.println("Your withdrawal request is submitted successfully.");
         } else {
             System.out.println("Could not find your application to withdraw.");
         }

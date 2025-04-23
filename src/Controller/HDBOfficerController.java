@@ -309,6 +309,7 @@ public class HDBOfficerController extends ApplicantController {
     public static void registerForProjectAsOfficer() {
         User currentUser = LocalData.getCurrentUser();
 
+
         if (!(currentUser instanceof HDBOfficer)) {
             System.out.println("Only HDB officers can register for projects as officers.");
             return;
@@ -357,36 +358,12 @@ public class HDBOfficerController extends ApplicantController {
 
         // All checks passed → add officer
         selectedProject.addOfficerInCharge(officer);
-        System.out.println("Successfully registered as officer for: " + selectedProject.getProjectName());
+        Registration registration = new Registration(projectName,officer.getName(),"Pending");
+        LocalData.getRegistrationList().addRegistration(registration);
+        System.out.println("Registration request submitted for: " + selectedProject.getProjectName());
     }
 
-        /* private HashMap<String, BTOProject> btoProjects = new HashMap<>();
-        User currentUser = LocalData.getCurrentUser();
-        
-        HDBOfficer officer = (HDBOfficer) currentUser;  // Upcast to HDBOfficer class
-        
-        System.out.println("Enter the project name you want to register for as an officer:");
-        Scanner sc = new Scanner(System.in);
-        String projectName = sc.nextLine();  // Get project name from the user
-        boolean projectFound = false;
-            
-        if (!projectFound) {
-            System.out.println("Project not found!");
-        }
-    
-        // Check if the project exists in the project list
-        for (BTOProject project : LocalData.getBTOProjectList().getList()) {
-            if (project.getProjectName().equalsIgnoreCase(projectName)) {
-                projectFound = true;
-                
 
-
-                // project.addOfficerInCharge(officer); SHOULD BE REGISTER, NOT STRAIGHT AWAY ADD
-
-                /*System.out.println("Successfully registered for the project: " + projectName);
-                break; 
-            }
-        } */
 
 
     public static void viewProjectDetails(User user) {

@@ -1,5 +1,5 @@
 Name,NRIC,Age,visibility,MaritalStatus,Password,hasApplied
-John,S1234567A,35,true,Single,password,false
+John,S1234567A,35,true,Single,password,Acacia Breeze
 Sarah,T7654321B,40,true,Married,password,false
 Grace,S9876543C,37,true,Married,password,false
 James,T2345678D,30,true,Married,password,false
