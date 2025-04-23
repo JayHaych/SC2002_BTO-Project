@@ -16,6 +16,7 @@ import Entity.HDBOfficer;
 import Entity.BTOApplication_List;
 import Entity.BTOProject;
 import Entity.User;
+import Entity.Applicant;
 import Entity.LocalData;
 import Entity.Registration_List;
 
@@ -368,13 +369,19 @@ public class HDBManagerController{
         int choice = sc.nextInt();
 
         for(int i = 0; i < projectList.getCount(); i++){
-            BTOProject project = projectList.getBTOProject(i);
 
-            for (FlatBooking flatBooking : project.getFlatBookings()){
-                User applicant = flatBooking.getApplicant();
-                String applicantName = applicant.getName();
-                int age = applicant.getAge();
-                String maritalStatus = applicant.getMaritalStatus();
+            for (FlatBooking flatBooking : LocalData.getFlatBookingList().getList()){
+                String maritalStatus = null;
+                int age = 0;
+                String applicantName = flatBooking.getApplicantName();
+                for (Applicant applicant : LocalData.getApplicantList().getList())
+                {
+                    if (applicant.getName().equals(applicantName)){
+                        applicantName = applicant.getName();
+                        age = applicant.getAge();
+                        maritalStatus = applicant.getMaritalStatus();
+                    }
+                }
                 String flatType = flatBooking.getFlatType();
                 String projectName = flatBooking.getProjectName();
             
