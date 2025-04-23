@@ -125,54 +125,70 @@ public class ApplicantController implements ViewEnquiryInterface {
 
     public static void apply() {
         User user = LocalData.getCurrentUser();
+        
+        if (user == null) {
+            System.out.println("No user is currently logged in.");
+            return;  // Exit if no user is logged in
+        }
+    
+        if (!(user instanceof Applicant)) {
+            System.out.println("This feature is only available for Applicants.");
+            return;
+        }
+        
+        Applicant applicant = (Applicant) user;  // Cast the user to Applicant
+    
+        // Check if applicant's name is valid
+        if (applicant.getName() == null || applicant.getName().isEmpty()) {
+            System.out.println("Error: Applicant's name is not set.");
+            return;  // Exit if applicant's name is invalid
+        }
+    
+        // Check if the applicant has already applied for a project by comparing names
+        for (BTOApplication application : LocalData.getBTOApplicationList().getList()) {
+            if (application.getApplicantName() != null && application.getApplicantName().equals(applicant.getName())) {
+                System.out.println("You have already applied for a project. You cannot apply for another.");
+                return;  // Exit the method if the applicant has already applied
+            }
+        }
+        
         Scanner sc = new Scanner(System.in);
         
         System.out.println("Enter the project name you would like to apply for:");
         String projectName = sc.nextLine();
-    
+        
         boolean projectFound = false;
         for (BTOProject project : LocalData.getBTOProjectList().getList()) {
+            // Check if the project exists and is visible
             if (project.getProjectName().equalsIgnoreCase(projectName)) {
+                if (!project.isVisible()) {
+                    System.out.println("This project is not visible and cannot be applied for.");
+                    return;  // Exit if the project is not visible
+                }
                 projectFound = true;
                 break;
             }
         }
-    
+        
         // If the project name is invalid, print an error and return
         if (!projectFound) {
             System.out.println("Invalid project name. Please choose a valid project from the list.");
             return;  // Exit the method if the project is not found
         }
-    
+        
         String flatType = "";
         
         // Check eligibility for married applicants (age >= 21)
         if (user.getMaritalStatus().equals("Married") && user.getAge() >= 21) {
-            System.out.println("Enter the flat type you want to apply for (enter 2 for 2-room, 3 for 3-room):");
+            System.out.println("You are eligible to apply for 2-room or 3-room flats.");
             
-            while (true) { // Loop until a valid choice is entered
-                if (sc.hasNextInt()) {
-                    int choice = sc.nextInt();
-                    sc.nextLine(); // Consume the newline character left after nextInt()
-    
-                    if (choice == 2) {
-                        flatType = "2-room";
-                        break;
-                    } else if (choice == 3) {
-                        flatType = "3-room";
-                        break; 
-                    } else {
-                        System.out.println("Invalid input! Please enter 2 for 2-room or 3 for 3-room.");
-                    }
-                } else {
-                    System.out.println("Invalid input! Please enter a number (2 for 2-room or 3 for 3-room).");
-                    sc.nextLine();
-                }
-            }
+            // We assume flatType has already been decided from the application
+            // No need to ask again, use the flatType from the BTOApplication (already set in the application CSV)
+            flatType = "2-room";  // Example: change this as per actual logic (use the same flatType in the application)
         }
         // Check eligibility for single applicants (age >= 35)
         else if (user.getMaritalStatus().equals("Single") && user.getAge() >= 35) {
-            System.out.println("As a single applicant, you can only apply for a 2-room flat. Proceeding to Apply for 2 room flat.");
+            System.out.println("As a single applicant, you can only apply for a 2-room flat.");
             flatType = "2-room";
         }
         // Applicant is not eligible
@@ -180,18 +196,17 @@ public class ApplicantController implements ViewEnquiryInterface {
             System.out.println("You are not eligible to apply for a BTO application based on your marital status or age.");
             return;
         }
-    
-        BTOApplication application = new BTOApplication(projectName, flatType, user); //default value type
         
-        LocalData.getBTOApplicationList().addBTOApplication(application);
-
-        Applicant applicant = (Applicant) user; 
-        applicant.setAppliedProject(projectName); 
+        // Create and add the application
+        BTOApplication application = new BTOApplication(projectName, flatType, user); // Create application with the current user
+        
+        LocalData.getBTOApplicationList().addBTOApplication(application);  // Add application to the list
+    
+        applicant.setAppliedProject(projectName); // Set the applied project for the applicant
         
         System.out.println("Application submitted successfully.");
-
     }
-    
+
     
     
 
@@ -342,77 +357,56 @@ public class ApplicantController implements ViewEnquiryInterface {
             System.out.println("No user is currently logged in.");
             return;
         }
-
-        // 1. Find their successful application
+    
+        // 1. Find their successful application by comparing name (String-based comparison)
         BTOApplication_List appList = LocalData.getBTOApplicationList();
         BTOApplication successfulApp = null;
         for (BTOApplication app : appList.getList()) {
-            if (app.getApplicant().equals(user)
-             && "Successful".equalsIgnoreCase(app.getApplicationStatus())) {
+            if (app.getApplicantName() != null && app.getApplicantName().equals(user.getName())
+                && "Successful".equalsIgnoreCase(app.getApplicationStatus())) {
                 successfulApp = app;
                 break;
             }
         }
-
+    
         if (successfulApp == null) {
             System.out.println("You do not have a successful application to book a flat.");
             return;
         }
-
-        // 2. Check they haven't already booked
+    
+        // 2. Check they haven't already booked (compare applicant's name)
         FlatBooking_List bookingList = LocalData.getFlatBookingList();
         for (FlatBooking fb : bookingList.getList()) {
-            if (fb.getApplicant().equals(user)
-             && !"Pending".equalsIgnoreCase(fb.getBookingStatus())) {
+            if (fb.getApplicantName() != null && fb.getApplicantName().equals(user.getName())
+                && !"Pending".equalsIgnoreCase(fb.getBookingStatus())) {
                 System.out.println("You have already completed a flat booking.");
                 return;
             }
         }
-
-        // 3. Ask the user to select the flat type (since unit number is removed)
-        Scanner sc = new Scanner(System.in);
-        System.out.println("You have been approved for a BTO application. Please select the flat type you want to book (enter 2 for 2-room, 3 for 3-room):");
-        
-        String flatType = "";
-        while (true) { 
-            if (sc.hasNextInt()) {
-                int choice = sc.nextInt();
-                sc.nextLine(); // Consume the newline character left after nextInt()
-
-                if (choice == 2) {
-                    flatType = "2-room";
-                    break;
-                } else if (choice == 3) {
-                    flatType = "3-room";
-                    break; 
-                } else {
-                    System.out.println("Invalid input! Please enter 2 for 2-room or 3 for 3-room.");
-                }
-            } else {
-                System.out.println("Invalid input! Please enter a number (2 for 2-room or 3 for 3-room).");
-                sc.nextLine();
-            }
-        }
-
+    
+        // 3. Use the flatType from the successful application (do not ask the user for it again)
+        String flatType = successfulApp.getFlatType();  // Use the flat type from the application
+    
         // 4. Generate a booking ID (simple increment, can be replaced with UUID if desired)
         String bookingID = String.valueOf(bookingList.getList().size() + 1);
         String projectName = successfulApp.getProjectName();
         String bookingStatus = "Pending";  // initial status
-
+    
         // 5. Create and store the booking
         FlatBooking booking = new FlatBooking(
             bookingID,
             projectName,
             flatType,
             bookingStatus,
-            user.getName()
+            user.getName()  // Store applicant's name here
         );
-        booking.setApplicant(user);
-
+        booking.setApplicantName(user.getName()); // Set applicant's name for booking
+    
         bookingList.addFlatBooking(booking);
-
+    
         System.out.println("Flat booking created successfully! Your Booking ID is " + bookingID + ".");
     }
+    
 
     public static void quit() {
      

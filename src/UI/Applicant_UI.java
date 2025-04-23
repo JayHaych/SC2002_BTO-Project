@@ -20,8 +20,9 @@ public class Applicant_UI {
         System.out.println("6. View a BTO");
         System.out.println("7. View your applied BTO");
         System.out.println("8. Request a withdrawal from your application");
-        System.out.println("9. Change your password");
-        System.out.println("10. Logout and quit");
+        System.out.println("9. Create a flat booking");
+        System.out.println("10. Change your password");
+        System.out.println("11. Logout and quit");
     }
 
     // Method to run the UI and interact with the user
@@ -30,7 +31,7 @@ public class Applicant_UI {
         int choice = 0;
 
         // Continue showing the menu until the user chooses to quit (option 10)
-        while (choice != 10) {
+        while (choice != 11) {
             displayMenu();  // Display the menu options
 
             System.out.print("Enter your choice: ");
@@ -77,14 +78,17 @@ public class Applicant_UI {
                     ApplicantController.requestWithdrawal();
                     break;
                 case 9:
-                    ApplicantController.changePassword();
+                    ApplicantController.createFlatBooking();
                     break;
                 case 10:
+                    ApplicantController.changePassword();
+                    break;
+                case 11:
                     ApplicantController.quit();  // Assuming quit will handle logout
                     System.out.println("You have successfully logged out.");
                     break;
                 default:
-                    System.out.println("Invalid choice. Please select a number from 1 to 10.");
+                    System.out.println("Invalid choice. Please select a number from 1 to 11.");
                     break;
             }
         }

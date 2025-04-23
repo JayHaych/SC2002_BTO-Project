@@ -13,7 +13,6 @@ public class HDBOfficerController extends ApplicantController {
         int count = 1;
         System.out.println("Your own enquiries:");
     
-        // Display the user's own enquiries
         for (Enquiry enquiry : LocalData.getEnquiryList().getList()) {
             if (enquiry.getUser().equals(user)) {
                 System.out.println(count + ". " + enquiry.getDetails());
@@ -30,15 +29,13 @@ public class HDBOfficerController extends ApplicantController {
 
     public static void viewProjects(HDBOfficer officer) {
         boolean foundProject = false;
-        int count = 1; // Start the counter at 1
+        int count = 1;
         System.out.println("Projects You Are In Charge Of:");
     
-        // Retrieve the list of projects from LocalData
         ArrayList<BTOProject> projectList = LocalData.getBTOProjectList().getList();
         
-        // Iterate through all projects in LocalData using the getList() method
+
         for (BTOProject project : projectList) {
-            // Officer can see the project regardless of visibility if they are in charge
             if (project.hasOfficer(officer.getNRIC())) {
                 System.out.println(count + ". Project Name: " + project.getProjectName());
                 System.out.println("   Neighbourhood: " + project.getNeighbourhood());
@@ -47,11 +44,10 @@ public class HDBOfficerController extends ApplicantController {
                 System.out.println("   Application Period: " + project.getOpeningDate() + " to " + project.getClosingDate());
                 System.out.println("------------------------------------------");
                 foundProject = true;
-                count++; // Increment the counter for each project
+                count++;
             }
         }
     
-        // Officer views projects based on eligibility (as an applicant)
         System.out.println("Projects Based on Your Eligibility:");
         User currentUser = LocalData.getCurrentUser();
         if (currentUser == null) {
@@ -59,7 +55,6 @@ public class HDBOfficerController extends ApplicantController {
             return;
         }
     
-        // Iterate through all projects to show based on eligibility
         for (BTOProject project : projectList) {
             if (!project.isVisible()) {
                 continue;

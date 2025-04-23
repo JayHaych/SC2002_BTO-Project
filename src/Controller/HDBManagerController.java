@@ -253,7 +253,7 @@ public class HDBManagerController{
                 int choice = sc.nextInt();
             
                 if (choice == 1){
-                    registrationList.getRegistration(i).setApprovalStatus("Approved");
+                    registrationList.getRegistration(i).setApprovalStatus("Successful");
                     System.out.println("Registration Approved!");
                     String target_name = registrationList.getRegistration(i).getOfficerName();
                     String target_BTO_ProjectName = registrationList.getRegistration(i).getProjectName();
@@ -304,7 +304,7 @@ public class HDBManagerController{
                 int choice = sc.nextInt();
         
                 if (choice == 1){
-                    applicationList.getBTOApplication(i).setApplicationStatus("Approved");
+                    applicationList.getBTOApplication(i).setApplicationStatus("Successful");
                     System.out.println("Application Approved!");
                     return applicationApproved;
                 } else if(choice == 2){
@@ -593,7 +593,7 @@ public class HDBManagerController{
 
                     // If there are available units, approve the booking
                     if (isAvailable) {
-                        flatBooking.setBookingStatus("Approved");
+                        flatBooking.setBookingStatus("Successful");
                         System.out.println("Flat booking approved successfully!");
                     } else {
                         System.out.println("No available units for this flat type.");

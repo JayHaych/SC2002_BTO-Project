@@ -25,18 +25,19 @@ public class HDB_Officer_UI
         System.out.println("6. View a BTO");
         System.out.println("7. View your applied BTO");
         System.out.println("8. Request a withdrawal from your application");
-        System.out.println("9. Change your password");
-        System.out.println("10. Register to join a project");
-        System.out.println("11. View your registration status");
-        System.out.println("12. View the enquiries of the project you are handling");
-        System.out.println("13. Reply to enquiries");
-        System.out.println("14. Generate receipt");
-        System.out.println("15. Logout and quit");
+        System.out.println("9. Create a flat booking");
+        System.out.println("10. Change your password");
+        System.out.println("11. Register to join a project");
+        System.out.println("12. View your registration status");
+        System.out.println("13. View the enquiries of the project you are handling");
+        System.out.println("14. Reply to enquiries");
+        System.out.println("15. Generate receipt");
+        System.out.println("16. Logout and quit");
 
 
         while (true)
         {
-            System.out.println("What would you like to do? (Select a number 1-15)");
+            System.out.println("What would you like to do? (Select a number 1-16)");
             choice = sc.nextInt();
             switch(choice) {                
                 case 1:
@@ -67,21 +68,24 @@ public class HDB_Officer_UI
                     HDBOfficerController.changePassword();
                     break;
                 case 10:
-                    HDBOfficerController.registerForProjectAsOfficer();
+                    HDBOfficerController.createFlatBooking();
                     break;
                 case 11:
-                    HDBOfficerController.viewRegistrationStatus(LocalData.getCurrentUser());
+                    HDBOfficerController.registerForProjectAsOfficer();
                     break;
                 case 12:
-                    HDBOfficerController.viewEnquiriesOfProject(LocalData.getCurrentUser());
+                    HDBOfficerController.viewRegistrationStatus(LocalData.getCurrentUser());
                     break;
                 case 13:
-                    HDBOfficerController.replyToEnquiry(LocalData.getCurrentUser());
+                    HDBOfficerController.viewEnquiriesOfProject(LocalData.getCurrentUser());
                     break;
                 case 14:
-                    HDBOfficerController.getReceipt(LocalData.getCurrentUser());
+                    HDBOfficerController.replyToEnquiry(LocalData.getCurrentUser());
                     break;
                 case 15:
+                    HDBOfficerController.getReceipt(LocalData.getCurrentUser());
+                    break;
+                case 16:
                     System.out.println("Logging out...");
                     sc.close();
                     return;
