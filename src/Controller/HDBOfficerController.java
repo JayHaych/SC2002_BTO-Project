@@ -525,25 +525,28 @@ public class HDBOfficerController extends ApplicantController {
     // Officer-specific method to generate a receipt for an application
     public static void getReceipt(User user) {
         Scanner sc = new Scanner(System.in);
-        System.out.println("Enter the application ID to generate a receipt:");
-        String applicationId = sc.nextLine().trim();
+        System.out.println("Enter the applicant name to generate a receipt:");
+        String applicantnameString = sc.nextLine().trim();
     
         boolean applicationFound = false;
     
         for (BTOApplication application : LocalData.getBTOApplicationList().getList()) {
-            // Let's assume applicationId here is applicantName + projectName combo for uniqueness
-            String generatedId = application.getApplicantName() + "_" + application.getProjectName();
-            if (generatedId.equalsIgnoreCase(applicationId)) {
+
+
+            if (application.getApplicantName().equalsIgnoreCase(applicantnameString)) {
                 applicationFound = true;
+                System.out.println("Generating receipt for " + application.getApplicantName() + "...");
     
                 // Cast applicant to actual Applicant class to get more details
                 Applicant applicant = null;
-                if (application.getApplicant() instanceof Applicant) {
-                    applicant = (Applicant) application.getApplicant();
+                for (Applicant a : LocalData.getApplicantList().getList()) {
+                    if (a.getName().equalsIgnoreCase(application.getApplicantName())) {
+                        applicant = a;
+                        break;
+                    }
                 }
     
                 System.out.println("======= Booking Receipt =======");
-                System.out.println("Application ID : " + applicationId);
                 System.out.println("Applicant Name : " + application.getApplicantName());
     
                 if (applicant != null) {

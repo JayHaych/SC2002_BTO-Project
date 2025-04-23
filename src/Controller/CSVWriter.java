@@ -182,7 +182,7 @@ public class CSVWriter
     {
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(filePath))) 
         {
-            bw.write("bookingID,projectName,flatType,unitNumber,bookingStatus,ApplicantName");
+            bw.write("bookingID,projectName,flatType,bookingStatus,ApplicantName");
             bw.newLine();
             
 
