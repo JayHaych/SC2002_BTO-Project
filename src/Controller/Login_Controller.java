@@ -45,10 +45,22 @@ public class Login_Controller
                 continue;
             }
             System.out.println("Please enter your NRIC and password.");
-            System.out.print("NRIC: ");
+            System.out.print("NRIC ( format: T1234567R ): ");
             NRIC = scanner.nextLine();
             System.out.print("Password: ");
             password = scanner.nextLine();
+
+            
+            if (! NRIC.matches("[a-zA-Z][0-9]{7}[a-zA-Z]"))
+            {
+                System.out.println("___________________________________________________________________________________________");
+                System.out.println("Invalid input. Format must be: letter + 7 digits + letter");
+                System.out.println();
+                continue;
+            }
+
+
+
             System.out.println("___________________________________________________________________________________________");
             switch(role)
             {
