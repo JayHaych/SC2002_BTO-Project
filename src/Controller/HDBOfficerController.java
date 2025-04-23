@@ -197,7 +197,7 @@ public class HDBOfficerController extends ApplicantController {
             System.out.println("No user is currently logged in.");
             return;  // Exit if no user is logged in
         }
-    
+
         // Check if the current user is an officer
         if (!(user instanceof HDBOfficer)) {
             System.out.println("This feature is only available for HDB Officers.");
@@ -205,7 +205,21 @@ public class HDBOfficerController extends ApplicantController {
         }
         
         HDBOfficer officer = (HDBOfficer) user;  // Cast the user to HDBOfficer
-        
+
+        // Debug: Check if officer's name is valid
+        if (officer.getName() == null || officer.getName().isEmpty()) {
+            System.out.println("Error: Officer's name is not set.");
+            return;  // Exit if officer's name is invalid
+        }
+
+        // Check if the officer has already applied for a project by comparing names
+        for (BTOApplication application : LocalData.getBTOApplicationList().getList()) {
+            if (application.getApplicant() != null && application.getApplicant().getName().equals(officer.getName())) {
+                System.out.println("You have already applied for a project. You cannot apply for another.");
+                return;  // Exit the method if the officer has already applied
+            }
+        }
+
         Scanner sc = new Scanner(System.in);
         
         System.out.println("Enter the project name you would like to apply for:");
@@ -228,24 +242,24 @@ public class HDBOfficerController extends ApplicantController {
                 break;
             }
         }
-    
+
         // If the project name is invalid, print an error and return
         if (!projectFound) {
             System.out.println("Invalid project name. Please choose a valid project from the list.");
             return;  // Exit the method if the project is not found
         }
-    
+
         String flatType = "";
-    
+
         // Check eligibility for married officers (age >= 21)
         if (officer.getMaritalStatus().equals("Married") && officer.getAge() >= 21) {
             System.out.println("Enter the flat type you want to apply for (enter 2 for 2-room, 3 for 3-room):");
-    
+
             while (true) { // Loop until a valid choice is entered
                 if (sc.hasNextInt()) {
                     int choice = sc.nextInt();
                     sc.nextLine(); // Consume the newline character left after nextInt()
-    
+
                     if (choice == 2) {
                         flatType = "2-room";
                         break;
@@ -271,18 +285,26 @@ public class HDBOfficerController extends ApplicantController {
             System.out.println("You are not eligible to apply for a BTO application based on your marital status or age.");
             return;
         }
-    
+
         // Create the application for the officer
         BTOApplication application = new BTOApplication(projectName, flatType, officer);
-    
+
+        // Check if the applicant field is set correctly after creating the application
+        if (application.getApplicant() == null) {
+            System.out.println("Error: The applicant is not set properly in the application.");
+            return;  // Exit if the applicant field is not set
+        }
+
         // Add the application to the BTO application list
         LocalData.getBTOApplicationList().addBTOApplication(application);
-    
+
         // Set the applied project for the officer (if needed)
         officer.setAppliedProject(projectName);
-    
+
         System.out.println("Application submitted successfully.");
     }
+
+    
 
     public static void registerForProjectAsOfficer() {
         User currentUser = LocalData.getCurrentUser();
