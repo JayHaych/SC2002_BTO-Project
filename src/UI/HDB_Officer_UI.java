@@ -36,7 +36,7 @@ public class HDB_Officer_UI
 
         while (true)
         {
-            System.out.println("What would you like to do? (Select a number 1-10)");
+            System.out.println("What would you like to do? (Select a number 1-15)");
             choice = sc.nextInt();
             switch(choice) {                
                 case 1:

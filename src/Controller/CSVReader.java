@@ -89,10 +89,11 @@ public class CSVReader
                 boolean visibility = Boolean.parseBoolean(values[3]);
                 String maritalStatus = values[4];
                 String password = values[5];
+                String BTOprojectName = values[6];
 
 
 
-                HDBManager hdbManager = new HDBManager(name, NRIC, password, visibility, maritalStatus, age, null);
+                HDBManager hdbManager = new HDBManager(name, NRIC, password, visibility, maritalStatus, age, BTOprojectName);
                 hdbManagerList.addHDBManager(hdbManager);
             }
         } catch (IOException e) {

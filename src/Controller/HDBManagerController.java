@@ -3,6 +3,8 @@ package Controller;
 import java.nio.file.SecureDirectoryStream;
 import java.util.Scanner;
 
+import javax.swing.plaf.basic.BasicInternalFrameTitlePane.SystemMenuBar;
+
 import Entity.BTOProject_List;
 import Entity.Enquiry_List;
 import Entity.FlatBooking;
@@ -10,6 +12,7 @@ import Entity.FlatBooking_List;
 import Entity.HDBManager;
 import Entity.HDBManager_List;
 import Entity.HDBOfficer_List;
+import Entity.HDBOfficer;
 import Entity.BTOApplication_List;
 import Entity.BTOProject;
 import Entity.User;
@@ -43,9 +46,12 @@ public class HDBManagerController{
     public void createProject(){
         User currentUser = LocalData.getCurrentUser();
         HDBManager manager = (HDBManager) currentUser;
-        
-        if (manager.getCurrentProject() != null) {
-            System.out.println("You already have an ongoing project: " + manager.getCurrentProject().getProjectName());
+
+        System.out.println(manager.getBTOprojectname());
+
+
+        if (manager.getBTOprojectname() != null) {
+            System.out.println("You already have an ongoing project: " + manager.getBTOprojectname());
             return;
         }
 
@@ -250,11 +256,21 @@ public class HDBManagerController{
                 if (choice == 1){
                     registrationList.getRegistration(i).setApprovalStatus("Approved");
                     System.out.println("Registration Approved!");
-                    for (int j = 0; j < officerList.getCount(); j++){
-                        if (officerList.getHDBOfficer(j).getName() == registrationList.getRegistration(i).getOfficerName()){
-                            officerList.getHDBOfficer(j).setBTOprojectName(registrationList.getRegistration(i).getProjectName());
+                    String target_name = registrationList.getRegistration(i).getOfficerName();
+                    String target_BTO_ProjectName = registrationList.getRegistration(i).getProjectName();
+
+                    System.out.println(target_BTO_ProjectName);
+                    System.out.println(target_name);
+                    
+                    for (HDBOfficer officer : officerList.getList())
+                    {
+                        if (officer.getName().equals(target_name))
+                        {
+                            officer.setBTOprojectName(target_BTO_ProjectName);
                         }
                     }
+                    
+
                     return registrationApproved;
 
                 } else if(choice == 2){

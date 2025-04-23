@@ -546,27 +546,4 @@ public class HDBOfficerController extends ApplicantController {
             System.out.println("Application not found!");
         }
     }
-    /* 
-    public static void getReceipt(User user) {
-        // Logic to generate receipt for an application
-        System.out.println("Enter the application ID to generate a receipt:");
-        String applicationId = sc.nextLine();
-
-        boolean applicationFound = false;
-        for (BTOApplication application : LocalData.getBTOApplicationList().getList()) {
-            if (application.getApplicationID().equals(applicationId)) {
-                applicationFound = true;
-                // Logic to generate and print a receipt
-                System.out.println("Receipt for Application ID: " + applicationId);
-                System.out.println("Project Name: " + application.getProjectName());
-                System.out.println("Flat Type: " + application.getFlatType());
-                System.out.println("Application Status: " + application.getApplicationStatus());
-                break;
-            }
-        }
-
-        if (!applicationFound) {
-            System.out.println("Application not found!");
-        }
-    } */
 }
