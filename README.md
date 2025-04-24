@@ -7,7 +7,7 @@ BTO Project is a command line interface designed to be a one-stop platform for u
 ## Getting Started
 
 ### Documentaton
-- [Final Written Report]()
+- [Final Written Report](https://github.com/JayHaych/SC2002_BTO-Project/blob/main/Documentation/FDAE-grp4.docx)
 - [Source Code](https://github.com/JayHaych/SC2002_BTO-Project/tree/main/src)
 - [UML Class Diagram](https://github.com/JayHaych/SC2002_BTO-Project/tree/main/Documentation/Class%20Diagram)
 - [UML Sequence Diagram](https://github.com/JayHaych/SC2002_BTO-Project/tree/main/Documentation/Sequence%20Diagram)
