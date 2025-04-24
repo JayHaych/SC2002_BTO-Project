@@ -7,11 +7,11 @@ BTO Project is a command line interface designed to be a one-stop platform for u
 ## Getting Started
 
 ### Documentaton
-[Final Written Report]()
-[Source Code](https://github.com/JayHaych/SC2002_BTO-Project/tree/main/src)
-[UML Class Diagram](https://github.com/JayHaych/SC2002_BTO-Project/tree/main/Documentation/Class%20Diagram)
-[UML Sequence Diagram](https://github.com/JayHaych/SC2002_BTO-Project/tree/main/Documentation/Sequence%20Diagram)
-[Javadoc](https://github.com/JayHaych/SC2002_BTO-Project/tree/main/doc)
+- [Final Written Report]()
+- [Source Code](https://github.com/JayHaych/SC2002_BTO-Project/tree/main/src)
+- [UML Class Diagram](https://github.com/JayHaych/SC2002_BTO-Project/tree/main/Documentation/Class%20Diagram)
+- [UML Sequence Diagram](https://github.com/JayHaych/SC2002_BTO-Project/tree/main/Documentation/Sequence%20Diagram)
+- [Javadoc](https://github.com/JayHaych/SC2002_BTO-Project/tree/main/doc)
 
 ### Clone the Repository
 Before beginning, clone the Git repository to your local machine.
