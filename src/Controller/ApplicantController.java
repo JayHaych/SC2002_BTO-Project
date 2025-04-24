@@ -358,50 +358,48 @@ public class ApplicantController implements ViewEnquiryInterface {
             return;
         }
     
-        // 1. Find their successful application by comparing name (String-based comparison)
+        // 1. Find their successful application by comparing name & status
         BTOApplication_List appList = LocalData.getBTOApplicationList();
         BTOApplication successfulApp = null;
         for (BTOApplication app : appList.getList()) {
-            if (app.getApplicantName() != null && app.getApplicantName().equals(user.getName())
+            if (app.getApplicantName() != null
+                && app.getApplicantName().equals(user.getName())
                 && "Successful".equalsIgnoreCase(app.getApplicationStatus())) {
                 successfulApp = app;
                 break;
             }
         }
-    
         if (successfulApp == null) {
             System.out.println("You do not have a successful application to book a flat.");
             return;
         }
     
-        // 2. Check they haven't already booked (compare applicant's name)
+        // 2. NEW CHECK: block any repeat booking by this user
         FlatBooking_List bookingList = LocalData.getFlatBookingList();
-        for (FlatBooking fb : bookingList.getList()) {
-            if (fb.getApplicantName() != null && fb.getApplicantName().equals(user.getName())
-                && !"Pending".equalsIgnoreCase(fb.getBookingStatus())) {
-                System.out.println("You have already completed a flat booking.");
+        for (FlatBooking existing : bookingList.getList()) {
+            if (existing.getApplicantName() != null
+                && existing.getApplicantName().equals(user.getName())) {
+                System.out.println("You have already made a flat booking and cannot book another flat.");
                 return;
             }
         }
     
-        // 3. Use the flatType from the successful application (do not ask the user for it again)
-        String flatType = successfulApp.getFlatType();  // Use the flat type from the application
-    
-        // 4. Generate a booking ID (simple increment, can be replaced with UUID if desired)
-        String bookingID = String.valueOf(bookingList.getList().size() + 1);
+        // 3. Use the flatType from the successful application
+        String flatType   = successfulApp.getFlatType();
         String projectName = successfulApp.getProjectName();
-        String bookingStatus = "Pending";  // initial status
+        String bookingStatus = "Pending";
     
-        // 5. Create and store the booking
+        // 4. Generate a booking ID (simple increment)
+        String bookingID = String.valueOf(bookingList.getList().size() + 1);
+    
+        // 5. Create and store the new booking
         FlatBooking booking = new FlatBooking(
             bookingID,
             projectName,
             flatType,
             bookingStatus,
-            user.getName()  // Store applicant's name here
+            user.getName()
         );
-        booking.setApplicantName(user.getName()); // Set applicant's name for booking
-    
         bookingList.addFlatBooking(booking);
     
         System.out.println("Flat booking created successfully! Your Booking ID is " + bookingID + ".");
