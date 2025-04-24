@@ -7,20 +7,20 @@ BTO Project is a command line interface designed to be a one-stop platform for u
 ## Getting Started
 
 ### Documentaton
-![Final Written Report]()
-![Source Code]()
-![UML Class Diagram]()
-![UML Sequence Diagram]()
-![Javadoc]()
+[Final Written Report]()
+[Source Code]()
+[UML Class Diagram]()
+[UML Sequence Diagram]()
+[Javadoc]()
 
 ### Clone the Repository
 Before beginning, clone the Git repository to your local machine.
 
 ### Recommended Software
 Download and install the following software:
--Vscode, or
--Eclipse, or
--IntelliJ
+- Vscode, or
+- Eclipse, or
+- IntelliJ
 
 ## Running the Project
 1. Open one terminal (preferably in VS Code):
