@@ -7,8 +7,8 @@ import java.util.Scanner;
 import Entity.*;
 
 public class HDBOfficerController extends ApplicantController {
-
-    public static void viewEnquiry(User user) {
+    //Implemented DIP in viewEnquiry for officer
+    public void viewEnquiry(User user) {
         boolean found = false;
         int count = 1;
         System.out.println("Your own enquiries:");
