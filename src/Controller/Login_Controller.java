@@ -3,6 +3,29 @@ package Controller;
 import java.util.Scanner;
 import Entity.LocalData;
 
+/**
+ * The Login_Controller class is responsible for handling the login process of users
+ * within the system. It allows users to log in as one of three roles: Applicant, 
+ * HDB Officer, or HDB Manager. The login process involves verifying the user's NRIC,
+ * password, and role, and matching it against the user data stored in the system.
+ * 
+ * <p>Role-based authentication is performed, where each role (Applicant, HDB Officer, 
+ * HDB Manager) has its own set of valid users. Upon successful login, the current user 
+ * is set in the LocalData class, making them accessible throughout the application.
+ * </p>
+ * 
+ * <p>The login process ensures input validation, such as checking for valid NRIC format 
+ * and correct password entries, and it provides feedback to the user on the outcome 
+ * of their login attempt.</p>
+ * 
+ * <p>This class contains the following methods:</p>
+ * <ul>
+ *   <li>{@link #login()} - Handles the user login process for all roles and authenticates 
+ *   based on the entered credentials (NRIC, password).</li>
+ * </ul>
+ * 
+ * @see Entity.LocalData
+ */
 
 public class Login_Controller 
 {
@@ -11,6 +34,17 @@ public class Login_Controller
     private static String password;
     private static int role;
 
+    /**
+     * Prompts the user to log in by entering their role, NRIC, and password. The method 
+     * checks the validity of the entered credentials and authenticates the user based on 
+     * their role. If the login is successful, the current user is set and the method 
+     * returns the role of the user.
+     * 
+     * @return the role of the logged-in user (1 for Applicant, 2 for HDB Officer, 
+     *         3 for HDB Manager).
+     */
+
+     
     public static int login()
     {
 

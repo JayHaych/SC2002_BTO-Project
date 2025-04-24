@@ -6,13 +6,29 @@ import Entity.LocalData;
 import Entity.User;
 import Interface.ViewEnquiryInterface;
 
+/**
+ * The {@code Applicant_UI} class provides the user interface for Applicants in the HDB Application System.
+ * Applicants can perform various actions such as submitting and managing enquiries, applying for BTO projects,
+ * booking flats, and handling account operations.
+ *
+ * <p>Features include:
+ * <ul>
+ *     <li>Submitting, viewing, editing, and deleting enquiries</li>
+ *     <li>Applying for and viewing BTO projects</li>
+ *     <li>Requesting withdrawals and creating flat bookings</li>
+ *     <li>Changing password and logging out</li>
+ * </ul>
+ */
 public class Applicant_UI {
 
-    // Method to display the menu options
+    /**
+     * Displays the menu of available options for the applicant.
+     * The menu includes operations ranging from enquiry management to application and account actions.
+     */
     public static void displayMenu() {
         System.out.println(LocalData.getCurrentUser().getName() + ", welcome to the Applicant UI!");
         System.out.println("-----------------------------");
-        System.out.println("What would you like to do? (Select a number 1-10)");
+        System.out.println("What would you like to do? (Select a number 1-11)");
         System.out.println("1. Submit an enquiry");
         System.out.println("2. View your enquiries");
         System.out.println("3. Edit an enquiry");
@@ -26,32 +42,31 @@ public class Applicant_UI {
         System.out.println("11. Logout and quit");
     }
 
-    // Method to run the UI and interact with the user
+    /**
+     * Runs the applicant user interface loop, allowing applicants to interact with the system.
+     * Processes user input and performs actions based on the selected option.
+     * Loops until the user chooses to logout and quit.
+     */
     public static void display() {
         Scanner sc = new Scanner(System.in);
         int choice = 0;
 
-        // Continue showing the menu until the user chooses to quit (option 10)
         while (choice != 11) {
-            displayMenu();  // Display the menu options
+            displayMenu();  // Display menu options
 
             System.out.print("Enter your choice: ");
-            
-            // Ensure the input is an integer and handle the case where user provides invalid input
+
+            // Validate user input to ensure it's an integer
             if (sc.hasNextInt()) {
                 choice = sc.nextInt();
-                sc.nextLine();
+                sc.nextLine(); // Consume newline
             } else {
-                // Handle non-integer input
-                System.out.println("Invalid input! Please enter a number between 1 and 10.");
-                sc.nextLine();  // Consume the invalid input (this prevents infinite loops)
-                continue; // Skip the rest of the loop and ask for input again
+                System.out.println("Invalid input! Please enter a number between 1 and 11.");
+                sc.nextLine();  // Clear invalid input
+                continue;
             }
 
-            // Consume the leftover newline character after reading the integer
-            //sc.nextLine();
-
-            User currentUser = LocalData.getCurrentUser();  // Get the current user
+            User currentUser = LocalData.getCurrentUser();  // Retrieve current user context
 
             switch (choice) {
                 case 1:
@@ -86,7 +101,7 @@ public class Applicant_UI {
                     ApplicantController.changePassword();
                     break;
                 case 11:
-                    ApplicantController.quit();  // Assuming quit will handle logout
+                    ApplicantController.quit();  // Handles logout process
                     System.out.println("You have successfully logged out.");
                     break;
                 default:

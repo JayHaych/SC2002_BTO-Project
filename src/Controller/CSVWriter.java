@@ -5,6 +5,37 @@ import java.io.FileWriter;
 import java.io.IOException;
 import Entity.*;
 
+/**
+ * Utility class for writing various types of data to CSV files.
+ * <p>
+ * The {@code CSVWriter} class provides static methods for writing data to CSV files for different entities
+ * within the application. These entities include applicants, HDB managers, officers, BTO projects, enquiries,
+ * flat bookings, BTO applications, and registrations. Each method is responsible for converting the list of
+ * entities into a CSV format and writing it to a specified file path.
+ * </p>
+ * <p>
+ * Each method handles the creation of a {@link BufferedWriter} to write the respective entity data to the CSV
+ * file, ensuring proper formatting by writing headers and data lines. In case of an {@link IOException},
+ * the error is printed to the standard error stream.
+ * </p>
+ * <p>
+ * The following methods are provided for writing different types of data:
+ * <ul>
+ *     <li>{@link #writeApplicantCSV(String, Applicant_list)}</li>
+ *     <li>{@link #writeHDBManagerCSV(String, HDBManager_List)}</li>
+ *     <li>{@link #writeHDBOfficerCSV(String, HDBOfficer_List)}</li>
+ *     <li>{@link #writeBTOProjectCSV(String, BTOProject_List)}</li>
+ *     <li>{@link #writeEnquiryCSV(String, Enquiry_List)}</li>
+ *     <li>{@link #writeFlatBookingCSV(String, FlatBooking_List)}</li>
+ *     <li>{@link #writeBTOApplicationCSV(String, BTOApplication_List)}</li>
+ *     <li>{@link #writeRegistrationCSV(String, Registration_List)}</li>
+ * </ul>
+ * </p>
+ * <p>
+ * The data for each entity is formatted as a comma-separated string and written as a new line in the output file.
+ * </p>
+ */
+
 public class CSVWriter 
 {
     public static void writeApplicantCSV(String filePath, Applicant_list applicantList) 

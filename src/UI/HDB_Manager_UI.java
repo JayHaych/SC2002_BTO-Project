@@ -1,12 +1,32 @@
 package UI;
 
 import java.util.Scanner;
-
 import Controller.HDBManagerController;
 
+/**
+ * The {@code HDB_Manager_UI} class provides the user interface for HDB Managers in the system.
+ * It allows HDB Managers to perform administrative operations related to BTO projects, such as
+ * creation, editing, deletion, and visibility settings. Additionally, it provides access to 
+ * enquiry handling, approval processes, and project reports.
+ *
+ * <p>Key features include:
+ * <ul>
+ *     <li>Creating and managing BTO projects</li>
+ *     <li>Setting project visibility</li>
+ *     <li>Generating project reports</li>
+ *     <li>Viewing and replying to enquiries</li>
+ *     <li>Approving registrations, applications, and withdrawals</li>
+ *     <li>Logging out of the system</li>
+ * </ul>
+ */
 public class HDB_Manager_UI {
     
-    public static void display(){
+    /**
+     * Displays the HDB Manager menu and processes user selections.
+     * Operations are handled via an instance of {@link HDBManagerController}.
+     * Loops until the manager chooses to log out.
+     */
+    public static void display() {
         Scanner sc = new Scanner(System.in);
         int choice;
 
@@ -30,66 +50,50 @@ public class HDB_Manager_UI {
             System.out.println("13. Logout and quit");
             System.out.print("Select option: ");
             
-           
             choice = sc.nextInt();
-            // report = controller.generateReport();
 
             switch (choice) {
                 case 1:
                     controller.createProject();
                     break;
-
                 case 2:
                     controller.editProject();
                     break;
-
                 case 3:
                     controller.deleteProject();
                     break;
-
                 case 4:
                     controller.setVisibility();
                     break;
-
                 case 5:
                     controller.viewAllProjects();
                     break;
-
                 case 6:
                     controller.viewMyProjects();
                     break;
-
                 case 7:
                     controller.generateReport();
-                    // System.out.println(report);
                     break;
-
                 case 8:
                     controller.viewAllEnquiries();
                     break;
-
                 case 9:
                     controller.replyEnquiry();
                     break;
-
                 case 10:
                     controller.approveRegistration();
                     break;
-
                 case 11:
                     controller.approveApplication();
                     break;
-
                 case 12:
                     controller.approveWithdrawal();
                     break;
-
                 case 13:
                     System.out.println("Logging out...");
                     System.out.println("Thank you!");
                     sc.close();
                     return;
-                    
                 default:
                     System.out.println("Invalid option.");
             }

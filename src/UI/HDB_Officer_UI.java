@@ -4,16 +4,33 @@ import java.util.Scanner;
 import Controller.HDBOfficerController;
 import Entity.LocalData;
 
-public class HDB_Officer_UI 
-{
-    
+/**
+ * The {@code HDB_Officer_UI} class provides the user interface for HDB Officers within the application.
+ * It displays a menu of available actions and handles user input to perform tasks through the {@link HDBOfficerController}.
+ * 
+ * <p>Features include:
+ * <ul>
+ *     <li>Submitting and managing enquiries</li>
+ *     <li>Viewing and applying for BTO projects</li>
+ *     <li>Managing flat bookings</li>
+ *     <li>Handling officer-specific project registrations</li>
+ *     <li>Responding to applicant enquiries</li>
+ *     <li>Generating receipts</li>
+ *     <li>Logging out</li>
+ * </ul>
+ */
+public class HDB_Officer_UI {
 
-    public static void display() 
-    {
+    /**
+     * Displays the main menu for HDB Officers and handles input for various operations.
+     * Continues to prompt the officer until they choose to logout (option 16).
+     * Delegates functional logic to the {@code HDBOfficerController} and uses
+     * the currently logged-in user from {@code LocalData}.
+     */
+    public static void display() {
 
         Scanner sc = new Scanner(System.in);
         int choice;
-
 
         System.out.println("Welcome to the HDB Officer UI!");
         System.out.println("-----------------------------");
@@ -34,12 +51,11 @@ public class HDB_Officer_UI
         System.out.println("15. Generate receipt");
         System.out.println("16. Logout and quit");
 
-
-        while (true)
-        {
+        while (true) {
             System.out.println("What would you like to do? (Select a number 1-16)");
             choice = sc.nextInt();
-            switch(choice) {                
+
+            switch (choice) {
                 case 1:
                     HDBOfficerController.submitEnquiry(LocalData.getCurrentUser());
                     break;
@@ -90,7 +106,7 @@ public class HDB_Officer_UI
                     sc.close();
                     return;
                 default:
-                    System.out.println("Invalid choice. Please select a number from 1 to 10.");
+                    System.out.println("Invalid choice. Please select a number from 1 to 16.");
                     break;
             }
         }

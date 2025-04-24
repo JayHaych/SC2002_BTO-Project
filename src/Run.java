@@ -4,21 +4,30 @@ import Entity.LocalData;
 
 /**
  * The {@code Run} class serves as the entry point for the application.
- * It loads local data, manages user login, and routes the user to 
- * the appropriate UI interface based on their role (Applicant, HDB Officer, or HDB Manager).
- * After user interaction, it updates the CSV data files accordingly.
+ * It is responsible for:
+ * <ul>
+ *     <li>Loading local data from persistent storage</li>
+ *     <li>Authenticating the user and determining their role</li>
+ *     <li>Routing the user to the appropriate UI interface based on their role:
+ *         <ul>
+ *             <li>1 - Applicant</li>
+ *             <li>2 - HDB Officer</li>
+ *             <li>3 - HDB Manager</li>
+ *         </ul>
+ *     </li>
+ *     <li>Saving updated data back to CSV files</li>
+ * </ul>
  */
-public class Run 
-{
-
+public class Run {
+    
     /**
      * The main method is the starting point of the application.
-     * It handles:
+     * It performs the following operations:
      * <ul>
-     *     <li>Loading local data from persistent storage</li>
-     *     <li>User login and role identification</li>
-     *     <li>Displaying the UI based on the logged-in user's role</li>
-     *     <li>Saving any changes back to CSV files</li>
+     *     <li>Loads local data from CSV files</li>
+     *     <li>Prompts the user to log in and identifies their role</li>
+     *     <li>Displays the appropriate user interface based on the role</li>
+     *     <li>Updates the CSV files with any changes made during the session</li>
      * </ul>
      *
      * @param args Command-line arguments (not used)
