@@ -4,6 +4,7 @@ import java.util.Scanner;
 import Controller.ApplicantController;
 import Entity.LocalData;
 import Entity.User;
+import Interface.ViewEnquiryInterface;
 
 public class Applicant_UI {
 
@@ -57,7 +58,8 @@ public class Applicant_UI {
                     ApplicantController.submitEnquiry(currentUser);
                     break;
                 case 2:
-                    ApplicantController.viewEnquiry(currentUser);
+                    ViewEnquiryInterface viewInterface = new ApplicantController();
+                    viewInterface.viewEnquiry(currentUser);
                     break;
                 case 3:
                     ApplicantController.editEnquiry(currentUser);

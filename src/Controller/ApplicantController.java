@@ -35,7 +35,7 @@ public class ApplicantController implements ViewEnquiryInterface {
         System.out.println("Enquiry submitted successfully.");
     }
 
-    public static void viewEnquiry(User user) {
+    public void viewEnquiry(User user) {
         boolean found = false;
         int count = 1;
         System.out.println("Your Enquiries:");
