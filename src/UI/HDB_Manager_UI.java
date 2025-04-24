@@ -47,7 +47,8 @@ public class HDB_Manager_UI {
             System.out.println("10. Approve registration");
             System.out.println("11. Approve application");
             System.out.println("12. Approve withdrawal");
-            System.out.println("13. Logout and quit");
+            System.out.println("13. Change password");
+            System.out.println("14. Logout and quit");
             System.out.print("Select option: ");
             
             choice = sc.nextInt();
@@ -90,6 +91,9 @@ public class HDB_Manager_UI {
                     controller.approveWithdrawal();
                     break;
                 case 13:
+                    controller.changePassword();
+                    break;
+                case 14:
                     System.out.println("Logging out...");
                     System.out.println("Thank you!");
                     sc.close();

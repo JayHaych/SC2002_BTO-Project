@@ -93,11 +93,11 @@ public class HDBOfficerController extends ApplicantController {
         int count = 1;
         System.out.println("Enquiries for your project:");
 
-        // Check if the user is an officer and retrieve their current project
+        // Double check if the user is an officer and retrieve their current project
         if (user instanceof HDBOfficer) {
             HDBOfficer officer = (HDBOfficer) user;
             
-            // Display enquiries related to the officer's current project
+            // Display enquiries related to the officer's current project only
             for (Enquiry enquiry : officer.getCurrentProject().getEnquiries()) {
                 System.out.println(count + ". " + enquiry.getDetails());
                 System.out.println("Reply: " + enquiry.getReply() + "\n");
@@ -114,75 +114,81 @@ public class HDBOfficerController extends ApplicantController {
     }
     
     public static void updateBTOProject() {
-        // Retrieve the current officer
         User user = LocalData.getCurrentUser();
-        
         if (user == null) {
             System.out.println("No user is currently logged in.");
             return;
         }
 
-        // Check if the current user is an officer
         if (!(user instanceof HDBOfficer)) {
             System.out.println("This feature is only available for HDB Officers.");
             return;
         }
 
-        HDBOfficer officer = (HDBOfficer) user;  // Cast the user to HDBOfficer
-        
-        // Retrieve the list of all flat bookings
-        FlatBooking_List flatBookingList = LocalData.getFlatBookingList();
-        
-        // Iterate through the list of flat bookings and check for approved bookings
-        for (FlatBooking flatBooking : flatBookingList.getList()) {
-            if ("Approved".equalsIgnoreCase(flatBooking.getBookingStatus())) {
-                // Find the project associated with the approved flat booking
-                BTOProject projectToUpdate = null;
-                for (BTOProject project : LocalData.getBTOProjectList().getList()) {
-                    if (project.getProjectName().equalsIgnoreCase(flatBooking.getProjectName())) {
-                        projectToUpdate = project;
-                        break;
-                    }
-                }
-
-                if (projectToUpdate == null) {
-                    System.out.println("Project not found for booking ID: " + flatBooking.getBookingID());
-                    continue;
-                }
-
-                // Update the flat booking details (available flats) for the respective flat type
-                if ("2-room".equalsIgnoreCase(flatBooking.getFlatType())) {
-                    if (projectToUpdate.getNumberOfTwoRoom() > 0) {
-                        projectToUpdate.setNumberOfTwoRoom(projectToUpdate.getNumberOfTwoRoom() - 1);
-                    }
-                } else if ("3-room".equalsIgnoreCase(flatBooking.getFlatType())) {
-                    if (projectToUpdate.getNumberOfThreeRoom() > 0) {
-                        projectToUpdate.setNumberOfThreeRoom(projectToUpdate.getNumberOfThreeRoom() - 1);
-                    }
-                }
-
-                // Update the applicant's BTO application status to "Booked"
-                BTOApplication_List btoApplicationList = LocalData.getBTOApplicationList();
-                for (BTOApplication app : btoApplicationList.getList()) {
-                    if (app.getApplicantName().equals(flatBooking.getApplicantName()) &&
-                        app.getProjectName().equals(flatBooking.getProjectName())) {
-                        app.setApplicationStatus("Booked");
-                        break;
-                    }
-                }
-
-                // Update the applicant's profile with the type of flat booked
-                for (Applicant applicant : LocalData.getApplicantList().getList()) {
-                    if (applicant.getName().equals(flatBooking.getApplicantName())) {
-                        applicant.setAppliedProject(flatBooking.getProjectName()); // Set the applied project
-                        break;
-                    }
-                }
-
-                System.out.println("BTO project updated successfully for booking ID: " + flatBooking.getBookingID());
+        HDBOfficer officer = (HDBOfficer) user;
+    
+        // 1. Get the officer’s assigned project name
+        String assignedName = officer.getBTOprojectName();
+        if (assignedName == null || assignedName.isBlank()) {
+            System.out.println("You are not assigned to any project yet.");
+            return;
+        }
+    
+        // 2. Locate the BTOProject object by name
+        BTOProject projectToUpdate = null;
+        for (BTOProject proj : LocalData.getBTOProjectList().getList()) {
+            if (proj.getProjectName().equalsIgnoreCase(assignedName)) {
+                projectToUpdate = proj;
+                break;
             }
         }
+        if (projectToUpdate == null) {
+            System.out.println("Assigned project '" + assignedName + "' not found.");
+            return;
+        }
+    
+        // 3. Process only “Approved” bookings for this project
+        boolean processedAny = false;  // ← track if we handle at least one booking
+    
+        for (FlatBooking booking : LocalData.getFlatBookingList().getList()) {
+            if (!booking.getProjectName().equalsIgnoreCase(assignedName)) {
+                continue;
+            }
+            if (!"Approved".equalsIgnoreCase(booking.getBookingStatus())) {
+                continue;
+            }
+    
+            // Decrement available units
+            String ft = booking.getFlatType();
+            if ("2-Room".equalsIgnoreCase(ft) && projectToUpdate.getNumberOfTwoRoom() > 0) {
+                projectToUpdate.setNumberOfTwoRoom(projectToUpdate.getNumberOfTwoRoom() - 1);
+            } else if ("3-Room".equalsIgnoreCase(ft) && projectToUpdate.getNumberOfThreeRoom() > 0) {
+                projectToUpdate.setNumberOfThreeRoom(projectToUpdate.getNumberOfThreeRoom() - 1);
+            }
+    
+            // Mark the application as “Booked”
+            for (BTOApplication app : LocalData.getBTOApplicationList().getList()) {
+                if (app.getApplicantName().equals(booking.getApplicantName())
+                    && app.getProjectName().equalsIgnoreCase(assignedName)) {
+                    app.setApplicationStatus("Booked");
+                    break;
+                }
+            }
+    
+            // Mark the FlatBooking as "Booked" too so it won’t be re‐processed
+            booking.setBookingStatus("Booked");
+    
+            System.out.println("BTO project updated for Booking ID: " + booking.getBookingID());
+            processedAny = true;
+        }
+    
+        // 4. If nothing was processed, inform the officer
+        if (!processedAny) {
+            System.out.println("No flat bookings to update for your project at this time.");
+        }
     }
+    
+    
     
     public static void apply() {
         // Retrieve the current user (officer or applicant)
@@ -227,13 +233,11 @@ public class HDBOfficerController extends ApplicantController {
         }
         
         boolean projectFound = false;
-        BTOProject projectToApplyFor = null;
         
         // Iterate through the list of projects to check if the entered project is valid
         for (BTOProject project : LocalData.getBTOProjectList().getList()) {
             if (project.getProjectName().equalsIgnoreCase(projectName)) {
                 projectFound = true;
-                projectToApplyFor = project;
                 break;
             }
         }

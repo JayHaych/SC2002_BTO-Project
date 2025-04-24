@@ -49,10 +49,11 @@ public class HDB_Officer_UI {
         System.out.println("13. View the enquiries of the project you are handling");
         System.out.println("14. Reply to enquiries");
         System.out.println("15. Generate receipt");
-        System.out.println("16. Logout and quit");
+        System.out.println("16. Process flat bookings");
+        System.out.println("17. Logout and quit");
 
         while (true) {
-            System.out.println("What would you like to do? (Select a number 1-16)");
+            System.out.println("What would you like to do? (Select a number 1-17)");
             choice = sc.nextInt();
 
             switch (choice) {
@@ -102,6 +103,9 @@ public class HDB_Officer_UI {
                     HDBOfficerController.getReceipt(LocalData.getCurrentUser());
                     break;
                 case 16:
+                    HDBOfficerController.updateBTOProject();
+                    break;
+                case 17:
                     System.out.println("Logging out...");
                     sc.close();
                     return;

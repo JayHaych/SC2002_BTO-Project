@@ -5,20 +5,7 @@ import java.util.Scanner;
 
 import javax.swing.plaf.basic.BasicInternalFrameTitlePane.SystemMenuBar;
 
-import Entity.BTOProject_List;
-import Entity.Enquiry_List;
-import Entity.FlatBooking;
-import Entity.FlatBooking_List;
-import Entity.HDBManager;
-import Entity.HDBManager_List;
-import Entity.HDBOfficer_List;
-import Entity.HDBOfficer;
-import Entity.BTOApplication_List;
-import Entity.BTOProject;
-import Entity.User;
-import Entity.Applicant;
-import Entity.LocalData;
-import Entity.Registration_List;
+import Entity.*;
 
 public class HDBManagerController{
     private boolean applicationApproved;
@@ -284,39 +271,107 @@ public class HDBManagerController{
         return registrationApproved;
     }
 
-    public boolean approveApplication(){
-        applicationList = LocalData.getBTOApplicationList();
+    public boolean approveApplication() {
+        BTOApplication_List applicationList = LocalData.getBTOApplicationList();
         Scanner sc = new Scanner(System.in);
-        for(int i = 0; i < applicationList.getCount(); i++){
-            System.out.println("All applications: ");
-            System.out.println((i+1) + ". " + applicationList.getBTOApplication(i).getApplicantName());
-            
-            String applicationStatus = applicationList.getBTOApplication(i).getApplicationStatus();
-            if (applicationStatus.equals("Pending")){
-                System.out.println("\nApplication " + (i + 1) + ":");
-                System.out.println("Applicant Name: " + applicationList.getBTOApplication(i).getApplicantName());
-                System.out.println("Project: " + applicationList.getBTOApplication(i).getProjectName());
-                System.out.println("Flat Type: " + applicationList.getBTOApplication(i).getFlatType());
-                System.out.println("Status: " + applicationList.getBTOApplication(i).getApplicationStatus());
+        boolean sawPending = false;
+    
+        for (int i = 0; i < applicationList.getCount(); i++) {
+            BTOApplication app = applicationList.getBTOApplication(i);
+    
+            // Only consider pending applications
+            if (!"Pending".equalsIgnoreCase(app.getApplicationStatus())) {
+                continue;
+            }
+            sawPending = true;
+    
+            // Display details
+            System.out.println("\nApplication " + (i + 1) + ":");
+            System.out.println(" Applicant Name: " + app.getApplicantName());
+            System.out.println(" Project       : " + app.getProjectName());
+            System.out.println(" Flat Type     : " + app.getFlatType());
+            System.out.println(" Status        : " + app.getApplicationStatus());
+    
+            // Force a valid choice
+            int choice;
+            while (true) {
                 System.out.println("Approve Application?");
-                System.out.println("1.YES");
-                System.out.println("2.NO");
-                int choice = sc.nextInt();
-        
-                if (choice == 1){
-                    applicationList.getBTOApplication(i).setApplicationStatus("Successful");
-                    System.out.println("Application Approved!");
-                    return applicationApproved;
-                } else if(choice == 2){
-                    applicationList.getBTOApplication(i).setApplicationStatus("Rejected");
-                    System.out.println("Application Rejected.");
+                System.out.println(" 1. YES");
+                System.out.println(" 2. NO");
+                String line = sc.nextLine().trim();
+                try {
+                    choice = Integer.parseInt(line);
+                    if (choice == 1 || choice == 2) {
+                        break;
+                    }
+                } catch (NumberFormatException e) {
+                    // ignore
+                }
+                System.out.println("Invalid input. Please enter 1 (YES) or 2 (NO).");
+            }
+    
+            // Handle approval or rejection
+            if (choice == 1) {
+                // Find project
+                BTOProject project = null;
+                for (BTOProject p : LocalData.getBTOProjectList().getList()) {
+                    if (p.getProjectName().equalsIgnoreCase(app.getProjectName())) {
+                        project = p;
+                        break;
+                    }
+                }
+                if (project == null) {
+                    System.out.println("Project not found. Cannot approve.");
                     applicationApproved = false;
                     return applicationApproved;
                 }
+    
+                // Check availability
+                String ft = app.getFlatType();
+                if (ft.equalsIgnoreCase("2-Room")) {
+                    if (project.getNumberOfTwoRoom() > 0) {
+                        project.setNumberOfTwoRoom(project.getNumberOfTwoRoom() - 1);
+                        app.setApplicationStatus("Successful");
+                        applicationApproved = true;
+                        System.out.println("Application Approved!");
+                    } else {
+                        app.setApplicationStatus("Rejected");
+                        applicationApproved = false;
+                        System.out.println("No 2-Room units available. Application Rejected.");
+                    }
+                } else if (ft.equalsIgnoreCase("3-Room")) {
+                    if (project.getNumberOfThreeRoom() > 0) {
+                        project.setNumberOfThreeRoom(project.getNumberOfThreeRoom() - 1);
+                        app.setApplicationStatus("Successful");
+                        applicationApproved = true;
+                        System.out.println("Application Approved!");
+                    } else {
+                        app.setApplicationStatus("Rejected");
+                        applicationApproved = false;
+                        System.out.println("No 3-Room units available. Application Rejected.");
+                    }
+                } else {
+                    app.setApplicationStatus("Rejected");
+                    applicationApproved = false;
+                    System.out.println("Unknown flat type. Application Rejected.");
+                }
+    
+                return applicationApproved;
+            } else {
+                // choice == 2
+                app.setApplicationStatus("Rejected");
+                applicationApproved = false;
+                System.out.println("Application Rejected.");
+                return applicationApproved;
             }
         }
+    
+        if (!sawPending) {
+            System.out.println("There are no pending applications to process.");
+        }
         return applicationApproved;
-    }   
+    }
+    
 
     public boolean approveWithdrawal(){
         applicationList = LocalData.getBTOApplicationList();
@@ -607,6 +662,17 @@ public class HDBManagerController{
         if (!foundPendingBooking) {
             System.out.println("No pending flat bookings to approve.");
         }
+    }
+
+    public void changePassword(){
+        User currentUser = LocalData.getCurrentUser();
+        Scanner sc = new Scanner(System.in);
+
+        System.out.println("Enter your new password");
+        String newPassword = sc.nextLine();
+        currentUser.setPassword(newPassword);
+        // need to change password here
+        System.out.println("Password saved successfully");
     }
     
 }
