@@ -1,5 +1,4 @@
 bookingID,projectName,flatType,bookingStatus,ApplicantName
 1,Acacia Breeze,2-Room,Booked,Grace
 2,Acacia Breeze,3-Room,Booked,James
-3,Acacia Breeze,4-Room,Pending,Rachel
-4,NTU,2-Room,Approved,bobo
+3,Acacia Breeze,2-Room,Successful,Rachel

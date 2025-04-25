@@ -184,7 +184,22 @@ public class ApplicantController implements ViewEnquiryInterface {
             
             // We assume flatType has already been decided from the application
             // No need to ask again, use the flatType from the BTOApplication (already set in the application CSV)
-            flatType = "2-room";  // Example: change this as per actual logic (use the same flatType in the application)
+            while (true) {
+                System.out.print("Enter flat type (2 for 2-room, 3 for 3-room): ");
+                String choice = sc.nextLine().trim();
+                switch (choice) {
+                    case "2":
+                        flatType = "2-room";
+                        break;
+                    case "3":
+                        flatType = "3-room";
+                        break;
+                    default:
+                        System.out.println("Invalid selection. Please enter 2 or 3.");
+                        continue;  // ask again
+                }
+                break;  // valid choice, exit loop
+            }  // Example: change this as per actual logic (use the same flatType in the application)
         }
         // Check eligibility for single applicants (age >= 35)
         else if (user.getMaritalStatus().equals("Single") && user.getAge() >= 35) {

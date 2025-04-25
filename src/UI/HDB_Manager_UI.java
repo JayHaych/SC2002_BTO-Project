@@ -48,7 +48,8 @@ public class HDB_Manager_UI {
             System.out.println("11. Approve application");
             System.out.println("12. Approve withdrawal");
             System.out.println("13. Change password");
-            System.out.println("14. Logout and quit");
+            System.out.println("14. Approve flatbooking");
+            System.out.println("15. Logout and quit");
             System.out.print("Select option: ");
             
             choice = sc.nextInt();
@@ -94,6 +95,9 @@ public class HDB_Manager_UI {
                     controller.changePassword();
                     break;
                 case 14:
+                    controller.approveFlatBooking();
+                    break;
+                case 15:
                     System.out.println("Logging out...");
                     System.out.println("Thank you!");
                     sc.close();

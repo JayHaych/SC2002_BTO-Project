@@ -582,7 +582,7 @@ public class HDBManagerController{
         
     }
 
-    public static void approveFlatBooking() {
+    public void approveFlatBooking() {
         // Retrieve the current user (HDB Manager)
         User user = LocalData.getCurrentUser();
         

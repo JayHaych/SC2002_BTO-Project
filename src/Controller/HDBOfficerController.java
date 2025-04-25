@@ -147,14 +147,14 @@ public class HDBOfficerController extends ApplicantController {
             return;
         }
     
-        // 3. Process only “Approved” bookings for this project
+        // 3. Process only “Successful” bookings for this project
         boolean processedAny = false;  // ← track if we handle at least one booking
     
         for (FlatBooking booking : LocalData.getFlatBookingList().getList()) {
             if (!booking.getProjectName().equalsIgnoreCase(assignedName)) {
                 continue;
             }
-            if (!"Approved".equalsIgnoreCase(booking.getBookingStatus())) {
+            if (!"Successful".equalsIgnoreCase(booking.getBookingStatus())) {
                 continue;
             }
     
